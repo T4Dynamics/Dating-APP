@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+import { Provider } from 'react-native-paper'
+import { theme } from './src/theme'
+import { MainScreen, LoginScreen, RegisterScreen, Dashboard, MatchesScreen } from './src/screens';
+//import firebaseHelper from "./src/helpers/firebaseHelper";
+
+const Stack = createStackNavigator();
+// const firebaseHelper = new firebaseHelper();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	return (
+	  <Provider theme={theme}>
+		<NavigationContainer>
+		  <Stack.Navigator
+			initialRouteName="MainScreen"
+			screenOptions={{
+			  headerShown: false,
+			}}
+		  >
+			<Stack.Screen name="MainScreen" component={ MainScreen } />
+			<Stack.Screen name="LoginScreen" component={ LoginScreen } />
+			<Stack.Screen name="RegisterScreen" component={ RegisterScreen } />
+			<Stack.Screen name="MatchesScreen" component={ MatchesScreen } />
+			<Stack.Screen name="Dashboard" component={ Dashboard } />
+		  </Stack.Navigator>
+		</NavigationContainer>
+	  </Provider>
+	)
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
