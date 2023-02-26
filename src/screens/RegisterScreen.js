@@ -1,10 +1,12 @@
 import React from "react";
+import Toast from 'react-native-toast-message';
 
 import Background from "../components/Background";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
+import { createUser } from "../../firebase";
 
 export default function RegisterScreen({ navigation }) {
 
@@ -14,7 +16,31 @@ export default function RegisterScreen({ navigation }) {
     const [confirmPassword, setConfirmPassword] = React.useState('');
 
     const handleRegisteration = () => {
-        console.log(displayName, email, password, confirmPassword);
+        if (displayName === '') return Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Please enter a display name',
+        });
+
+        if (email === '') return Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Please enter an email',
+        });
+
+        if (password === '') return Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Please enter a password',
+        });
+
+        if (password !== confirmPassword) return Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Passwords do not match',
+        });
+
+        createUser(displayName, email, password);
     }
 
     return (
