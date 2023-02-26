@@ -15,7 +15,11 @@ export default function RegisterScreen({ navigation }) {
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
 
-    const handleRegisteration = () => {
+    const handleRegistration = () => {
+
+        console.log('Registering user...');
+        console.log(displayName, email, password, confirmPassword);
+
         if (displayName === '') return Toast.show({
             type: 'error',
             text1: 'Error',
@@ -41,6 +45,7 @@ export default function RegisterScreen({ navigation }) {
         });
 
         createUser(displayName, email, password);
+        console.log('User created successfully');
     }
 
     return (
@@ -76,10 +81,11 @@ export default function RegisterScreen({ navigation }) {
 
                 <Button
                     mode="contained"
-                    onPress={ handleRegisteration }
+                    onPress={ handleRegistration }
                 >
                     Register!
                 </Button>
+                <Toast />
             </SafeAreaView>
         </Background>
     );

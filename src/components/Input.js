@@ -11,6 +11,7 @@ export default function Input({ placeholder, style, ...props }) {
                 placeholder = {placeholder}
                 focusColor="blue"
                 style = {[styles.input, style]}
+                {...props}  
             />
         </View>
     )
