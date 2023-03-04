@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
-import { createUser } from "../../firebase";
+import { firebaseAuth, createUserWithEmailAndPassword, updateProfile } from "../../firebase";
 
 export default function RegisterScreen({ navigation }) {
 
@@ -17,35 +17,43 @@ export default function RegisterScreen({ navigation }) {
 
     const handleRegistration = () => {
 
-        console.log('Registering user...');
-        console.log(displayName, email, password, confirmPassword);
+        let errorMessage = '';
 
-        if (displayName === '') return Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: 'Please enter a display name',
-        });
+        if (displayName === '') errorMessage = 'Please enter a display name';
+        if (email === '') errorMessage = 'Please enter an email';
+        if (password === '') errorMessage = 'Please enter a password';
+        if (password !== confirmPassword) errorMessage = 'Passwords do not match';
 
-        if (email === '') return Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: 'Please enter an email',
-        });
+        if (errorMessage !== '') {
+            return Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: errorMessage,
+            });
+        }
 
-        if (password === '') return Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: 'Please enter a password',
-        });
+        createUserWithEmailAndPassword(firebaseAuth, email, password).then(credentials => {
+            const user = credentials.user;
+        
+            updateProfile(user, { displayName: displayName }).then(() => {
+                navigation.navigate('Dashboard');
+            });
+        }).catch(error => {
+            let errorMessage = error.code === 'auth/email-already-in-use' ? 'Email already in use' :
+                error.code === 'auth/invalid-email' ? 'Invalid email' :
+                error.code === 'auth/weak-password' ? 'Password is too weak' :
+                'Something went wrong';
 
-        if (password !== confirmPassword) return Toast.show({
-            type: 'error',
-            text1: 'Error',
-            text2: 'Passwords do not match',
-        });
+            // Possible sentry error logging here
 
-        createUser(displayName, email, password);
-        console.log('User created successfully');
+            console.log(error.code + error);
+    
+            return Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: errorMessage,
+            });
+        })
     }
 
     return (
