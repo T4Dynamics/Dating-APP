@@ -78,6 +78,7 @@ export default function RegisterScreen({ navigation }) {
                     onChangeText={ setPassword }
                     value={ password }
                     secureTextEntry
+                    autoComplete="off"
                 />
 
                 <Input
@@ -85,6 +86,7 @@ export default function RegisterScreen({ navigation }) {
                     onChangeText={ setConfirmPassword }
                     value={ confirmPassword }
                     secureTextEntry
+                    autoComplete="off"
                 />
 
                 <Button
@@ -93,6 +95,14 @@ export default function RegisterScreen({ navigation }) {
                 >
                     Register!
                 </Button>
+
+                <Button
+                    mode="outlined"
+                    onPress={ () => navigation.navigate('MainScreen') }
+                >
+                    Main Menu
+                </Button>
+
                 <Toast />
             </SafeAreaView>
         </Background>

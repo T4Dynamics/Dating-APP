@@ -2,6 +2,8 @@ import { initializeApp, FirebaseApp, getApps, getApp } from 'firebase/app';
 import { Auth, getAuth, initializeAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
 import { getReactNativePersistence } from 'firebase/auth/react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const firebaseConfig = {
     apiKey: "AIzaSyAEbS93yb7ERaMkrrZy2KiONv69acGO4F4",
     authDomain: "bu-datingapp.firebaseapp.com",
