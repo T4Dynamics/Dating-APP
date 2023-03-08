@@ -1,30 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 
-import Background from '../components/Background'
-import Button from '../components/Button'
+import Background from '../components/Background';
+import Button from '../components/Button';
 
-import { theme } from '../theme'
+import { theme } from '../theme';
 
-import { View, Text, StyleSheet } from 'react-native'
-import { useRoute } from "@react-navigation/native"
+import { View, Text, StyleSheet } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+
+import { firebaseAuth, onAuthStateChanged } from '../../firebase';
+
+import { getMatches } from '../helpers/matches';
 
 export default function MainScreen({ navigation }) {
 
     const route = useRoute();
     const currentSlide = route.params ? route.params.currentSlide : 1;
 
-    return (
-        <Background>
-            <View style={styles.viewTop} />
-            <View style={styles.viewBot}>
-                <Text style={styles.title}>{displayData[currentSlide]["title"]}{"\n"}</Text>
+    const [auth, setAuth] = React.useState(true);
 
-                <Text style={styles.description}>{displayData[currentSlide]["description"]}</Text>
-                
-                {currentSlide !== 4 ? preMain(currentSlide, navigation) : main(navigation)}
-            </View>
-        </Background>
-    )
+    //check user is logged in and navigate to HomeScreen
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
+            if (user) {
+                setAuth(true);
+                getMatches();
+                navigation.navigate('HomeScreen');
+            } else {
+                setAuth(false);
+            }
+        });
+    
+        return unsubscribe;
+    }, []);
+
+    return (
+        content(auth, currentSlide, navigation)
+    );
 }
 
 const styles = StyleSheet.create({
@@ -64,8 +76,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     authButton: {
-        width: '100%',
-        height: '50%',
+        width: '45%',
+        height: '45%',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -152,3 +164,28 @@ const main = (navigation) => {
         </View>
     )
 }
+
+const content = (auth, currentSlide, navigation) => {
+    if (auth) {
+        return (
+            <View style={{height: '100%', width: '100%'}}>
+                <Text>Slider</Text>
+            </View>   
+        )   
+    }
+
+    return (
+        <Background>
+            <View style={styles.viewTop} />
+            <View style={styles.viewBot}>
+                <Text style={styles.title}>{displayData[currentSlide]["title"]}{"\n"}</Text>
+
+                <Text style={styles.description}>{displayData[currentSlide]["description"]}</Text>
+                
+                {currentSlide !== 4 ? preMain(currentSlide, navigation) : main(navigation)}
+            </View>
+        </Background>
+    )
+}
+
+

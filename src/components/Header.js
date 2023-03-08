@@ -4,10 +4,15 @@ import { Icon } from 'react-native-elements'
 
 import { theme } from '../theme'
 
-export default function Header({ }) {
+export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Slider</Text>
+            <Text 
+                style={styles.text}
+                onPress={() => navigation.navigate('HomeScreen')}
+            >
+                Slider
+            </Text>
             <View style={styles.icons}>
                 <Icon
                     name='bell'

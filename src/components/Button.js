@@ -8,9 +8,8 @@ export default function Button({ mode, style, ...props }) {
     return (
       	<PaperButton
         	style={[
-        	  	styles.button,
+        	  	style ? style : styles.button,
         	  	mode === 'outlined' && { backgroundColor: theme.colors.surface },
-        	  	style,
         	]}
 			labelStyle={styles.text}
 			mode={mode}

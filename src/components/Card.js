@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Animated, PanResponder } from 'react-native';
 import { Icon } from 'react-native-elements'
 
 import { theme } from '../theme'
-import { match } from '../helpers/match'
+import { match } from '../helpers/matches'
 
 export default function Card({ children, style, user }) {
     const pan = useRef(new Animated.ValueXY()).current;

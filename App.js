@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { Provider } from 'react-native-paper'
 import { theme } from './src/theme'
-import { MainScreen, LoginScreen, RegisterScreen, Dashboard, MatchesScreen } from './src/screens';
+import { MainScreen, LoginScreen, RegisterScreen, Dashboard, HomeScreen } from './src/screens';
 //import firebaseHelper from "./src/helpers/firebaseHelper";
 
 const Stack = createStackNavigator();
@@ -14,7 +14,7 @@ export default function App() {
 	  <Provider theme={theme}>
 		<NavigationContainer>
 		  <Stack.Navigator
-			initialRouteName="MatchesScreen"
+			initialRouteName="MainScreen"
 			screenOptions={{
 			  headerShown: false,
 			}}
@@ -22,7 +22,7 @@ export default function App() {
 			<Stack.Screen name="MainScreen" component={ MainScreen } />
 			<Stack.Screen name="LoginScreen" component={ LoginScreen } />
 			<Stack.Screen name="RegisterScreen" component={ RegisterScreen } />
-			<Stack.Screen name="MatchesScreen" component={ MatchesScreen } />
+			<Stack.Screen name="HomeScreen" component={ HomeScreen } />
 			<Stack.Screen name="Dashboard" component={ Dashboard } />
 		  </Stack.Navigator>
 		</NavigationContainer>

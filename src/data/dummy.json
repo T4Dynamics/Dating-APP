@@ -1,0 +1,23 @@
+{
+    "dummyData": [{
+        "name": "Jane Doe",
+        "email": "janedoe@example.com",
+        "age": 25,
+        "gender": "FEMALE",
+        "description": "This is some dummy data, my name is Jane Doe and I like to bike.",
+        "likes": "[1,2,5,7,8]",
+        "dislikes": "[3,4,6,9,10]",
+        "goals": 1,
+        "attraction": "MALE"
+    }, {
+        "name": "John Doe",
+        "email": "johndoe@example.com",
+        "age": 20,
+        "gender": "MALE",
+        "description": "This is some dummy data, my name is John Doe and I like to trike.",
+        "likes": "[3,5,6,7,9]",
+        "dislikes": "[1,2,4,8,10]",
+        "goals": 2,
+        "attraction": "FEMALE"
+    }]
+}

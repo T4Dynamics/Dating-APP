@@ -8,6 +8,7 @@ import Input from "../components/Input";
 import { firebaseAuth, signInWithEmailAndPassword, onAuthStateChanged } from '../../firebase';
 
 import { Text } from 'react-native'
+import { SafeAreaView } from "react-navigation";
 
 export default function LoginScreen({ navigation }) {
 
@@ -17,7 +18,7 @@ export default function LoginScreen({ navigation }) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
             if (user) {
-                navigation.navigate('Dashboard');
+                navigation.navigate('HomeScreen');
             }
         });
 
@@ -62,6 +63,7 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <Background>
+            <SafeAreaView>
             <Text>Dashboard</Text>
 
             <Input
@@ -86,12 +88,13 @@ export default function LoginScreen({ navigation }) {
 
             <Button
                 mode="outlined"
-                onPress={ () => navigation.navigate('MainScreen') }
+                onPress={ () => navigation.navigate('MainScreen', { currentSlide: 4 }) }
             >
                 Main Menu
             </Button>
 
             <Toast />
+            </SafeAreaView>
         </Background>
     );
 }
