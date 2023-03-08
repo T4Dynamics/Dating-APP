@@ -11,13 +11,19 @@ import CardItem from "../components/CardItem";
 
 
 export default function MatchesScreen({ navigation }) {
+
+    const route = useRoute();
+    const matches = route.params ? route.params.matches : [];
+
     return (
         <Background>
             <Header/>
 
             <Card
-                name='John Doe'
-                age='20'
+                user= {{
+                    name: 'John Doe',
+                    age: '20',
+                }}
                 style={{
                     zIndex: 2,
                     position: 'relative',
@@ -39,8 +45,10 @@ export default function MatchesScreen({ navigation }) {
             </Card>
 
             <Card
-                name='Jane Doe'
-                age='25'
+                user= {{
+                    name: 'Jane Doe',
+                    age: '25',
+                }}
                 style={{
                     zIndex: 1,
                     position: 'absolute',

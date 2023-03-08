@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, Animated, PanResponder } from 'react-native';
 import { Icon } from 'react-native-elements'
 
 import { theme } from '../theme'
+import { match } from '../helpers/match'
 
-export default function Card({ children, style, name, age }) {
+export default function Card({ children, style, user }) {
     const pan = useRef(new Animated.ValueXY()).current;
 
     const panResponder = useRef(
@@ -14,7 +15,12 @@ export default function Card({ children, style, name, age }) {
                 [null, { dx: pan.x, dy: pan.y }],
                 { useNativeDriver: false }
             ),
-            onPanResponderRelease: () => {
+            onPanResponderRelease: (event, gestureState) => {
+                if (gestureState.dx > 150) {
+                    match('right', user);
+                } else if (gestureState.dx < -150) {
+                    match('left', user);
+                }
                 Animated.spring(pan, {
                     toValue: { x: 0, y: 0 },
                     useNativeDriver: false,
@@ -23,14 +29,29 @@ export default function Card({ children, style, name, age }) {
         })
     ).current;
     
+    const rotate = pan.x.interpolate({
+        inputRange: [-300, 0, 300],
+        outputRange: ['-30deg', '0deg', '30deg'],
+        extrapolate: 'clamp',
+    });
+    
     return (
         <Animated.View
-            style={[pan.getLayout(), styles.container, style]}
+            style={[
+                pan.getLayout(), 
+                styles.container, 
+                style,
+                {transform: [
+                    { translateX: pan.x },
+                    { translateY: pan.y },
+                    { rotate: rotate }
+                ]}
+            ]}
             {...panResponder.panHandlers}
         >
             <View style={styles.person}>
-                <Text style={styles.heading}>{name}</Text>
-                <Text style={styles.heading}>{age}</Text>
+                <Text style={styles.heading}>{user.name}</Text>
+                <Text style={styles.heading}>{user.age}</Text>
             </View>
             <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
             <View style={styles.children}>{children}</View>
