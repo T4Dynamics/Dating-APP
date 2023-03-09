@@ -25,7 +25,7 @@ export default function MainScreen({ navigation }) {
             if (user) {
                 setAuth(true);
                 getMatches();
-                navigation.navigate('HomeScreen');
+                return navigation.navigate('HomeScreen');
             } else {
                 setAuth(false);
             }

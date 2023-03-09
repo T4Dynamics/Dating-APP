@@ -13,12 +13,15 @@ import { matches } from '../helpers/matches';
 
 
 export default function HomeScreen({ navigation }) {
+    
+    console.log(matches.length);
 
     let cards = matches.map((match, index) => {
         return (
             <Card
-                user={match.rawData}
+                user={match}
                 key={index}
+                navigation={navigation}
                 style={{
                     zIndex: 100 - index,
                     position: index === 0 ? 'relative' : 'absolute',

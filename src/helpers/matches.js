@@ -3,11 +3,24 @@ import User from '../models/User.js';
 
 const matches = [];
 
-const match = (side, person) => {
-    console.log(side);
+const match = (side, person, navigation) => {
+    if (matches.find(match => match === person)) {
+        const index = matches.findIndex(match => match === person);
+        matches.splice(index, 1);
+        navigation.navigate('HomeScreen');
+
+        console.log(matches);
+
+        if (side === 'left') {
+            console.log('left');
+        } else {
+            console.log('right');
+        }
+    }
 }
 
 const getMatches = async () => {
+    if (matches.length > 0) return;
     await dummyMatches['default']['dummyData'].forEach((person) => {
         matches.push(new User(person));
     });

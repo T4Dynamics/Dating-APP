@@ -25,6 +25,12 @@ export default function Dashboard({ navigation }) {
             >
                 Logout
             </Button>
+            <Button
+                mode="contained"
+                onPress={ () => navigation.navigate('HomeScreen') }
+            >
+                Home
+            </Button>
         </Background>
     );
 }
