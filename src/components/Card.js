@@ -16,6 +16,7 @@ export default function Card({ children, style, user, navigation }) {
                 { useNativeDriver: false }
             ),
             onPanResponderRelease: (event, gestureState) => {
+                console.log(gestureState.dx);
                 if (gestureState.dx > 150) {
                     match('right', user, navigation);
                 } else if (gestureState.dx < -150) {

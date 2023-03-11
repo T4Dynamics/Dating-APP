@@ -4,10 +4,13 @@ import User from '../models/User.js';
 const matches = [];
 
 const match = (side, person, navigation) => {
+    console.log(person);
+    console.log(matches);
     if (matches.find(match => match === person)) {
         const index = matches.findIndex(match => match === person);
         matches.splice(index, 1);
-        navigation.navigate('HomeScreen');
+
+        navigation.navigate('HomeScreen', {});
 
         console.log(matches);
 
