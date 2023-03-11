@@ -53,4 +53,4 @@ In the event you have been working on a feature and master has had changes since
 - Open a terminal inside the code base and run `npm run start`
 - (Optional) Install the Expo Go app on your phone 
 - Scan the QR code shown in the terminal with your phone or launch the virtual phone option
-- (Optional) To view the code on your PC use an [Android Emulator](https://www.youtube.com/watch?v=aBTNUpp72ik) and then run `npm run android`
+- (Optional) To view the code on your PC use an [Android Emulator](https://www.youtube.com/watch?v=aBTNUpp72ik) and run `npm run android`
