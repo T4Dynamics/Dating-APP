@@ -3,23 +3,14 @@ import User from '../models/User.js';
 
 const matches = [];
 
-const match = (side, person, navigation) => {
-    console.log(person);
-    console.log(matches);
-    if (matches.find(match => match === person)) {
-        const index = matches.findIndex(match => match === person);
-        matches.splice(index, 1);
-
-        navigation.navigate('HomeScreen', {});
-
-        console.log(matches);
-
-        if (side === 'left') {
-            console.log('left');
-        } else {
-            console.log('right');
-        }
+const handleSwipe = (user, side) => {
+    if (side === 'left') {
+        console.log('left');
+    } else if (side === 'right') {
+        console.log('right');
     }
+
+    matches.shift();
 }
 
 const getMatches = async () => {
@@ -29,4 +20,4 @@ const getMatches = async () => {
     });
 }
 
-export { match, getMatches, matches }
+export { handleSwipe, getMatches, matches }
