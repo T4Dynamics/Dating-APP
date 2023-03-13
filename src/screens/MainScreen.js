@@ -4,6 +4,7 @@ import Background from '../components/Background';
 import Button from '../components/Button';
 
 import { font, theme } from '../theme';
+import { Icon } from 'react-native-elements'
 
 import { View, Text, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -54,10 +55,13 @@ const styles = StyleSheet.create({
         fontFamily: theme.font.bold
     },
     button: {
-        borderRadius: '100%',
+        borderRadius: 100,
         width: 70,
         height: 70,
-        fontSize: '100%'
+        fontSize: '100%',
+        backgroundColor: theme.colors.primary,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     description: {
         fontSize: 15,
@@ -139,10 +143,9 @@ const preMain = (currentSlide, navigation) => {
                 </View>
             </View>
             <View>
-                <Button 
-                    mode="contained"
+                <View 
                     style={styles.button}
-                    onPress={() => navigation.navigate('MainScreen', { currentSlide: currentSlide + 1 })}
+                    onStartShouldSetResponder={() => navigation.navigate('MainScreen', { currentSlide: currentSlide + 1 })}
                 >
                 <Icon 
                     name='chevron-right'
@@ -150,12 +153,10 @@ const preMain = (currentSlide, navigation) => {
                     size={50}
                     color={'white'}
                     style={{
-                        margin: 0,
-                        padding: 0,
-                        marginLeft: '-50%'
+                        zIndex: 1,
                     }}
                  />
-                </Button>
+                </View>
             </View>
         </View>
     )
