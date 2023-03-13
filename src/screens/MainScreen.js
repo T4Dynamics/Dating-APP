@@ -44,8 +44,11 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    slideContainer: {
+        width: '80%',
+        flexDirection: 'row'
     },
     title: {
         fontSize: 24,
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     slide: {
-        width: '25%',
+        width: '10%',
         height: '10%',
         borderRadius: 100,
         backgroundColor: 'grey',
@@ -109,29 +112,31 @@ const displayData = {
 const preMain = (currentSlide, navigation) => {
     return (
         <View style={styles.container}>
-            <View 
-                style={[
-                styles.slide,
-                { backgroundColor: currentSlide >= 1 ? theme.colors.primary : theme.colors.accent }
-                ]}
-            >
-                <Text> </Text>
-            </View>
-            <View 
-                style={[
-                styles.slide,
-                { backgroundColor: currentSlide >= 2 ? theme.colors.primary : theme.colors.accent }
-                ]}
-            >
-                <Text> </Text>
-            </View>
-            <View 
-                style={[
-                styles.slide,
-                { backgroundColor: currentSlide >= 3 ? theme.colors.primary : theme.colors.accent }
-                ]}
-            >
-                <Text> </Text>
+            <View style={styles.slideContainer} >
+                <View 
+                    style={[
+                    styles.slide,
+                    { backgroundColor: currentSlide >= 1 ? theme.colors.primary : theme.colors.accent }
+                    ]}
+                >
+                    <Text> </Text>
+                </View>
+                <View 
+                    style={[
+                    styles.slide,
+                    { backgroundColor: currentSlide >= 2 ? theme.colors.primary : theme.colors.accent }
+                    ]}
+                >
+                    <Text> </Text>
+                </View>
+                <View 
+                    style={[
+                    styles.slide,
+                    { backgroundColor: currentSlide >= 3 ? theme.colors.primary : theme.colors.accent }
+                    ]}
+                >
+                    <Text> </Text>
+                </View>
             </View>
             <View>
                 <Button 
