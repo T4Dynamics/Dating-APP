@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Background from '../components/Background';
 import Button from '../components/Button';
 
+import { Icon } from 'react-native-elements'
 import { theme } from '../theme';
 
 import { View, Text, StyleSheet } from 'react-native';
@@ -138,7 +139,17 @@ const preMain = (currentSlide, navigation) => {
                     style={styles.button}
                     onPress={() => navigation.navigate('MainScreen', { currentSlide: currentSlide + 1 })}
                 >
-
+                <Icon 
+                    name='chevron-right'
+                    type='material-community'
+                    size={50}
+                    color={'white'}
+                    style={{
+                        margin: 0,
+                        padding: 0,
+                        marginLeft: '-50%'
+                    }}
+                 />
                 </Button>
             </View>
         </View>
