@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     slideContainer: {
         width: '80%',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     title: {
         fontSize: 24,
@@ -69,10 +69,11 @@ const styles = StyleSheet.create({
         fontFamily: theme.font.regular
     },
     slide: {
-        width: '10%',
-        height: '10%',
+        width: 10,
+        height: 10,
         borderRadius: 100,
         backgroundColor: 'grey',
+        margin: 5,
     },
     viewTop: {
         height: '60%',
@@ -91,13 +92,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
 })
 
 const displayData = {
     1: {
         title: 'Dating with Personality',
         description: 'Swipe peoples Interests, passions and hobbies to find your perfect match, rather than just their looks.',
+        
     },
     2: {
         title: 'Being attractive to within',
@@ -119,24 +120,30 @@ const preMain = (currentSlide, navigation) => {
             <View style={styles.slideContainer} >
                 <View 
                     style={[
-                    styles.slide,
-                    { backgroundColor: currentSlide >= 1 ? theme.colors.primary : theme.colors.accent }
+                    styles.slide, { 
+                        backgroundColor: currentSlide >= 1 ? theme.colors.primary : theme.colors.accent,
+                        width: currentSlide == 1 ? 50 : 10
+                    }
+                ]}
+                >
+                    <Text> </Text>
+                </View>
+                <View 
+                    style={[
+                    styles.slide, { 
+                        backgroundColor: currentSlide >= 2 ? theme.colors.primary : theme.colors.accent,
+                        width: currentSlide == 2 ? 50 : 10
+                    }
                     ]}
                 >
                     <Text> </Text>
                 </View>
                 <View 
                     style={[
-                    styles.slide,
-                    { backgroundColor: currentSlide >= 2 ? theme.colors.primary : theme.colors.accent }
-                    ]}
-                >
-                    <Text> </Text>
-                </View>
-                <View 
-                    style={[
-                    styles.slide,
-                    { backgroundColor: currentSlide >= 3 ? theme.colors.primary : theme.colors.accent }
+                    styles.slide, { 
+                        backgroundColor: currentSlide >= 3 ? theme.colors.primary : theme.colors.accent,
+                        width: currentSlide == 3 ? 50 : 10
+                    }
                     ]}
                 >
                     <Text> </Text>
