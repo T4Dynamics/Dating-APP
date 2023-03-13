@@ -34,16 +34,6 @@ export default function MainScreen({ navigation }) {
         return unsubscribe;
     }, []);
 
-    /*
-    return (
-        <Background>
-            <View style={styles.viewTop}>
-                <Text style={{fontFamily: test.font}}>Test</Text>
-            </View>
-        </Background>
-    );
-    */
-
     return (
         content(auth, currentSlide, navigation)
     );
