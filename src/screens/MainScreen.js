@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import { font, theme } from '../theme';
 import { Icon } from 'react-native-elements'
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 import { firebaseAuth, onAuthStateChanged } from '../../firebase';
@@ -203,7 +203,13 @@ const content = (auth, currentSlide, navigation) => {
 
     return (
         <Background>
-            <View style={styles.viewTop} />
+            <View style={styles.viewTop}>
+                <ImageBackground
+                source={require('../assets/slide1.png')}
+                resizeMode="cover"
+                style={styles.background} >
+            </ImageBackground>
+            </View>
             <View style={styles.viewBot}>
                 <Text style={[styles.title]}>{displayData[currentSlide]["title"]}{"\n"}</Text>
 
