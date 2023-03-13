@@ -53,16 +53,21 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    slideContainer: {
+        width: '80%',
+        flexDirection: 'row'
     },
     title: {
         fontSize: 24,
         fontFamily: theme.font.bold
     },
     button: {
-        borderRadius: 100,
-        width: '25%'
+        borderRadius: '100%',
+        width: 70,
+        height: 70,
+        fontSize: '100%'
     },
     description: {
         fontSize: 15,
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
         fontFamily: theme.font.regular
     },
     slide: {
-        width: '25%',
+        width: '10%',
         height: '10%',
         borderRadius: 100,
         backgroundColor: 'grey',
@@ -117,29 +122,31 @@ const displayData = {
 const preMain = (currentSlide, navigation) => {
     return (
         <View style={styles.container}>
-            <View 
-                style={[
-                styles.slide,
-                { backgroundColor: currentSlide >= 1 ? theme.colors.primary : theme.colors.accent }
-                ]}
-            >
-                <Text> </Text>
-            </View>
-            <View 
-                style={[
-                styles.slide,
-                { backgroundColor: currentSlide >= 2 ? theme.colors.primary : theme.colors.accent }
-                ]}
-            >
-                <Text> </Text>
-            </View>
-            <View 
-                style={[
-                styles.slide,
-                { backgroundColor: currentSlide >= 3 ? theme.colors.primary : theme.colors.accent }
-                ]}
-            >
-                <Text> </Text>
+            <View style={styles.slideContainer} >
+                <View 
+                    style={[
+                    styles.slide,
+                    { backgroundColor: currentSlide >= 1 ? theme.colors.primary : theme.colors.accent }
+                    ]}
+                >
+                    <Text> </Text>
+                </View>
+                <View 
+                    style={[
+                    styles.slide,
+                    { backgroundColor: currentSlide >= 2 ? theme.colors.primary : theme.colors.accent }
+                    ]}
+                >
+                    <Text> </Text>
+                </View>
+                <View 
+                    style={[
+                    styles.slide,
+                    { backgroundColor: currentSlide >= 3 ? theme.colors.primary : theme.colors.accent }
+                    ]}
+                >
+                    <Text> </Text>
+                </View>
             </View>
             <View>
                 <Button 
@@ -147,7 +154,17 @@ const preMain = (currentSlide, navigation) => {
                     style={styles.button}
                     onPress={() => navigation.navigate('MainScreen', { currentSlide: currentSlide + 1 })}
                 >
-                    →
+                <Icon 
+                    name='chevron-right'
+                    type='material-community'
+                    size={50}
+                    color={'white'}
+                    style={{
+                        margin: 0,
+                        padding: 0,
+                        marginLeft: '-50%'
+                    }}
+                 />
                 </Button>
             </View>
         </View>
