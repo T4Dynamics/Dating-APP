@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "BU-DatingAPP",
-    "slug": "BU-DatingAPP",
-    "version": "1.0.0",
+    "name": "Slider",
+    "slug": "Slider",
+    "version": "1.0.13", //Version number changes with ammount of commits
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
