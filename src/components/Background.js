@@ -1,16 +1,23 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, KeyboardAvoidingView, View } from 'react-native';
 
-import { theme } from '../theme'
+import { getTheme, theme } from '../theme'
 
 export default function Background({ children }) {
+
     return (
         <ImageBackground
             source={require('../assets/background_dot.png')}
             resizeMode="repeat"
-            style={styles.background}
+            style={[styles.background]}
         >
-{            <KeyboardAvoidingView style={styles.container} behavior="">
+            {<KeyboardAvoidingView 
+                style={[
+                    styles.container,
+                    { fontFamily: 'Judson-Regular' }
+                ]} 
+                behavior=""
+            >
                 {children}
             </KeyboardAvoidingView>}
         </ImageBackground>

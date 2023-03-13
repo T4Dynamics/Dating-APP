@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Background from '../components/Background';
 import Button from '../components/Button';
 
-import { theme } from '../theme';
+import { font, theme } from '../theme';
 
 import { View, Text, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
@@ -34,6 +34,16 @@ export default function MainScreen({ navigation }) {
         return unsubscribe;
     }, []);
 
+    /*
+    return (
+        <Background>
+            <View style={styles.viewTop}>
+                <Text style={{fontFamily: test.font}}>Test</Text>
+            </View>
+        </Background>
+    );
+    */
+
     return (
         content(auth, currentSlide, navigation)
     );
@@ -48,7 +58,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontFamily: theme.font.bold
     },
     button: {
         borderRadius: 100,
@@ -57,6 +67,7 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 15,
         textAlign: 'center',
+        fontFamily: theme.font.regular
     },
     slide: {
         width: '25%',
@@ -166,6 +177,7 @@ const main = (navigation) => {
 }
 
 const content = (auth, currentSlide, navigation) => {
+
     if (auth) {
         return (
             <View style={{height: '100%', width: '100%'}}>
@@ -178,7 +190,7 @@ const content = (auth, currentSlide, navigation) => {
         <Background>
             <View style={styles.viewTop} />
             <View style={styles.viewBot}>
-                <Text style={styles.title}>{displayData[currentSlide]["title"]}{"\n"}</Text>
+                <Text style={[styles.title]}>{displayData[currentSlide]["title"]}{"\n"}</Text>
 
                 <Text style={styles.description}>{displayData[currentSlide]["description"]}</Text>
                 

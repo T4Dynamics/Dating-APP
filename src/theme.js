@@ -1,6 +1,6 @@
-import { DefaultTheme } from 'react-native-paper';
+import { DefaultTheme, configureFonts } from 'react-native-paper';
 
-export const theme = {
+const theme = {
     ...DefaultTheme,
     roundness: 2,
     colors: {
@@ -11,4 +11,12 @@ export const theme = {
         accent: '#cdd4f8',
         error: '#e74c3c',
     },
+    font: {
+        regular: 'Judson-Regular',
+        bold: 'Judson-Bold',
+        italic: 'Judson-Italic',
+    }
 };
+
+
+export { theme }

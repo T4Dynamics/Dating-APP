@@ -4,9 +4,16 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 
 import { Text } from 'react-native'
-import { firebaseAuth, signOut } from "../../firebase";
+import { firebaseAuth, signOut, collection, getDocs, firebaseFirestore } from "../../firebase";
 
 export default function Dashboard({ navigation }) {
+
+    const test = async () => {
+        const temp = await getDocs(collection(firebaseFirestore, 'matches'));
+        temp.forEach(doc => {
+            console.log(doc.id, '=>', doc);
+        });
+    }
 
     const handleLogout = () => {
         signOut(firebaseAuth).then(() => {
@@ -30,6 +37,12 @@ export default function Dashboard({ navigation }) {
                 onPress={ () => navigation.navigate('HomeScreen') }
             >
                 Home
+            </Button>
+            <Button
+                mode="contained"
+                onPress={ test }
+            >
+                Test
             </Button>
         </Background>
     );
