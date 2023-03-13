@@ -42,11 +42,14 @@ export default function MainScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop: '10%',
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     slideContainer: {
+        paddingTop: '10%',
         width: '80%',
         flexDirection: 'row',
     },
@@ -80,11 +83,15 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: theme.colors.primary,
     },
+    viewTopBackground: {
+        width: '100%',
+        height: '100%',
+        zIndex: 99,
+    },
     viewBot: {
         width: '80%',
         height: '40%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: '15%',
     },
     authButton: {
         width: '45%',
@@ -98,19 +105,22 @@ const displayData = {
     1: {
         title: 'Dating with Personality',
         description: 'Swipe peoples Interests, passions and hobbies to find your perfect match, rather than just their looks.',
-        
+        backgroundImage: require('../assets/slide1.png')
     },
     2: {
         title: 'Being attractive to within',
         description: 'Add your hobbies, interests and get swiping. Once you match, you\'ll gain access to each others profiles and pictures',
+        backgroundImage: require('../assets/slide2.png')
     },
     3: {
         title: 'Fix up the dulll conversation',
         description: 'Our chatbot Lovebot will help you get the conversation going, and help you find out more about your match',
+        backgroundImage: require('../assets/slide3.png')
     },
     4: {
         title: 'Find your perfect match',
         description: 'Start some meaningful conversations.',
+        backgroundImage: require('../assets/slide4.png')
     }
 }
 
@@ -205,9 +215,9 @@ const content = (auth, currentSlide, navigation) => {
         <Background>
             <View style={styles.viewTop}>
                 <ImageBackground
-                source={require('../assets/slide1.png')}
-                resizeMode="cover"
-                style={styles.background} >
+                source={displayData[currentSlide]["backgroundImage"]}
+                resizeMode="contain"
+                style={styles.viewTopBackground} >
             </ImageBackground>
             </View>
             <View style={styles.viewBot}>
