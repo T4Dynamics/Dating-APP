@@ -15,6 +15,8 @@ const customFont = {
 	'Judson-Regular': require('./src/assets/fonts/Judson-Regular.ttf'),
 	'Judson-Bold': require('./src/assets/fonts/Judson-Bold.ttf'),
 	'Judson-Italic': require('./src/assets/fonts/Judson-Italic.ttf'),
+	'Montserrat-Regular': require('./src/assets/fonts/Montserrat-Regular.ttf'),
+	'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'),
 };
 
 export default function App() {

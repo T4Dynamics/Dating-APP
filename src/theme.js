@@ -1,4 +1,4 @@
-import { DefaultTheme, configureFonts } from 'react-native-paper';
+import { DefaultTheme } from 'react-native-paper';
 
 const theme = {
     ...DefaultTheme,
@@ -10,12 +10,23 @@ const theme = {
         secondary: '#414a77',
         accent: '#eeeeee',
         error: '#e74c3c',
+        button: {
+            primary: '#212121',
+            accent: '#624DE1',
+        }
     },
-    font: {
-        regular: 'Judson-Regular',
-        bold: 'Judson-Bold',
-        italic: 'Judson-Italic',
+    fonts: {
+        judson: {
+            regular: 'Judson-Regular',
+            bold: 'Judson-Bold',
+            italic: 'Judson-Italic',
+        },
+        montserrat: {
+            regular: 'Montserrat-Regular',
+            bold: 'Montserrat-SemiBold',
+        }
     }
+
 };
 
 

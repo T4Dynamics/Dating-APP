@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import Background from '../components/Background';
 import Button from '../components/Button';
 
-import { font, theme } from '../theme';
+import { theme } from '../theme';
 import { Icon } from 'react-native-elements'
 
-import { View, Text, StyleSheet, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 import { firebaseAuth, onAuthStateChanged } from '../../firebase';
@@ -42,20 +42,18 @@ export default function MainScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: '10%',
+        paddingTop: '5%',
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
     },
     slideContainer: {
-        paddingTop: '10%',
         width: '80%',
         flexDirection: 'row',
     },
     title: {
-        fontSize: 24,
-        fontFamily: theme.font.bold
+        fontSize: 36,
+        fontFamily: theme.fonts.judson.regular,
     },
     button: {
         borderRadius: 100,
@@ -68,8 +66,9 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 15,
-        textAlign: 'center',
-        fontFamily: theme.font.regular
+        textAlign: 'left',
+        fontFamily: theme.fonts.montserrat.regular,
+        color: '#393939'
     },
     slide: {
         width: 10,
@@ -87,15 +86,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         zIndex: 99,
+        marginTop: '10%'
     },
     viewBot: {
         width: '80%',
         height: '40%',
-        paddingTop: '15%',
+        paddingTop: '5%',
     },
     authButton: {
-        width: '45%',
-        height: '45%',
+        minWidth: '45%',
+        height: undefined,
         alignItems: 'center',
         justifyContent: 'center',
     },
