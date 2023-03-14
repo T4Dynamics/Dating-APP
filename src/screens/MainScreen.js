@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     slideContainer: {
         width: '80%',
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         paddingTop: '5%',
     },
     authButton: {
-        minWidth: '45%',
+        minWidth: '30%',
         height: undefined,
         alignItems: 'center',
         justifyContent: 'center',
@@ -195,7 +196,7 @@ const main = (navigation) => {
                 mode="contained"
                 onPress={() => navigation.navigate('RegisterScreen')}
             >
-                Register
+                Sign up
             </Button>
         </View>
     )

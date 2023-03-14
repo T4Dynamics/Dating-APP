@@ -12,7 +12,6 @@ const theme = {
         error: '#e74c3c',
         button: {
             primary: '#212121',
-            accent: '#624DE1',
         }
     },
     fonts: {
