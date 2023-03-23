@@ -231,5 +231,3 @@ const content = (auth, currentSlide, navigation) => {
         </Background>
     )
 }
-
-

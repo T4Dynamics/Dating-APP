@@ -4,8 +4,8 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
-
 export default function RegisterScreenNew({ navigation }) {
+
     return (
         <Background>
             <SafeAreaView style={styles.container}>

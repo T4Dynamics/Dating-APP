@@ -5,11 +5,10 @@ import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
 
 import { theme } from './src/theme'
-import { MainScreen, LoginScreen, RegisterScreen, Dashboard, HomeScreen } from './src/screens';
+import { MainScreen, LoginScreen, RegisterScreen, Dashboard, HomeScreen, ProfileScreen } from './src/screens';
 
 
 const Stack = createStackNavigator();
-
 
 const customFont = {
 	'Judson-Regular': require('./src/assets/fonts/Judson-Regular.ttf'),
@@ -36,7 +35,7 @@ export default function App() {
 			<Stack.Navigator
 				initialRouteName="MainScreen"
 				screenOptions={{
-				headerShown: false,
+					headerShown: false,
 				}}
 			>
 				<Stack.Screen name="MainScreen" component={ MainScreen } />
@@ -44,6 +43,7 @@ export default function App() {
 				<Stack.Screen name="RegisterScreen" component={ RegisterScreen } />
 				<Stack.Screen name="HomeScreen" component={ HomeScreen } />
 				<Stack.Screen name="Dashboard" component={ Dashboard } />
+				<Stack.Screen name="ProfileScreen" component={ ProfileScreen } />
 			</Stack.Navigator>
 			</NavigationContainer>
 		</Provider>

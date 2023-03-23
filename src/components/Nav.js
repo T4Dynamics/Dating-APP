@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 
 import { theme } from '../theme'
 import { Icon } from 'react-native-elements'
@@ -8,16 +8,13 @@ const navItems = [
     {icon: 'toggle-left', page: 'HomeScreen'},
     {icon: 'heart', page: 'MatchesScreen'},
     {icon: 'message-square', page: 'MessagesScreen'},
-    {icon: 'user', page: 'Dashboard'},
+    {icon: 'user', page: 'ProfileScreen'},
 ]
 
-export default function Nav({ navigation }) {
-    const [currentPage, setCurrentPage] = React.useState(0);
-
+export default function Nav({ navigation, currentPage }) {
     //  Handle navigation - Do not move to prevent prop drilling
     function handleOnPress(props) {
         navigation.navigate(props.page)
-        setCurrentPage(props.id)
     }
 
     function IconButton(props) {
@@ -25,7 +22,7 @@ export default function Nav({ navigation }) {
             <Icon 
                 name={props.icon}
                 type='feather' 
-                color={props.currentPage === props.id ? 'white' : 'black'} 
+                color={props.currentPage === props.page ? 'black' : 'white'} 
                 size={30} 
                 onPress={() => handleOnPress(props)} 
                 style={styles.button} 
@@ -47,7 +44,9 @@ export default function Nav({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
+        marginHorizontal: '5%',
+        position: 'absolute',
+        bottom: '5%',
         height: '8%',
         width: '90%',
         backgroundColor: '#F6F6F6',
