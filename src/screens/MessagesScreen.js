@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function ProfileScreen({ navigation }) {
+export default function MessagesScreen({ navigation }) {
     return (
         <View>
-            <Text>Profile Screen</Text>
+            <Text>Messages Screen</Text>
         </View>
     );
 }

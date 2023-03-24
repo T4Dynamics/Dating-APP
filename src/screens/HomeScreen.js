@@ -15,7 +15,6 @@ import { matches, handleSwipe } from '../helpers/matches';
 
 import { Animated, PanResponder } from 'react-native';
 
-
 export default function HomeScreen({ navigation }) {
 
     const [swipe, setSwipe] = React.useState('');

@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function ProfileScreen({ navigation }) {
+export default function SwipeScreen({ navigation }) {
     return (
         <View>
-            <Text>Profile Screen</Text>
+            <Text>Swipe Screen</Text>
         </View>
     );
 }

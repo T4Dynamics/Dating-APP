@@ -1,14 +1,8 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
 
 import { theme } from './src/theme'
-import { MainScreen, LoginScreen, RegisterScreen, Dashboard, HomeScreen, ProfileScreen } from './src/screens';
-
-
-const Stack = createStackNavigator();
+import MainContainer from './src/screens/MainContainer'
 
 const customFont = {
 	'Judson-Regular': require('./src/assets/fonts/Judson-Regular.ttf'),
@@ -31,21 +25,7 @@ export default function App() {
 	//if (custom) {
 		return (
 		<Provider theme={[theme]}>
-			<NavigationContainer>
-			<Stack.Navigator
-				initialRouteName="MainScreen"
-				screenOptions={{
-					headerShown: false,
-				}}
-			>
-				<Stack.Screen name="MainScreen" component={ MainScreen } />
-				<Stack.Screen name="LoginScreen" component={ LoginScreen } />
-				<Stack.Screen name="RegisterScreen" component={ RegisterScreen } />
-				<Stack.Screen name="HomeScreen" component={ HomeScreen } />
-				<Stack.Screen name="Dashboard" component={ Dashboard } />
-				<Stack.Screen name="ProfileScreen" component={ ProfileScreen } />
-			</Stack.Navigator>
-			</NavigationContainer>
+			<MainContainer />
 		</Provider>
 		)
 	//}
