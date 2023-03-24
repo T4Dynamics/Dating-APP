@@ -1,80 +1,92 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-
-import { theme } from '../theme'
+import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { Icon } from 'react-native-elements'
 
-const navItems = [
-    {icon: 'toggle-left', page: 'HomeScreen'},
-    {icon: 'heart', page: 'MatchesScreen'},
-    {icon: 'message-square', page: 'MessagesScreen'},
-    {icon: 'user', page: 'ProfileScreen'},
+import SwipeScreen from '../screens/SwipeScreen';
+import MessagesScreen from '../screens/MessagesScreen';
+import MatchesScreen from '../screens/MatchesScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+
+import { StyleSheet } from 'react-native';
+
+const Tab = createBottomTabNavigator();
+
+const TabButtons = [
+    {
+        name: 'Swipe',
+        component: SwipeScreen,
+        iconName: 'toggle-left'
+    },
+    {
+        name: 'Messages',
+        component: MessagesScreen,
+        iconName: 'message-square'
+    },
+    {
+        name: 'Matches',
+        component: MatchesScreen,
+        iconName: 'heart'
+    },
+    {
+        name: 'Profile',
+        component: ProfileScreen,
+        iconName: 'user'
+    },
 ]
 
-export default function Nav({ navigation, currentPage }) {
-    //  Handle navigation - Do not move to prevent prop drilling
-    function handleOnPress(props) {
-        navigation.navigate(props.page)
-    }
-
-    function IconButton(props) {
-        return (
-            <Icon 
-                name={props.icon}
-                type='feather' 
-                color={props.currentPage === props.page ? 'black' : 'white'} 
-                size={30} 
-                onPress={() => handleOnPress(props)} 
-                style={styles.button} 
-            />
-        );
-    }
-
+function Nav() {
     return (
-        <View style={styles.container}>
-            <View id='highlight' style={styles.highlight} />
-            <View style={styles.buttonContainer}>
-                {navItems.map((item, index) => (
-                    <IconButton key={index} id={index} icon={item.icon} page={item.page} currentPage={currentPage} />
-                ))}
-            </View>
-        </View>
+        <NavigationContainer>
+            <Tab.Navigator
+                initialRouteName="Swipe"
+                screenOptions={({route}) => ({
+                    headerShown: false,
+                    tabBarShowLabel: false,
+                    tabBarItemStyle: {
+                        width: 50,
+                        height: 50,
+                    },
+                    tabBarStyle: {
+                        position: 'absolute',
+                        display: 'block',
+                        borderTopEndRadius: '25%',
+                        borderTopStartRadius: '25%',
+                        backgroundColor: '#F6F6F6',
+                        height: 140,
+                        padding: 15,
+                        shadowColor: 'black',
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.15,
+                    }
+                })}
+            >
+            
+            {TabButtons.map((item, index) => (
+                <Tab.Screen key={index} name={item.name} component={item.component} options={{
+                    tabBarIcon: ({focused, color, size}) => {
+                        return <Icon 
+                            name={item.iconName} 
+                            type="feather" 
+                            size={32} 
+                            color={focused ? 'white' : styles.button.primary}
+                            backgroundColor={focused ? '#121212' : undefined}
+                            style={styles.button}
+                        />
+                    }
+                }}/>
+            ))} 
+
+            </Tab.Navigator>    
+        </NavigationContainer>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginHorizontal: '5%',
-        position: 'absolute',
-        bottom: '5%',
-        height: '8%',
-        width: '90%',
-        backgroundColor: '#F6F6F6',
-        borderRadius: '100%',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.15,
-    },
-    buttonContainer: {
-        position: 'relative',
-        zIndex: 10,
-        width: '100%',
-        height: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
     button: {
-        position: 'relative',
-        zIndex: 20,
-    },
-    highlight: {
-        zIndex: 10,
-        padding: 25,
-        backgroundColor: theme.colors.button.primary,
+        padding: 10,
         borderRadius: '100%',
-        margin: 10,
-        position: 'absolute',
-        left: 9,
-    }
+    },
 });
+
+export default Nav;
