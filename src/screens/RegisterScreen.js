@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
-import { firebaseAuth, createUserWithEmailAndPassword, updateProfile } from "../../firebase";
+import { firebaseAuth, createUserWithEmailAndPassword, updateProfile } from "../../config/firebase";
 
 export default function RegisterScreen({ navigation }) {
 

@@ -4,7 +4,7 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 
 import { Text } from 'react-native'
-import { firebaseAuth, signOut, collection, getDocs, firebaseFirestore } from "../../firebase";
+import { firebaseAuth, signOut, collection, getDocs, firebaseFirestore } from "../../config/firebase";
 
 export default function Dashboard({ navigation }) {
 
