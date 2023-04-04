@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements'
 import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
-import { firebaseAuth, onAuthStateChanged } from '../../firebase';
+import { firebaseAuth, onAuthStateChanged } from '../../config/firebase';
 
 import { getMatches } from '../helpers/matches';
 

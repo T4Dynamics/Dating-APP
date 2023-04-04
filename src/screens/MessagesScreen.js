@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     messageContainer: {
         left: '5%',
         backgroundColor: '#222',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10,
     }
 });
 

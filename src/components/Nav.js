@@ -1,16 +1,20 @@
 import React from 'react';
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { Icon } from 'react-native-elements'
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from '@react-navigation/stack';
 
 import SwipeScreen from '../screens/SwipeScreen';
 import MessagesScreen from '../screens/MessagesScreen';
 import MatchesScreen from '../screens/MatchesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import MainScreen from '../screens/MainScreen';
 
 import { StyleSheet } from 'react-native';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const TabButtons = [
     {
@@ -39,7 +43,7 @@ function Nav() {
     return (
         <NavigationContainer>
             <Tab.Navigator
-                initialRouteName="Swipe"
+                initialRouteName="SwipeScreen"
                 screenOptions={({route}) => ({
                     headerShown: false,
                     tabBarShowLabel: false,
@@ -76,17 +80,11 @@ function Nav() {
                     }
                 }}/>
             ))} 
-
-            </Tab.Navigator>    
-        </NavigationContainer>
+            </Tab.Navigator>   
+            <Tab.Screen name="MainScreen" component={MainScreen} />
+        </NavigationContainer> 
     );
 }
 
-const styles = StyleSheet.create({
-    button: {
-        padding: 10,
-        borderRadius: '100%',
-    },
-});
 
 export default Nav;
