@@ -26,7 +26,6 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import MainScreen from './src/screens/MainScreen';
 
 export default function App() {
-
 	const [loaded] = useFonts(customFont);
 
     if (!loaded) {
@@ -75,6 +74,13 @@ export default function App() {
 						)
 					}}/>
 					<Tab.Screen name="MessagesScreen" component={MessagesScreen} options={{
+						tabBarBadge: 3,
+						tabBarBadgeStyle: {
+							backgroundColor: '#121212',
+							color: 'white',
+							fontSize: 12,
+							fontWeight: 'bold',
+						},
 						tabBarIcon: ({focused}) => (
 							<Icon
 								name="message-square"
@@ -85,6 +91,7 @@ export default function App() {
 								style={styles.button}
 							/>
 						)
+						
 					}}/>
 					<Tab.Screen name="MatchesScreen" component={MatchesScreen} options={{
 						tabBarIcon: ({focused}) => (

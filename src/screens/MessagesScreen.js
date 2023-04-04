@@ -2,17 +2,30 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Input } from "react-native-elements";
 
+import Message from "../components/Message";
+
 export default function MessagesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Messages</Text>
-            <Input placeholder="Search" style={styles.search} />
+           
             <View style={styles.messageContainer}>
-                
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+                <Message />
             </View>
         </View>
     );
 }
+// This search should only be visible on the MessagesScreen once swiped down, need to figure this out. 
+// <Input placeholder="Search" style={styles.search} />
 
 const styles = StyleSheet.create({
     container: {
@@ -32,11 +45,11 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     messageContainer: {
-        left: '5%',
-        backgroundColor: '#222',
+        top: 20,
+        paddingHorizontal: 10,
         display: 'flex',
         flexDirection: 'column',
-        gap: 10,
+        gap: 20,
     }
 });
 
