@@ -49,9 +49,9 @@ export default function App() {
 						},
 						tabBarStyle: {
 							position: 'absolute',
-							display: 'block',
-							borderTopEndRadius: '25%',
-							borderTopStartRadius: '25%',
+							//display: 'block',
+							borderTopEndRadius: 25,
+							borderTopStartRadius: 25,
 							backgroundColor: '#F6F6F6',
 							height: 140,
 							padding: 15,
@@ -127,6 +127,6 @@ export default function App() {
 const styles = StyleSheet.create({
     button: {
         padding: 10,
-        borderRadius: '100%',
+        borderRadius: 100,
     },
 });

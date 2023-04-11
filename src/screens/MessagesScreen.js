@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     search: {
         padding: 10,
         backgroundColor: '#F6F6F6',
-        borderRadius: '100%',
+        borderRadius: 100,
         borderBottomWidth: 0,
         marginVertical: 10,
     },
