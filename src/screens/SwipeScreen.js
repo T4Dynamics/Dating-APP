@@ -4,7 +4,9 @@ import React, {useRef} from "react";
 import Background from "../components/Background";
 import Header from "../components/Header";
 
-import { StyleSheet, Text, Animated, PanResponder } from "react-native";
+import { StyleSheet, Text, Animated, PanResponder, View } from "react-native";
+import { Icon } from 'react-native-elements'
+
 import { matches, handleSwipe } from '../helpers/matches';
 import { theme } from '../theme';
 
@@ -129,6 +131,47 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     }
 });
+
+const matchCard = (user, pan, panResponder, rotate) => {
+    return (
+        <Animated.View
+            style={[
+                pan.getLayout(), 
+                styles.container, 
+                {transform: [
+                    { translateX: pan.x },
+                    { translateY: pan.y },
+                    { rotate: rotate }
+                ]}
+            ]}
+            {...panResponder.panHandlers}
+        >
+            <View style={styles.person}>
+                <Text style={styles.heading}>{user.name}</Text>
+                <Text style={styles.heading}>{user.age}</Text>
+            </View>
+            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
+            <View style={styles.children}></View>
+            <View style={styles.row}>
+                <Icon
+                    name='thumb-down'
+                    type='material-community'
+                    color='red'
+                    style={styles.icon}
+                    size={50}
+                />
+
+                <Icon
+                    name='thumb-up'
+                    type='material-community'
+                    color='green'
+                    style={styles.icon}
+                    size={50}
+                />
+            </View>
+        </Animated.View>
+    )
+}
 
 const undefinedMatches = (pan, panResponder, rotate) => {
     return (

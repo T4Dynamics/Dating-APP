@@ -18,7 +18,7 @@ export default function LoginScreen({ navigation }) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
             if (user) {
-                navigation.navigate('HomeScreen');
+                navigation.navigate('Main', { screen: 'SwipeScreen' });
             }
         });
 

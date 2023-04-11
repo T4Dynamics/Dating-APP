@@ -36,7 +36,7 @@ export default function RegisterScreen({ navigation }) {
             const user = credentials.user;
         
             updateProfile(user, { displayName: displayName }).then(() => {
-                navigation.navigate('HomeScreen');
+                navigation.navigate('Main', { screen: 'SwipeScreen' });
             });
         }).catch(error => {
             let errorMessage = error.code === 'auth/email-already-in-use' ? 'Email already in use' :

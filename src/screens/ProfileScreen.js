@@ -14,7 +14,7 @@ export default function ProfileScreen({ navigation }) {
 
     const handleLogout = () => {
         signOut(firebaseAuth).then(() => {
-            navigation.navigate('HomeScreen');
+            navigation.navigate('Main', { screen: 'MainScreen' });
         }).catch(error => {
             console.log(error);
         });

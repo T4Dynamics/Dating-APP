@@ -18,25 +18,8 @@ export default function MainScreen({ navigation }) {
     const route = useRoute();
     const currentSlide = route.params ? route.params.currentSlide : 1;
 
-    const [auth, setAuth] = React.useState(true);
-
-    //check user is logged in and navigate to HomeScreen
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
-            if (user) {
-                setAuth(true);
-                getMatches();
-                return navigation.navigate('HomeScreen');
-            } else {
-                setAuth(false);
-            }
-        });
-    
-        return unsubscribe;
-    }, []);
-
     return (
-        content(auth, currentSlide, navigation)
+        content(currentSlide, navigation)
     );
 }
 
@@ -186,7 +169,7 @@ const main = (navigation) => {
             <Button
                 style={styles.authButton}
                 mode="outlined"
-                onPress={() => navigation.navigate('LoginScreen')}
+                onPress={() => navigation.navigate('Profile', { screen: 'LoginScreen' })}
             >
                 Login
             </Button>
@@ -194,7 +177,7 @@ const main = (navigation) => {
             <Button
                 style={styles.authButton}
                 mode="contained"
-                onPress={() => navigation.navigate('RegisterScreen')}
+                onPress={() => navigation.navigate('Profile', { screen: 'RegisterScreen' })}
             >
                 Sign up
             </Button>
@@ -202,16 +185,7 @@ const main = (navigation) => {
     )
 }
 
-const content = (auth, currentSlide, navigation) => {
-
-    if (auth) {
-        return (
-            <View style={{height: '100%', width: '100%'}}>
-                <Text>Slider</Text>
-            </View>   
-        )   
-    }
-
+const content = (currentSlide, navigation) => {
     return (
         <Background>
             <View style={styles.viewTop}>
