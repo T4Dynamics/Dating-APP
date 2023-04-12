@@ -5,7 +5,7 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
-import { firebaseAuth, signInWithEmailAndPassword, onAuthStateChanged } from '../../firebase';
+import { firebaseAuth, signInWithEmailAndPassword, onAuthStateChanged } from '../../config/firebase';
 
 import { Text } from 'react-native'
 import { SafeAreaView } from "react-navigation";
@@ -18,7 +18,7 @@ export default function LoginScreen({ navigation }) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
             if (user) {
-                navigation.navigate('HomeScreen');
+                navigation.navigate('Main', { screen: 'SwipeScreen' });
             }
         });
 

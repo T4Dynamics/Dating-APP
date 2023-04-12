@@ -7,24 +7,14 @@ import { theme } from '../theme'
 export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text 
-                style={styles.text}
-                onPress={() => navigation.navigate('HomeScreen')}
-            >
-                Slider
+            <Text style={styles.text}>
+                Welcome back, User!
             </Text>
             <View style={styles.icons}>
                 <Icon
-                    name='bell'
+                    name='cog'
                     type='material-community'
-                    color={theme.colors.primary}
-                    size={30}
-                />
-
-                <Icon
-                    name='menu'
-                    type='material-community'
-                    color={theme.colors.primary}
+                    color={'#121212'}
                     size={30}
                 />
             </View>
@@ -34,21 +24,22 @@ export default function Header({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        width: '80%',
+        position: 'absolute',
+        top: '5%',
+        width: '90%',
         height: '10%',
-
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     icons: {
-        width: '30%',
+        width: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     text: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 18,
+        fontWeight: 'regular',
     },
 });

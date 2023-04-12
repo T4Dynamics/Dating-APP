@@ -1,22 +1,16 @@
-import React, { useRef } from "react";
+import React, {useRef} from "react";
 
+// Components
 import Background from "../components/Background";
-import Button from "../components/Button";
+import Header from "../components/Header";
 
-import { Text, View, StyleSheet } from 'react-native';
+import { StyleSheet, Text, Animated, PanResponder, View } from "react-native";
 import { Icon } from 'react-native-elements'
 
-import Header from "../components/Header";
-import Nav from "../components/Nav";
-import CardItem from "../components/CardItem";
-
-import { theme } from '../theme';
 import { matches, handleSwipe } from '../helpers/matches';
+import { theme } from '../theme';
 
-import { Animated, PanResponder } from 'react-native';
-
-
-export default function HomeScreen({ navigation }) {
+export default function SwipeScreen({ navigation }) {
 
     const [swipe, setSwipe] = React.useState('');
     const user = matches[0];
@@ -64,20 +58,17 @@ export default function HomeScreen({ navigation }) {
 
             { user ? matchCard(user, pan, panResponder, rotate) : undefinedMatches(pan, panResponder, rotate) }
 
-            <Nav
-                navigation={navigation}
-                page='HomeScreen'
-            />
         </Background>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
+        position: 'absolute',
+        left: '5%',
+        top: '15%',
         width: '90%',
-        height: '70%',
+        height: '65%',
         padding: 15,
-
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: theme.colors.accent,

@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
-import { firebaseAuth, createUserWithEmailAndPassword, updateProfile } from "../../firebase";
+import { firebaseAuth, createUserWithEmailAndPassword, updateProfile } from "../../config/firebase";
 
 export default function RegisterScreen({ navigation }) {
 
@@ -36,7 +36,7 @@ export default function RegisterScreen({ navigation }) {
             const user = credentials.user;
         
             updateProfile(user, { displayName: displayName }).then(() => {
-                navigation.navigate('HomeScreen');
+                navigation.navigate('Main', { screen: 'SwipeScreen' });
             });
         }).catch(error => {
             let errorMessage = error.code === 'auth/email-already-in-use' ? 'Email already in use' :
