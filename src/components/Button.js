@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 			paddingVertical: 3,
 			borderStyle: 'solid',
 			borderColor: theme.colors.button.primary,
-			borderRadius: 4,
+			borderRadius: 4, 
 			borderWidth: 2
 		}
 	},

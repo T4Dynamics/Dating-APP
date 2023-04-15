@@ -2,15 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements'
 
-import { theme } from '../theme'
+import * as Globals from '../helpers/globals';
 
 export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Welcome back, User!
+                Welcome back, { Globals.userName }!
             </Text>
-            <View style={styles.icons}>
+            <View 
+                style={styles.icons}
+                onStartShouldSetResponder={() => navigation.navigate('Profile', { screen: 'SettingsScreen' })}
+            >
                 <Icon
                     name='cog'
                     type='material-community'

@@ -3,17 +3,41 @@ import React, {useRef} from "react";
 // Components
 import Background from "../components/Background";
 import Header from "../components/Header";
+import CardItem from "../components/CardItem";
+
+import User from '../models/User.js';
 
 import { StyleSheet, Text, Animated, PanResponder, View } from "react-native";
 import { Icon } from 'react-native-elements'
 
-import { matches, handleSwipe } from '../helpers/matches';
+import { handleSwipe } from '../helpers/matches';
+import * as Globals from '../helpers/globals';
+
+import { collection, getDocs, firebaseFirestore } from '../../config/firebase';
+
 import { theme } from '../theme';
 
 export default function SwipeScreen({ navigation }) {
 
+    const [matches, setMatches] = React.useState([]);
     const [swipe, setSwipe] = React.useState('');
-    const user = matches[0];
+
+    React.useEffect(() => {
+        if (Globals.matches.length === 0) {
+            const collectionRef = collection(firebaseFirestore, 'users');
+            getDocs(collectionRef).then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    if (doc.id !== Globals.userId) {
+                        Globals.matches.push(new User(doc.data()));
+                        Globals.matchesLoaded = true;
+                        setMatches(Globals.matches);
+                    }
+                });
+            });
+        }
+    }, []);
+
+    const user = Globals.matches[0];
 
     if (swipe === 'left' || swipe === 'right') {
         handleSwipe(user, swipe);
@@ -30,11 +54,10 @@ export default function SwipeScreen({ navigation }) {
                 { useNativeDriver: false }
             ),
             onPanResponderRelease: (event, gestureState) => {
-                console.log(gestureState.dx);
                 if (gestureState.dx > 150) {
-                    setSwipe("right");
+                    if (Globals.matches != 0) setSwipe("right");
                 } else if (gestureState.dx < -150) {
-                    setSwipe("left");
+                    if (Globals.matches != 0) setSwipe("left");
                 }
                 Animated.spring(pan, {
                     toValue: { x: 0, y: 0 },
@@ -56,7 +79,11 @@ export default function SwipeScreen({ navigation }) {
                 navigation={navigation}
             />
 
-            { user ? matchCard(user, pan, panResponder, rotate) : undefinedMatches(pan, panResponder, rotate) }
+            { 
+                user ? matchCard(user, pan, panResponder, rotate) : 
+                Globals.matchesLoaded == false ? undefinedMatches(pan, panResponder, rotate, 'Loading...') :
+                    undefinedMatches(pan, panResponder, rotate, 'No More Matches') 
+            }
 
         </Background>
     );
@@ -150,8 +177,18 @@ const matchCard = (user, pan, panResponder, rotate) => {
                 <Text style={styles.heading}>{user.name}</Text>
                 <Text style={styles.heading}>{user.age}</Text>
             </View>
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
-            <View style={styles.children}></View>
+            <Text style={styles.text}>{user.description}</Text>
+            <View style={styles.children}>
+                { 
+                    user.getLikes().map((e, index) => {
+                        return (
+                            <CardItem key={'item-' + index}>
+                                <Text>{e}</Text>
+                            </CardItem>
+                        )
+                    })
+                }
+            </View>
             <View style={styles.row}>
                 <Icon
                     name='thumb-down'
@@ -173,7 +210,7 @@ const matchCard = (user, pan, panResponder, rotate) => {
     )
 }
 
-const undefinedMatches = (pan, panResponder, rotate) => {
+const undefinedMatches = (pan, panResponder, rotate, text) => {
     return (
         <Animated.View
             style={[
@@ -187,7 +224,7 @@ const undefinedMatches = (pan, panResponder, rotate) => {
             ]}
             {...panResponder.panHandlers}
         >
-            <Text style={[styles.heading, styles.noMatches]}>No more matches</Text>
+            <Text style={[styles.heading, styles.noMatches]}>{ text }</Text>
         </Animated.View>
     )
 }

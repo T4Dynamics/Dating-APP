@@ -14,6 +14,8 @@ import * as Screens from './src/screens/index';
 import { firebaseAuth, onAuthStateChanged } from './config/firebase';
 import { getMatches } from './src/helpers/matches';
 
+import * as Global from './src/helpers/globals'
+
 const customFont = {
 	'Judson-Regular': require('./src/assets/fonts/Judson-Regular.ttf'),
 	'Judson-Bold': require('./src/assets/fonts/Judson-Bold.ttf'),
@@ -48,6 +50,7 @@ const ProfileStackScreen = () => {
 			<ProfileStack.Screen name="ProfileScreen" component={Screens.ProfileScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="LoginScreen" component={Screens.LoginScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
+			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false}}/>
 		</ProfileStack.Navigator>
 	)
 }
@@ -62,9 +65,10 @@ export default function App() {
         const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
             if (user) {
 				console.log('User is logged in');
-				getMatches();
+				Global.userId = user.uid;
+				Global.userName = user.displayName;
+				Global.matchesLoaded = false;
                 setAuth(true);
-				console.log('Matches retrieved');
             } else {
                 setAuth(false);
 				console.log('User is not logged in');
@@ -103,9 +107,6 @@ export default function App() {
 	}
 
 	let hideNavProp = auth ? 'flex' : 'none';
-
-	console.log('display: ' + hideNavProp);
-	console.log('initialScreen: ' + initialScreen);
 
 	return (
 		<Provider theme={[theme]}>
@@ -183,7 +184,7 @@ export default function App() {
 					<Tab.Screen name="Profile" component={ProfileStackScreen} options={{
 						tabBarIcon: ({focused}) => (
 							<Icon
-								name="heart"
+								name="user"
 								type="feather"
 								size={30}
 								color={focused ? 'white' : styles.button.primary}

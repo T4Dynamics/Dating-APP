@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-function Message(props) {
+function Message({ ...props }) {
     return (
         <View style={styles.messageContainer}>
             <Image source={require('../assets/blank_user.png')}  style={styles.user_image} />

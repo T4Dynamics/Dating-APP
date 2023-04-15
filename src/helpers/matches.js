@@ -1,7 +1,9 @@
 import * as dummyMatches from '../data/dummy.json';
 import User from '../models/User.js';
 
-const matches = [];
+import { collection, getDocs, firebaseFirestore } from '../../config/firebase';
+
+import * as Globals from '../helpers/globals';
 
 const handleSwipe = (user, side) => {
     if (side === 'left') {
@@ -10,14 +12,21 @@ const handleSwipe = (user, side) => {
         console.log('right');
     }
 
-    matches.shift();
+    Globals.matches.shift();
 }
 
-const getMatches = async () => {
-    if (matches.length > 0) return;
-    await dummyMatches['default']['dummyData'].forEach((person) => {
-        matches.push(new User(person));
+const getMatches = async (userId) => {
+    if (Globals.matches.length > 0) return;
+
+    const collectionRef = collection(firebaseFirestore, 'users');
+    const snapshot = await getDocs(collectionRef);
+
+    snapshot.forEach((doc) => {
+        if (doc.id !== userId) {
+            console.log(doc.id, '=>', doc.data());
+            Globals.matches.push(new User(doc.data()));
+        }
     });
 }
 
-export { handleSwipe, getMatches, matches }
+export { handleSwipe, getMatches }

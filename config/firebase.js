@@ -8,6 +8,7 @@ import { getReactNativePersistence } from 'firebase/auth/react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+/*
 const firebaseConfig = {
   apiKey: "AIzaSyAEbS93yb7ERaMkrrZy2KiONv69acGO4F4",
   authDomain: Constants.manifest?.extra?.firebaseAuthDomain,
@@ -15,6 +16,16 @@ const firebaseConfig = {
   storageBucket: Constants.manifest?.extra?.firebaseStorageBucket,
   messagingSenderId: Constants.manifest?.extra?.firebaseMessagingSenderId,
   appId: Constants.manifest?.extra?.firebaseAppId,
+};
+*/
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAEbS93yb7ERaMkrrZy2KiONv69acGO4F4",
+    authDomain: "bu-datingapp.firebaseapp.com",
+    projectId: "bu-datingapp",
+    storageBucket: "bu-datingapp.appspot.com",
+    messagingSenderId: "738694565034",
+    appId: "1:738694565034:web:4412b7bd38d05999ed14d3",
 };
 
 let firebaseApp;
