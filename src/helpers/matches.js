@@ -3,7 +3,7 @@ import User from '../models/User.js';
 
 import { collection, getDocs, firebaseFirestore } from '../../config/firebase';
 
-import * as Globals from '../helpers/globals';
+import * as Global from '../helpers/globals';
 
 const handleSwipe = (user, side) => {
     if (side === 'left') {
@@ -12,11 +12,11 @@ const handleSwipe = (user, side) => {
         console.log('right');
     }
 
-    Globals.matches.shift();
+    Global.matches.shift();
 }
 
 const getMatches = async (userId) => {
-    if (Globals.matches.length > 0) return;
+    if (Global.matches.length > 0) return;
 
     const collectionRef = collection(firebaseFirestore, 'users');
     const snapshot = await getDocs(collectionRef);
@@ -24,7 +24,7 @@ const getMatches = async (userId) => {
     snapshot.forEach((doc) => {
         if (doc.id !== userId) {
             console.log(doc.id, '=>', doc.data());
-            Globals.matches.push(new User(doc.data()));
+            Global.matches.push(new User(doc.data()));
         }
     });
 }

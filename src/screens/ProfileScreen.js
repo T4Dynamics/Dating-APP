@@ -4,6 +4,8 @@ import { firebaseAuth, signOut, collection, getDocs, firebaseFirestore } from ".
 import Background from "../components/Background";
 import Button from "../components/Button";
 
+import Global from '../helpers/globals';
+
 export default function ProfileScreen({ navigation }) {
     const test = async () => {
         const temp = await getDocs(collection(firebaseFirestore, 'matches'));
@@ -15,6 +17,11 @@ export default function ProfileScreen({ navigation }) {
     const handleLogout = () => {
         signOut(firebaseAuth).then(() => {
             navigation.navigate('Main', { screen: 'MainScreen' });
+            Global.userId = '';
+            Global.matches = [];
+            Global.matchesLoaded = false;
+            Global.userDocument = {};
+            Global.userName = '';
         }).catch(error => {
             console.log(error);
         });

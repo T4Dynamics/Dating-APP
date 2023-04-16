@@ -11,7 +11,7 @@ import { StyleSheet, Text, Animated, PanResponder, View } from "react-native";
 import { Icon } from 'react-native-elements'
 
 import { handleSwipe } from '../helpers/matches';
-import * as Globals from '../helpers/globals';
+import * as Global from '../helpers/globals';
 
 import { collection, getDocs, firebaseFirestore } from '../../config/firebase';
 
@@ -23,21 +23,22 @@ export default function SwipeScreen({ navigation }) {
     const [swipe, setSwipe] = React.useState('');
 
     React.useEffect(() => {
-        if (Globals.matches.length === 0) {
+        if (Global.matches.length === 0) {
             const collectionRef = collection(firebaseFirestore, 'users');
             getDocs(collectionRef).then((snapshot) => {
                 snapshot.forEach((doc) => {
-                    if (doc.id !== Globals.userId) {
-                        Globals.matches.push(new User(doc.data()));
-                        Globals.matchesLoaded = true;
-                        setMatches(Globals.matches);
+                    if (doc.id !== Global.userId) {
+                        console.log(doc.id, '=>', doc.data());
+                        Global.matches.push(new User(doc.data()));
+                        Global.matchesLoaded = true;
+                        setMatches(Global.matches);
                     }
                 });
             });
         }
     }, []);
 
-    const user = Globals.matches[0];
+    const user = Global.matches[0];
 
     if (swipe === 'left' || swipe === 'right') {
         handleSwipe(user, swipe);
@@ -55,9 +56,9 @@ export default function SwipeScreen({ navigation }) {
             ),
             onPanResponderRelease: (event, gestureState) => {
                 if (gestureState.dx > 150) {
-                    if (Globals.matches != 0) setSwipe("right");
+                    if (Global.matches != 0) setSwipe("right");
                 } else if (gestureState.dx < -150) {
-                    if (Globals.matches != 0) setSwipe("left");
+                    if (Global.matches != 0) setSwipe("left");
                 }
                 Animated.spring(pan, {
                     toValue: { x: 0, y: 0 },
@@ -81,7 +82,7 @@ export default function SwipeScreen({ navigation }) {
 
             { 
                 user ? matchCard(user, pan, panResponder, rotate) : 
-                Globals.matchesLoaded == false ? undefinedMatches(pan, panResponder, rotate, 'Loading...') :
+                Global.matchesLoaded == false ? undefinedMatches(pan, panResponder, rotate, 'Loading...') :
                     undefinedMatches(pan, panResponder, rotate, 'No More Matches') 
             }
 

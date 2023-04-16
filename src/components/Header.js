@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements'
 
-import * as Globals from '../helpers/globals';
+import * as Global from '../helpers/globals';
 
 export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Welcome back, { Globals.userName }!
+                Welcome back, { Global.userName + Global.userDocument.age }!
             </Text>
             <View 
                 style={styles.icons}
