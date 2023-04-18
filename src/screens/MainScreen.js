@@ -190,10 +190,10 @@ const content = (currentSlide, navigation) => {
         <Background>
             <View style={styles.viewTop}>
                 <ImageBackground
-                source={displayData[currentSlide]["backgroundImage"]}
-                resizeMode="contain"
-                style={styles.viewTopBackground} >
-            </ImageBackground>
+                    source={displayData[currentSlide]["backgroundImage"]}
+                    resizeMode="contain"
+                    style={styles.viewTopBackground} >
+                </ImageBackground>
             </View>
             <View style={styles.viewBot}>
                 <Text style={[styles.title]}>{displayData[currentSlide]["title"]}{"\n"}</Text>

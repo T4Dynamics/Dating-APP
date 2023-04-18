@@ -75,15 +75,15 @@ export default function App({ navigation }) {
         const unsubscribed = onAuthStateChanged(firebaseAuth, async (user) => {
             if (user) {
 				console.log('User is logged in');
-				Global.userId = user.uid;
-				Global.userName = user.displayName;
-				Global.matchesLoaded = false;
+				Global.storeClientData('@user_id', user.uid);
+				Global.storeClientData('@user_name', user.displayName);
+				Global.storeClientData('@matches_loaded', "false");
 
                 setAuth(true);
 
-				console.log('User ID: ' + Global.userId);
+				const userId = await Global.getClientData('@user_id');
 
-				await getUserDocument(Global.userId);
+				await getUserDocument(userId);
             } else {
                 setAuth(false);
 				console.log('User is not logged in');
@@ -95,7 +95,7 @@ export default function App({ navigation }) {
 			const docSnap = await getDoc(docRef);
 		
 			if (docSnap.exists()) {
-				Global.userDocument = new User(docSnap.data());
+				Global.storeClientData('@user_document', docSnap.data());
 				setDataLoaded(true);
 			} else {
 				console.log('No such document!');
@@ -115,7 +115,7 @@ export default function App({ navigation }) {
 	const MainStack = createNativeStackNavigator();
 	let initialScreen = 'MainScreen';
 
-	const MainStackScreen = () => {
+	const MainStackScreen = async () => {
 		let screen = [
 			{ screen: 'MainScreen', component: Screens.MainScreen },
 			{ screen: 'SwipeScreen', component: Screens.SwipeScreen },
@@ -123,14 +123,16 @@ export default function App({ navigation }) {
 		];
 
 		if (auth) {
-			if (Object.keys(Global.userDocument).length === 0) {
+			const userDocument = await Global.getClientDocument();
+
+			if (Object.keys(userDocument).length === 0) {
 			  	initialScreen = 'AccountSetupScreen';
 			} else {
 			  	initialScreen = 'SwipeScreen';
 			}
-		  } else {
-				initialScreen = 'MainScreen';
-		  }
+		} else {
+			initialScreen = 'MainScreen';
+		}
 
 		screen.forEach((item, index) => {
 			if (item.screen === initialScreen) {
@@ -141,7 +143,7 @@ export default function App({ navigation }) {
 
 		return (
 			<MainStack.Navigator>
-				{ screen.map((item, index) => { return <MainStack.Screen key={index} name={item.screen} component={item.component} options={{headerShown: false}}/> })}
+				{ screen.map((item, index) => { console.log("map - ",item, index); return <MainStack.Screen key={index} name={item.screen} component={item.component} options={{headerShown: false}}/> })}
 			</MainStack.Navigator>
 		)
 	}

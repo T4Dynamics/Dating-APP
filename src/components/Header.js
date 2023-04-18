@@ -8,7 +8,7 @@ export default function Header({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Welcome back, { Global.userName + Global.userDocument.age }!
+                Welcome back, { Global.userName }!
             </Text>
             <View 
                 style={styles.icons}

@@ -4,22 +4,16 @@ import * as goals from '../data/relationshipType.json';
 export default class User {
 
     constructor(data) {
-        this.rawData = data;
 
         this.name = data.name;
         this.age = data.age;
         this.gender = data.gender;
-        this.email = data.email;
 
         this.description = data.match_data.description;
         this.likes = data.match_data.likes;
         this.dislikes = data.match_data.dislikes;
         this.goal = data.match_data.relationship_goal;
         this.attraction = data.match_data.attraction;
-    }
-
-    getRawData() {
-        return this.rawData;
     }
 
     getName() {
