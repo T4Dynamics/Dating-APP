@@ -4,7 +4,7 @@ import { firebaseAuth, signOut, collection, getDocs, firebaseFirestore } from ".
 import Background from "../components/Background";
 import Button from "../components/Button";
 
-import Global from '../helpers/globals';
+import * as Global from "../helpers/globals";
 
 export default function ProfileScreen({ navigation }) {
     const test = async () => {
@@ -17,11 +17,9 @@ export default function ProfileScreen({ navigation }) {
     const handleLogout = () => {
         signOut(firebaseAuth).then(() => {
             navigation.navigate('Main', { screen: 'MainScreen' });
-            Global.userId = '';
+            Global.clearAllData();
             Global.matches = [];
-            Global.matchesLoaded = false;
-            Global.userDocument = {};
-            Global.userName = '';
+            Global.profileBuilder = {};
         }).catch(error => {
             console.log(error);
         });

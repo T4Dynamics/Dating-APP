@@ -23,19 +23,24 @@ export default function SwipeScreen({ navigation }) {
     const [swipe, setSwipe] = React.useState('');
 
     React.useEffect(() => {
-        if (Global.matches.length === 0) {
-            const collectionRef = collection(firebaseFirestore, 'users');
-            getDocs(collectionRef).then((snapshot) => {
-                snapshot.forEach((doc) => {
-                    if (doc.id !== Global.userId) {
-                        console.log(doc.id, '=>', doc.data());
-                        Global.matches.push(new User(doc.data()));
-                        Global.matchesLoaded = true;
-                        setMatches(Global.matches);
-                    }
+        const fetchData = async () => {
+            if (Global.matches.length === 0) {
+                const collectionRef = collection(firebaseFirestore, 'users');
+                const loggedInUserId = await Global.getClientData('@user_id');
+
+                getDocs(collectionRef).then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        if (doc.id !== loggedInUserId) {
+                            Global.matches.push(new User(doc.data()));
+                            Global.storeClientData('@matches_loaded', "true");
+                            setMatches(Global.matches);
+                        }
+                    });
                 });
-            });
+            }
         }
+
+        fetchData();
     }, []);
 
     const user = Global.matches[0];

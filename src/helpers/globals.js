@@ -1,12 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import User from '../models/User';
 
-export const userId = "";
-export const userName = "";
-export let userDocument = {};
-export let matchesLoaded = false;
 export let matches = [];
-
 export let profileBuilder = [];
 
 const storeClientData = async (key, value) => {
@@ -30,6 +25,14 @@ const getClientData = async (key) => {
     }
 }
 
+const clearAllData = async () => {
+    try {
+        await AsyncStorage.clear();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 const getClientDocument = async () => {
     try {
         const value = await AsyncStorage.getItem('@user_document');
@@ -46,5 +49,5 @@ const getClientDocument = async () => {
 
 
 
-export { storeClientData, getClientData, getClientDocument }
+export { storeClientData, getClientData, getClientDocument, clearAllData }
 

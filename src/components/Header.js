@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
 
 export default function Header({ navigation }) {
+
+    const [loggedUser, setLoggedUser] = useState({});
+
+    useEffect(() => {
+        const fetchLoggedUser = async () => {
+            const user = await Global.getClientDocument();
+            setLoggedUser(user);
+        }
+
+        fetchLoggedUser();
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Welcome back, { Global.userName }!
+                Welcome back, { loggedUser.name }!
             </Text>
             <View 
                 style={styles.icons}

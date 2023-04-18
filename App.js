@@ -79,7 +79,6 @@ const ProfileStackScreen = () => {
 const Tab = createBottomTabNavigator();
 
 const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
-	let [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
         const unsubscribed = onAuthStateChanged(firebaseAuth, async (user) => {
@@ -114,11 +113,9 @@ const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
 			
 				if (docSnap.exists()) {
 					Global.storeClientData('@user_document', JSON.stringify(docSnap.data()));
-					setDataLoaded(true);
 					resolve();
 				} else {
 					console.log('No such document!');
-					setDataLoaded(false);
 					resolve();
 				}
 			});
@@ -235,12 +232,12 @@ export default function App() {
 						},
 						tabBarButton: (props) => (
 							<TouchableOpacity style={styles.button} onPress={() => {
-								navigation.reset({
-									index: 0,
-									routes: [{ name: 'MessagesScreen' }],
-								});
-
-								console.log('Resetting Message stack');
+								//navigation.reset({
+								//	index: 0,
+								//	routes: [{ name: 'MessagesScreen' }],
+								//});
+//
+								//console.log('Resetting Message stack');
 
 								navigation.navigate('Messages', {screen: 'MessagesScreen'});
 							}}
@@ -258,12 +255,12 @@ export default function App() {
 					<Tab.Screen name="Matches" component={MatchesStackScreen} options={({ navigation }) => ({
 						tabBarButton: (props) => (
 							<TouchableOpacity style={styles.button} onPress={() => {
-								navigation.reset({
-									index: 0,
-									routes: [{ name: 'MatchesScreen' }],
-								});
-
-								console.log('Resetting Matches stack');
+								//navigation.reset({
+								//	index: 0,
+								//	routes: [{ name: 'MatchesScreen' }],
+								//});
+//
+								//console.log('Resetting Matches stack');
 
 								navigation.navigate('Matches', { screen: 'MatchesScreen' });
 							}}>
