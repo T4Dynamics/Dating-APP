@@ -35,7 +35,7 @@ const getClientDocument = async () => {
         const value = await AsyncStorage.getItem('@user_document');
         if (value !== null) {
             const valueJson = JSON.parse(value);
-            const user = new User(valueJson);
+            const user = new User(JSON.parse(valueJson));
 
             return user;
         }

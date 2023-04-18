@@ -1,20 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CommonActions, NavigationContainer } from '@react-navigation/native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { CommonActions, NavigationContainer, useNavigation } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Icon } from 'react-native-elements';
 import { theme } from './src/theme';
-import Button from './src/components/Button';
 
 import * as Screens from './src/screens/index';
 import { firebaseAuth, onAuthStateChanged, firebaseFirestore, doc, getDoc } from './config/firebase';
 
-import User from './src/models/User.js';
 import * as Global from './src/helpers/globals';
 
 const customFont = {
@@ -25,9 +23,31 @@ const customFont = {
 	'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'),
 };
 
+const MainStack = createNativeStackNavigator();
 const MessagesStack = createNativeStackNavigator();
 const MatchesStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+
+const MainStackScreen = ({ initialScreen }) => {
+	let screen = [
+		{ screen: 'MainScreen', component: Screens.MainScreen },
+		{ screen: 'SwipeScreen', component: Screens.SwipeScreen },
+		{ screen: 'AccountSetupScreen', component: Screens.AccountSetupScreen },
+	];
+
+	screen.forEach((item, index) => {
+		if (item.screen === initialScreen) {
+			screen.splice(index, 1);
+			screen.unshift(item);
+		}
+	});
+
+	return (
+		<MainStack.Navigator>
+			{ screen.map((item, index) => { return <MainStack.Screen key={index} name={item.screen} component={item.component} options={{headerShown: false}}/> })}
+		</MainStack.Navigator>
+	)
+}
 
 const MessagesStackScreen = () => {
 	return (
@@ -56,19 +76,9 @@ const ProfileStackScreen = () => {
 	)
 }
 
-const CustomTabButton = ({ children, onPress }) => {
-	return (
-		<Button onPress={() => { onPress }}>
-			{children}
-		</Button>
-	);
-}
-
 const Tab = createBottomTabNavigator();
 
-export default function App({ navigation }) {
-	const [loaded] = useFonts(customFont);
-	let [auth, setAuth] = useState(false);
+const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
 	let [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
@@ -83,7 +93,14 @@ export default function App({ navigation }) {
 
 				const userId = await Global.getClientData('@user_id');
 
-				await getUserDocument(userId);
+				await getUserDocument(userId)
+					.then(() => getInitialScreen())
+					.then((initial) => {
+						console.log('Initial Screen: ' + initial);
+						setInitialScreen(initial);
+						resetNavigation(initial);
+					});
+
             } else {
                 setAuth(false);
 				console.log('User is not logged in');
@@ -91,20 +108,49 @@ export default function App({ navigation }) {
         });
 
 		const getUserDocument = async (id) => {
-			const docRef = doc(firebaseFirestore, 'users', id);
-			const docSnap = await getDoc(docRef);
-		
-			if (docSnap.exists()) {
-				Global.storeClientData('@user_document', docSnap.data());
-				setDataLoaded(true);
+			return new Promise(async (resolve, reject) => {
+				const docRef = doc(firebaseFirestore, 'users', id);
+				const docSnap = await getDoc(docRef);
+			
+				if (docSnap.exists()) {
+					Global.storeClientData('@user_document', JSON.stringify(docSnap.data()));
+					setDataLoaded(true);
+					resolve();
+				} else {
+					console.log('No such document!');
+					setDataLoaded(false);
+					resolve();
+				}
+			});
+		};
+
+		const getInitialScreen = async () => {
+			let initialScreen;
+
+			if (auth) {
+				const userDocument = await Global.getClientDocument();
+
+				if (!userDocument || Object.keys(userDocument).length === 0) {
+					initialScreen = 'AccountSetupScreen';
+				} else {
+					initialScreen = 'SwipeScreen';
+				}
 			} else {
-				console.log('No such document!');
-				setDataLoaded(false);
+				initialScreen = 'MainScreen';
 			}
+
+			return initialScreen;
 		};
 
 		return unsubscribed;
-    }, []);
+    }, [auth]);
+}
+
+export default function App() {
+	let [auth, setAuth] = useState(false);
+	let [initialScreen, setInitialScreen] = useState('MainScreen');
+	const [loaded] = useFonts(customFont);
+	const navigationRef = useRef();
 
     if (!loaded) {
         return null;
@@ -112,47 +158,23 @@ export default function App({ navigation }) {
         console.log('Font Loaded')
     }
 
-	const MainStack = createNativeStackNavigator();
-	let initialScreen = 'MainScreen';
-
-	const MainStackScreen = async () => {
-		let screen = [
-			{ screen: 'MainScreen', component: Screens.MainScreen },
-			{ screen: 'SwipeScreen', component: Screens.SwipeScreen },
-			{ screen: 'AccountSetupScreen', component: Screens.AccountSetupScreen },
-		];
-
-		if (auth) {
-			const userDocument = await Global.getClientDocument();
-
-			if (Object.keys(userDocument).length === 0) {
-			  	initialScreen = 'AccountSetupScreen';
-			} else {
-			  	initialScreen = 'SwipeScreen';
-			}
-		} else {
-			initialScreen = 'MainScreen';
-		}
-
-		screen.forEach((item, index) => {
-			if (item.screen === initialScreen) {
-				screen.splice(index, 1);
-				screen.unshift(item);
-			}
-		});
-
-		return (
-			<MainStack.Navigator>
-				{ screen.map((item, index) => { console.log("map - ",item, index); return <MainStack.Screen key={index} name={item.screen} component={item.component} options={{headerShown: false}}/> })}
-			</MainStack.Navigator>
-		)
-	}
-
 	let hideNavProp = auth ? 'flex' : 'none';
+
+	const resetNavigation = (initial) => {
+		navigationRef.current.dispatch(
+			CommonActions.reset({
+				index: 0,
+				routes: [
+					{ name: initial }
+				]
+			})
+		);
+	}
 	
 	return (
 		<Provider theme={[theme]}>
-			<NavigationContainer>
+			<NavigationContainer ref={navigationRef}>
+				<AuthHandler auth={auth} setAuth={setAuth} setInitialScreen={setInitialScreen} resetNavigation={resetNavigation}/>
 				<Tab.Navigator
 					initialRouteName={initialScreen}
 					screenOptions={({route}) => ({
@@ -179,7 +201,7 @@ export default function App({ navigation }) {
 						},
 					})}>
 
-					<Tab.Screen name="Main" component={MainStackScreen} options={({ navigation }) => ({
+					<Tab.Screen name="Main" options={({ navigation }) => ({
 						tabBarButton: (props) => (
 							<TouchableOpacity style={styles.button} onPress={() => {
 								navigation.reset({
@@ -199,7 +221,9 @@ export default function App({ navigation }) {
 								/>
 							</TouchableOpacity>
 						)
-					})}/>	
+					})}>
+						{() => <MainStackScreen initialScreen={initialScreen}/>}
+					</Tab.Screen>
 
 					<Tab.Screen name="Messages" component={MessagesStackScreen} options={({ navigation }) => ({
 						tabBarBadge: 3,
