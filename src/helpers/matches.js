@@ -1,4 +1,3 @@
-import * as dummyMatches from '../data/dummy.json';
 import User from '../models/User.js';
 
 import { collection, getDocs, firebaseFirestore } from '../../config/firebase';
