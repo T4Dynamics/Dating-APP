@@ -1,4 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useReducer, useState, useCallback } from 'react';
+import { useFocusEffect, useNavigationContainerRef  } from '@react-navigation/native';
+
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -21,6 +23,25 @@ const customFont = {
 	'Judson-Italic': require('./src/assets/fonts/Judson-Italic.ttf'),
 	'Montserrat-Regular': require('./src/assets/fonts/Montserrat-Regular.ttf'),
 	'Montserrat-SemiBold': require('./src/assets/fonts/Montserrat-SemiBold.ttf'),
+};
+
+const initialState = {
+	auth: false,
+	initialScreen: 'MainScreen',
+	fontsLoaded: false,
+};
+
+const reducer = (state, action) => {
+	switch (action.type) {
+		case 'SET_AUTH':
+			return { ...state, auth: action.payload };
+		case 'SET_INITIAL_SCREEN':
+			return { ...state, initialScreen: action.payload };
+		case 'SET_FONTS_LOADED':
+			return { ...state, fontsLoaded: action.payload };
+		default:
+			return state;
+	}
 };
 
 const MainStack = createNativeStackNavigator();
@@ -68,7 +89,7 @@ const MatchesStackScreen = () => {
 const ProfileStackScreen = () => {
 	return (
 		<ProfileStack.Navigator>
-			<ProfileStack.Screen name="ProfileScreen" component={Screens.ProfileScreen} options={{headerShown: false}}/>
+			<ProfileStack.Screen name="ProfileScreen" component={Screens.ProfileScreen} options={{headerShown: false }}/>
 			<ProfileStack.Screen name="LoginScreen" component={Screens.LoginScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false}}/>
@@ -76,9 +97,193 @@ const ProfileStackScreen = () => {
 	)
 }
 
+const useTabBarVisible = (route) => {
+	const [tabBarVisible, setTabBarVisible] = useState(true);
+	const navigation = useNavigation();
+  
+	useFocusEffect(
+	  	useCallback(() => {
+			const routeName = getFocusedRouteNameFromRoute(route) ?? 'SwipeScreen';
+			const hide = ['AccountSetupScreen', 'LoginScreen', 'SettingsScreen', 'RegisterScreen'].includes(routeName);
+
+			if (hide !== tabBarVisible) {
+				setTabBarVisible(!hide);
+			}
+
+	  	}, [navigation])
+	);
+  
+	return tabBarVisible;
+};
+
+const getFocusedRouteNameFromRoute = (route) => {
+	if (!route.state) return null;
+
+	const routeIndex = route.state.index;
+	const nestedRoute = route.state.routes[routeIndex];
+
+	return nestedRoute.state ? getFocusedRouteNameFromRoute(nestedRoute) : nestedRoute.name;
+  };
+
 const Tab = createBottomTabNavigator();
 
-const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
+export default function App() {
+	const [state, dispatch] = useReducer(reducer, initialState);
+	const { auth, initialScreen, fontsLoaded } = state;
+	
+	const navigationRef = useRef();
+
+	const [loaded] = useFonts(customFont);
+  	const [appIsReady, setAppIsReady] = useState(false);
+
+	useEffect(() => {
+		if (!fontsLoaded && loaded) {
+		 	dispatch({ type: 'SET_FONTS_LOADED', payload: true });
+		 	setAppIsReady(true);
+		}
+	}, [loaded]);
+	
+	if (!appIsReady) {
+		return null;
+	} else {
+		console.log('Font Loaded');
+	}
+
+	const resetNavigation = (initial) => {
+		navigationRef.current.dispatch(
+		  	CommonActions.reset({
+				index: 0,
+				routes: [{ name: initial }],
+		  	})
+		);
+	};
+	
+	return (
+		<Provider theme={[theme]}>
+			<NavigationContainer ref={navigationRef}>
+			<AuthHandler auth={auth} dispatch={dispatch} resetNavigation={resetNavigation} state={state} />
+				<Tab.Navigator
+					initialRouteName={initialScreen}
+					screenOptions={({route}) => {
+
+						return {
+							headerShown: false,
+							tabBarShowLabel: false,
+							tabBarItemStyle: {
+								width: 50,
+								height: 50,
+							},
+							tabBarStyle: {
+								position: 'absolute',
+								borderTopEndRadius: 25,
+								borderTopStartRadius: 25,
+								backgroundColor: '#F6F6F6',
+								height: 140,
+								padding: 15,
+								shadowColor: 'black',
+								shadowOffset: { width: 0, height: 2 },
+								shadowOpacity: 0.15,
+								justifyContent: 'center',
+								alignItems: 'center',
+							},
+						}
+					}}>
+
+					<Tab.Screen name="Main" options={({ navigation, route }) => {
+						const tabBarVisible = useTabBarVisible(route);
+
+						return {
+							tabBarVisible,
+							tabBarButton: (props) => (
+								<TouchableOpacity style={styles.button} onPress={() => {
+									navigation.navigate('SwipeScreen');
+								}}>
+								<Icon
+									name="toggle-left"
+									type="feather"
+									size={40}
+									style={styles.button}
+								/>
+								</TouchableOpacity>
+							)
+						}
+					}}>
+						{() => <MainStackScreen initialScreen={initialScreen}/>}
+					</Tab.Screen>
+
+					<Tab.Screen name="Messages" component={MessagesStackScreen} options={({ navigation, route }) => {
+						const tabBarVisible = useTabBarVisible(route);
+
+						return {
+							tabBarVisible,
+							tabBarBadge: 3,
+							tabBarBadgeStyle: {
+								backgroundColor: '#121212',
+								color: 'white',
+								fontSize: 12,
+								fontWeight: 'bold',
+							},
+							tabBarButton: (props) => (
+								<TouchableOpacity style={styles.button} onPress={() => {
+									navigation.navigate('Messages', { screen: 'MessagesScreen' });
+								}}>
+								<Icon
+									name="message-square"
+									type="feather"
+									size={40}
+									style={styles.button}
+								/>
+								</TouchableOpacity>
+							)
+						}
+					}}/>
+
+					<Tab.Screen name="Matches" component={MatchesStackScreen} options={({ navigation, route }) => {
+						const tabBarVisible = useTabBarVisible(route);
+
+						return {
+							tabBarVisible,
+							tabBarButton: (props) => (
+								<TouchableOpacity style={styles.button} onPress={() => {
+									navigation.navigate('Matches', { screen: 'MatchesScreen' });
+								}}>
+								<Icon
+									name="heart"
+									type="feather"
+									size={40}
+									style={styles.button}
+								/>
+								</TouchableOpacity>
+							)
+						}
+					}}/>
+
+					<Tab.Screen name="Profile" component={ProfileStackScreen} options={({ navigation, route }) => {
+						const tabBarVisible = useTabBarVisible(route);
+
+						return {
+							tabBarVisible,
+							tabBarButton: (props) => (
+								<TouchableOpacity style={styles.button} onPress={() => {
+									navigation.navigate('Profile', { screen: 'ProfileScreen' });
+								}}>
+								<Icon
+									name="user"
+									type="feather"
+									size={40}
+									style={styles.button}
+								/>
+								</TouchableOpacity>
+							)
+						}
+					}}/>
+				</Tab.Navigator>
+			</NavigationContainer>
+		</Provider>
+	);
+}
+
+const AuthHandler = ({ resetNavigation, dispatch, state }) => {
 
     useEffect(() => {
         const unsubscribed = onAuthStateChanged(firebaseAuth, async (user) => {
@@ -88,20 +293,25 @@ const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
 				Global.storeClientData('@user_name', user.displayName);
 				Global.storeClientData('@matches_loaded', "false");
 
-                setAuth(true);
+                dispatch({ type: 'SET_AUTH', payload: true });
 
 				const userId = await Global.getClientData('@user_id');
 
 				await getUserDocument(userId)
-					.then(() => getInitialScreen())
+					.then(() => getInitialScreen(state.auth))
 					.then((initial) => {
 						console.log('Initial Screen: ' + initial);
-						setInitialScreen(initial);
+						dispatch({ type: 'SET_INITIAL_SCREEN', payload: initial });
 						resetNavigation(initial);
+					})
+					.catch(() => {
+						console.log('No user document found, navigating to AccountSetupScreen');
+						dispatch({ type: 'SET_INITIAL_SCREEN', payload: 'AccountSetupScreen' });
+						resetNavigation('AccountSetupScreen');
 					});
 
             } else {
-                setAuth(false);
+                dispatch({ type: 'SET_AUTH', payload: false });
 				console.log('User is not logged in');
             }
         });
@@ -116,12 +326,12 @@ const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
 					resolve();
 				} else {
 					console.log('No such document!');
-					resolve();
+					reject();
 				}
 			});
 		};
 
-		const getInitialScreen = async () => {
+		const getInitialScreen = async (auth) => {
 			let initialScreen;
 
 			if (auth) {
@@ -140,165 +350,7 @@ const AuthHandler = ({ resetNavigation, auth, setAuth, setInitialScreen }) => {
 		};
 
 		return unsubscribed;
-    }, [auth]);
-}
-
-export default function App() {
-	let [auth, setAuth] = useState(false);
-	let [initialScreen, setInitialScreen] = useState('MainScreen');
-	const [loaded] = useFonts(customFont);
-	const navigationRef = useRef();
-
-    if (!loaded) {
-        return null;
-    } else {
-        console.log('Font Loaded')
-    }
-
-	let hideNavProp = auth ? 'flex' : 'none';
-
-	const resetNavigation = (initial) => {
-		navigationRef.current.dispatch(
-			CommonActions.reset({
-				index: 0,
-				routes: [
-					{ name: initial }
-				]
-			})
-		);
-	}
-	
-	return (
-		<Provider theme={[theme]}>
-			<NavigationContainer ref={navigationRef}>
-				<AuthHandler auth={auth} setAuth={setAuth} setInitialScreen={setInitialScreen} resetNavigation={resetNavigation}/>
-				<Tab.Navigator
-					initialRouteName={initialScreen}
-					screenOptions={({route}) => ({
-						headerShown: false,
-						tabBarShowLabel: false,
-						tabBarItemStyle: {
-							width: 50,
-							height: 50,
-						},
-						tabBarStyle: {
-							position: 'absolute',
-							display: hideNavProp,
-							borderTopEndRadius: 25,
-							borderTopStartRadius: 25,
-							backgroundColor: '#F6F6F6',
-							height: 140,
-							padding: 15,
-							shadowColor: 'black',
-							shadowOffset: { width: 0, height: 2 },
-							shadowOpacity: 0.15,
-							justifyContent: 'center',
-							alignItems: 'center',
-
-						},
-					})}>
-
-					<Tab.Screen name="Main" options={({ navigation }) => ({
-						tabBarButton: (props) => (
-							<TouchableOpacity style={styles.button} onPress={() => {
-								navigation.reset({
-									index: 0,
-									routes: [{ name: 'SwipeScreen' }],
-								});
-
-								console.log('Resetting Main stack');
-
-								navigation.navigate('SwipeScreen');
-							}}>
-								<Icon
-									name="toggle-left"
-									type="feather"
-									size={40}
-									style={styles.button}
-								/>
-							</TouchableOpacity>
-						)
-					})}>
-						{() => <MainStackScreen initialScreen={initialScreen}/>}
-					</Tab.Screen>
-
-					<Tab.Screen name="Messages" component={MessagesStackScreen} options={({ navigation }) => ({
-						tabBarBadge: 3,
-						tabBarBadgeStyle: {
-							backgroundColor: '#121212',
-							color: 'white',
-							fontSize: 12,
-							fontWeight: 'bold',
-						},
-						tabBarButton: (props) => (
-							<TouchableOpacity style={styles.button} onPress={() => {
-								//navigation.reset({
-								//	index: 0,
-								//	routes: [{ name: 'MessagesScreen' }],
-								//});
-//
-								//console.log('Resetting Message stack');
-
-								navigation.navigate('Messages', {screen: 'MessagesScreen'});
-							}}
-							>
-								<Icon
-									name="message-square"
-									type="feather"
-									size={40}
-									style={styles.button}
-								/>
-							</TouchableOpacity>
-						),
-					})}/>
-
-					<Tab.Screen name="Matches" component={MatchesStackScreen} options={({ navigation }) => ({
-						tabBarButton: (props) => (
-							<TouchableOpacity style={styles.button} onPress={() => {
-								//navigation.reset({
-								//	index: 0,
-								//	routes: [{ name: 'MatchesScreen' }],
-								//});
-//
-								//console.log('Resetting Matches stack');
-
-								navigation.navigate('Matches', { screen: 'MatchesScreen' });
-							}}>
-								<Icon
-									name="heart"
-									type="feather"
-									size={40}
-									style={styles.button}
-								/>
-							</TouchableOpacity>
-						)
-					})}/>
-
-					<Tab.Screen name="Profile" component={ProfileStackScreen} options={({ navigation }) => ({
-						tabBarButton: (props) => (
-							<TouchableOpacity style={styles.button} onPress={() => {
-								navigation.reset({
-									index: 0,
-									routes: [{ name: 'ProfileScreen' }],
-								});
-
-								console.log('Resetting Profile stack');
-
-								navigation.navigate('Profile', { screen: 'ProfileScreen' });
-							}}>
-								<Icon
-									name="user"
-									type="feather"
-									size={40}
-									style={styles.button}
-								/>
-							</TouchableOpacity>
-						)
-					})}/>
-				</Tab.Navigator>
-			</NavigationContainer>
-		</Provider>
-	);
+    }, [dispatch]);
 }
 
 const styles = StyleSheet.create({
