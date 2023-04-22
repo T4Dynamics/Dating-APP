@@ -87,7 +87,7 @@ const displayData = {
     },
     2: {
         title: 'Being attractive to within',
-        description: 'Add your hobbies, interests and get swiping. Once you match, you\'ll gain access to each others profiles and pictures',
+        description: 'Add your hobbies, interests and get swiping. Once you match, you\'ll gain access to each others pictures.',
         backgroundImage: require('../assets/slide2.png')
     },
     3: {
