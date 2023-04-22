@@ -22,7 +22,6 @@ const getMatches = async (userId) => {
 
     snapshot.forEach((doc) => {
         if (doc.id !== userId) {
-            console.log(doc.id, '=>', doc.data());
             Global.matches.push(new User(doc.data()));
         }
     });

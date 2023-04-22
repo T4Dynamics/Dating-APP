@@ -5,7 +5,7 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
-import { Text, SafeAreaView, StyleSheet } from 'react-native'
+import { Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { firebaseAuth, createUserWithEmailAndPassword, updateProfile } from "../../config/firebase";
 
 export default function RegisterScreen({ navigation }) {
@@ -58,7 +58,7 @@ export default function RegisterScreen({ navigation }) {
 
     return (
         <Background>
-            <SafeAreaView style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <Text style={styles.title}>Register</Text>
 
                 <Input 
@@ -102,9 +102,7 @@ export default function RegisterScreen({ navigation }) {
                 >
                     Main Menu
                 </Button>
-
-                <Toast />
-            </SafeAreaView>
+            </KeyboardAvoidingView>
         </Background>
     );
 }

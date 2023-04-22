@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Toast from 'react-native-toast-message';
 
 import Background from "../components/Background";
@@ -7,13 +7,12 @@ import Input from "../components/Input";
 
 import { firebaseAuth, signInWithEmailAndPassword, onAuthStateChanged } from '../../config/firebase';
 
-import { Text } from 'react-native'
-import { SafeAreaView } from "react-navigation";
+import { Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
 export default function LoginScreen({ navigation }) {
 
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, user => {
@@ -63,38 +62,48 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <Background>
-            <SafeAreaView>
-            <Text>Dashboard</Text>
+            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <Text>Dashboard</Text>
 
-            <Input
-                    placeholder="Email"
-                    onChangeText={ setEmail }
-                    value={ email }
-            />
+                <Input
+                        placeholder="Email"
+                        onChangeText={ setEmail }
+                        value={ email }
+                />
 
-            <Input
-                    placeholder="Password"
-                    onChangeText={ setPassword }
-                    value={ password }
-                    secureTextEntry
-            />
+                <Input
+                        placeholder="Password"
+                        onChangeText={ setPassword }
+                        value={ password }
+                        secureTextEntry
+                />
 
-            <Button
-                mode="contained"
-                onPress={ handleLogin }
-            >
-                Login!
-            </Button>
+                <Button
+                    mode="contained"
+                    onPress={ handleLogin }
+                >
+                    Login!
+                </Button>
 
-            <Button
-                mode="outlined"
-                onPress={ () => navigation.navigate('MainScreen', { currentSlide: 4 }) }
-            >
-                Main Menu
-            </Button>
-
-            <Toast />
-            </SafeAreaView>
+                <Button
+                    mode="outlined"
+                    onPress={ () => navigation.navigate('MainScreen', { currentSlide: 4 }) }
+                >
+                    Main Menu
+                </Button>
+            </KeyboardAvoidingView>
         </Background>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        width: '100%',
+        maxWidth: 340,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});

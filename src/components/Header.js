@@ -3,24 +3,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
+import { theme } from '../theme';
 
 export default function Header({ navigation }) {
-
-    const [loggedUser, setLoggedUser] = useState({});
-
-    useEffect(() => {
-        const fetchLoggedUser = async () => {
-            const user = await Global.getClientDocument();
-            setLoggedUser(user);
-        }
-
-        fetchLoggedUser();
-    }, []);
 
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Welcome back, { loggedUser.name }!
+                Slider
             </Text>
             <View 
                 style={styles.icons}
@@ -41,7 +31,7 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         top: '5%',
-        width: '90%',
+        width: '70%',
         height: '10%',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -54,7 +44,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        fontSize: 18,
+        fontSize: 36,
         fontWeight: 'regular',
+        width: '100%',
+        textAlign: 'center',
+        fontFamily: theme.fonts.judson.bold,
+        color: theme.colors.primary,
     },
 });

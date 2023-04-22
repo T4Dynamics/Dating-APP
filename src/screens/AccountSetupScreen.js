@@ -2,6 +2,7 @@ import React from "react";
 
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { CheckBox } from "react-native-elements";
+import Toast from 'react-native-toast-message';
 
 import { useRoute } from '@react-navigation/native';
 import Button from "../components/Button";
@@ -77,9 +78,27 @@ const displayData = (currentSlide, navigation) => {
                             style={{ marginTop: 10 }}
                             mode="contained"
                             onPress={() => {
+                                if (age.length === 0) return Toast.show({
+                                    type: 'error',
+                                    text1: 'Error',
+                                    text2: 'Please enter your age.',
+                                    visibilityTime: 4000,
+                                    autoHide: true,
+                                    topOffset: 30,
+                                    bottomOffset: 40,
+                                });
+
+                                if (age < 18) return Toast.show({
+                                    type: 'error',
+                                    text1: 'Error',
+                                    text2: 'You must be 18 or older to use this app.',
+                                    visibilityTime: 4000,
+                                    autoHide: true,
+                                    topOffset: 30,
+                                    bottomOffset: 40,
+                                });
+
                                 Global.profileBuilder = { age: age };
-                                if (age.length === 0) return console.log('Age is empty');
-                                if (age < 18) return console.log('Age is less than 18');
                                 
                                 navigation.navigate('Main', { screen: 'AccountSetupScreen', params: { currentSlide: currentSlide + 1 } });
                             }}

@@ -8,9 +8,7 @@ const storeClientData = async (key, value) => {
     try {
         const jsonValue = JSON.stringify(value);
         await AsyncStorage.setItem(key, jsonValue);
-    } catch (e) {
-        console.log(e);
-    }
+    } catch (e) {}
 }
 
 const getClientData = async (key) => {
@@ -20,17 +18,13 @@ const getClientData = async (key) => {
             const valueJson = JSON.parse(value);
             return valueJson;
         }
-    } catch (e) {
-        console.log(e);
-    }
+    } catch (e) {}
 }
 
 const clearAllData = async () => {
     try {
         await AsyncStorage.clear();
-    } catch (e) {
-        console.log(e);
-    }
+    } catch (e) {}
 }
 
 const getClientDocument = async () => {
@@ -42,9 +36,7 @@ const getClientDocument = async () => {
 
             return user;
         }
-    } catch (e) {
-        console.log(e);
-    }
+    } catch (e) {}
 }
 
 
