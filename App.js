@@ -30,7 +30,6 @@ const initialState = {
 	auth: false,
 	initialScreen: 'MainScreen',
 	fontsLoaded: false,
-	navigationVisible: true,
 };
 
 const reducer = (state, action) => {
@@ -41,8 +40,6 @@ const reducer = (state, action) => {
 			return { ...state, initialScreen: action.payload };
 		case 'SET_FONTS_LOADED':
 			return { ...state, fontsLoaded: action.payload };
-		case 'SET_NAVIGATION_VISIBLE':
-			return { ...state, navigationVisible: action.payload };
 		default:
 			return state;
 	}
@@ -55,7 +52,7 @@ const MessagesStack = createNativeStackNavigator();
 const MatchesStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 
-const MainStackScreen = ({ initialScreen, navigation }) => {
+const MainStackScreen = ({ initialScreen }) => {
 	let screen = [
 		{ screen: 'MainScreen', component: Screens.MainScreen },
 		{ screen: 'SwipeScreen', component: Screens.SwipeScreen },
@@ -69,6 +66,8 @@ const MainStackScreen = ({ initialScreen, navigation }) => {
 		}
 	});
 
+	showNavigation = initialScreen === "MainScreen" ? false : true;
+
 	return (
 		<MainStack.Navigator>
 			{ screen.map((item, index) => { return <MainStack.Screen key={index} name={item.screen} component={item.component} options={{headerShown: false}}/> })}
@@ -76,7 +75,7 @@ const MainStackScreen = ({ initialScreen, navigation }) => {
 	)
 }
 
-const MessagesStackScreen = ({ navigation }) => {
+const MessagesStackScreen = () => {
 
 	return (
 		<MessagesStack.Navigator>
@@ -85,7 +84,7 @@ const MessagesStackScreen = ({ navigation }) => {
 	)
 }
 
-const MatchesStackScreen = ({ navigation }) => {
+const MatchesStackScreen = () => {
 
 	return (
 		<MatchesStack.Navigator>
@@ -94,14 +93,13 @@ const MatchesStackScreen = ({ navigation }) => {
 	)
 }
 
-const ProfileStackScreen = (props) => {
-	
+const ProfileStackScreen = () => {
 	return (
 		<ProfileStack.Navigator>
 			<ProfileStack.Screen name="ProfileScreen" component={Screens.ProfileScreen} options={{headerShown: false }}/>
 			<ProfileStack.Screen name="LoginScreen" component={Screens.LoginScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
-			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} screenOptions={{ tabBarStyle: { height: 0 }}}  options={{headerShown: false, tabBarVisible: false}}/>
+			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false, tabBarStyle: { height: 0 }}}/>
 		</ProfileStack.Navigator>
 	)
 }
@@ -110,7 +108,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const { auth, initialScreen, fontsLoaded, navigationVisible } = state;
+	const { auth, initialScreen, fontsLoaded } = state;
 	
 	const navigationRef = useRef();
 
@@ -135,6 +133,9 @@ export default function App() {
 				<Tab.Navigator
 					initialRouteName={initialScreen}
 					screenOptions={({route}) => {
+						const focusedScreen = getFocusedRouteNameFromRoute(route);
+						const hiddenScreens = ['MainScreen', 'LoginScreen', 'RegisterScreen', 'SettingsScreen', 'AccountSetupScreen'];
+						const hideNav = hiddenScreens.includes(focusedScreen);
 
 						return {
 							headerShown: false,
@@ -155,7 +156,8 @@ export default function App() {
 								shadowOpacity: 0.15,
 								justifyContent: 'center',
 								alignItems: 'center',
-								display: navigationVisible ? 'flex' : 'none'
+								display: !showNavigation ? 'none' 
+									: hideNav ? 'none' : 'flex',
 							},
 						}
 					}}>
@@ -239,7 +241,7 @@ export default function App() {
 							)
 						}
 					}}>
-						{ (props) => <ProfileStackScreen { ...props } dispatch={dispatch} /> }
+						{ (props) => <ProfileStackScreen { ...props } /> }
 					</Tab.Screen>
 				</Tab.Navigator>
 				<Toast />
@@ -331,7 +333,7 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 		
 			handleUserLoggedIn(currentUser);
 		}
-	}, [currentUser]); // Run this effect only when the currentUser changes
+	}, [currentUser, dispatch, state.auth]);
 
 	return <></>;
 };

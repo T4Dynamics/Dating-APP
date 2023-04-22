@@ -12,6 +12,9 @@ export default function ProfileScreen({ navigation }) {
         temp.forEach(doc => {
             console.log(doc.id, '=>', doc);
         });
+
+        const userId = await Global.getClientData('@user_id');
+        console.log(userId);
     }
 
     const handleLogout = () => {
