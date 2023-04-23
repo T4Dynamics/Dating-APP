@@ -162,8 +162,8 @@ const displayData = (currentSlide, navigation) => {
                             style={{ marginTop: 10, width: '100%' }}
                             mode="outlined"
                             onPress={() => navigation.navigate('Main', {
-                            screen: 'AccountSetupScreen',
-                            params: { currentSlide: currentSlide - 1 },
+                                screen: 'AccountSetupScreen',
+                                params: { currentSlide: currentSlide - 1 },
                             })}
                         >
                             Back
@@ -647,8 +647,18 @@ const displayData = (currentSlide, navigation) => {
                             title='Next'
                             mode="contained"
                             onPress={() => {
-                                saveProfileData(Global.profileBuilder);
-                                console.log(Global.profileBuilder)}
+                                saveProfileData(Global.profileBuilder).then(() => {
+                                    navigation.navigate('Main', { screen: 'SwipeScreen' });
+                                    return Toast.show({
+                                        type: 'success',
+                                        text1: 'Success',
+                                        text2: 'Your profile has been created!',
+                                        visibilityTime: 4000,
+                                        autoHide: true,
+                                        topOffset: 30,
+                                        bottomOffset: 40,
+                                    });
+                                })}
                             }
                         >
                             Submit

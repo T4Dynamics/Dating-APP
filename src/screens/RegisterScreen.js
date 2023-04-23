@@ -36,7 +36,7 @@ export default function RegisterScreen({ navigation }) {
             const user = credentials.user;
         
             updateProfile(user, { displayName: displayName }).then(() => {
-                navigation.navigate('Main', { screen: 'SwipeScreen' });
+                navigation.navigate('Main', { screen: 'AccountSetupScreen' });
             });
         }).catch(error => {
             let errorMessage = error.code === 'auth/email-already-in-use' ? 'Email already in use' :
@@ -90,6 +90,7 @@ export default function RegisterScreen({ navigation }) {
                 />
 
                 <Button
+                    style={{ marginTop: 10, width: '100%' }}
                     mode="contained"
                     onPress={ handleRegistration }
                 >
@@ -97,8 +98,9 @@ export default function RegisterScreen({ navigation }) {
                 </Button>
 
                 <Button
+                    style={{ marginTop: 10, width: '100%' }}
                     mode="outlined"
-                    onPress={ () => navigation.navigate('MainScreen', { currentSlide: 4 }) }
+                    onPress={ () => navigation.navigate('Main', { screen: 'MainScreen', params: { currentSlide: 4 } }) }
                 >
                     Main Menu
                 </Button>

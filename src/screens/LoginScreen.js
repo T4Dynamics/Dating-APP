@@ -79,6 +79,7 @@ export default function LoginScreen({ navigation }) {
                 />
 
                 <Button
+                    style={{ marginTop: 10, width: '100%' }}
                     mode="contained"
                     onPress={ handleLogin }
                 >
@@ -86,8 +87,9 @@ export default function LoginScreen({ navigation }) {
                 </Button>
 
                 <Button
+                    style={{ marginTop: 10, width: '100%' }}
                     mode="outlined"
-                    onPress={ () => navigation.navigate('MainScreen', { currentSlide: 4 }) }
+                    onPress={ () => navigation.navigate('Main', { screen: 'MainScreen', params: { currentSlide: 4 } }) }
                 >
                     Main Menu
                 </Button>
