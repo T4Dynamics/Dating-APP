@@ -149,7 +149,7 @@ export default function App() {
 								borderTopEndRadius: 25,
 								borderTopStartRadius: 25,
 								backgroundColor: '#F6F6F6',
-								height: 140,
+								height: 100,
 								padding: 15,
 								shadowColor: 'black',
 								shadowOffset: { width: 0, height: 2 },
