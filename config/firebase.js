@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, initializeAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
-import { getFirestore, collection, addDoc, getDoc, getDocs, doc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, doc } from 'firebase/firestore';
 
 import Constants from 'expo-constants';
 
@@ -61,6 +61,7 @@ export {
     collection, 
     addDoc,
     getDoc,
+    setDoc,
     getDocs,
     doc,
 };
