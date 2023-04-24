@@ -317,6 +317,7 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 				await Global.storeClientData("@matches_loaded", "false");
 			
 				const userId = await Global.getClientData("@user_id");
+				console.log("User ID: ", userId);
 			
 				await getUserDocument(userId)
 				.then(() => getInitialScreen(state.auth))

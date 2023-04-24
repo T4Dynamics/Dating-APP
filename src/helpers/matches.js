@@ -4,27 +4,36 @@ import { collection, getDocs, firebaseFirestore } from '../../config/firebase';
 
 import * as Global from '../helpers/globals';
 
-const handleSwipe = (user, side) => {
+const handleSwipe = async (match, side) => {
+    console.log('handleSwipe', match, side);
+    const userId = await Global.getClientData('@user_id');
+
     if (side === 'left') {
-        console.log('left');
+        createMatch(match.id, userId, false);
     } else if (side === 'right') {
-        console.log('right');
+        createMatch(match.id, userId, true);
     }
 
     Global.matches.shift();
 }
 
-const getMatches = async (userId) => {
-    if (Global.matches.length > 0) return;
-
-    const collectionRef = collection(firebaseFirestore, 'users');
-    const snapshot = await getDocs(collectionRef);
-
-    snapshot.forEach((doc) => {
-        if (doc.id !== userId) {
-            Global.matches.push(new User(doc.data()));
-        }
-    });
+const createMatch = async (userId, profileId, likeType) => {
+    try {
+        const matchesRef = collection(firebaseFirestore, 'potential_matches');
+        const newMatchRef = doc(matchesRef);
+    
+        const data = {
+            match_ref: `/users/${userId}`,
+            user_ref: `/users/${profileId}`,
+            match_like: 'NONE',
+            user_like: (likeType ? 'LIKE' : 'DISLIKE') ?? 'NONE',
+        };
+    
+        await setDoc(newMatchRef, data);
+        console.log('Match created with ID:', newMatchRef.id);
+      } catch (e) {
+        console.error('Error creating match:', e);
+      }
 }
 
-export { handleSwipe, getMatches }
+export { handleSwipe }

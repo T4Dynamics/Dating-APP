@@ -3,8 +3,9 @@ import * as goals from '../data/relationshipType.json';
 
 export default class User {
 
-    constructor(data) {
-
+    constructor(data, id) {
+        this.id = id;
+        
         this.name = data.name;
         this.age = data.age;
         this.gender = data.gender;
