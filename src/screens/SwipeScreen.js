@@ -7,7 +7,7 @@ import CardItem from "../components/CardItem";
 
 import User from '../models/User.js';
 
-import { StyleSheet, Text, Animated, PanResponder, View } from "react-native";
+import { StyleSheet, Text, Animated, PanResponder, View, TouchableOpacity, Dimensions } from "react-native";
 import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
@@ -209,21 +209,24 @@ const matchCard = (match, pan, panResponder, rotate) => {
                 }
             </View>
             <View style={styles.row}>
-                <Icon
-                    name='thumb-down'
-                    type='material-community'
-                    color='red'
-                    style={styles.icon}
-                    size={50}
-                />
-
-                <Icon
-                    name='thumb-up'
-                    type='material-community'
-                    color='green'
-                    style={styles.icon}
-                    size={50}
-                />
+                <TouchableOpacity onPress={() => handleSwipe(user, 'left')}>
+                    <Icon
+                        name='close'
+                        type='material-community'
+                        color='white'
+                        style={[styles.icon, {backgroundColor: '#1a1a1a'}]}
+                        size={50}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleSwipe(user, 'right')}>
+                    <Icon
+                        name='heart'
+                        type='material-community'
+                        color='white'
+                        style={[styles.icon, {backgroundColor: '#C41E3A'}]}
+                        size={50}
+                    />
+                </TouchableOpacity>
             </View>
         </Animated.View>
     )
@@ -250,20 +253,17 @@ const undefinedMatches = (pan, panResponder, rotate, text) => {
 
 const styles = StyleSheet.create({
     container: {
+        flex1: 1,
         position: 'absolute',
         left: '5%',
         top: '15%',
         width: '90%',
-        height: '65%',
+        height: Dimensions.get('window').height * 0.65,
         padding: 15,
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: theme.colors.accent,
-        borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.4,
-        shadowRadius: 2,  
+        borderRadius: 15,
         elevation: 3
     },
     row: {
@@ -279,20 +279,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     icon: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderBottomWidth: 0,
-        shadowColor: 'gray',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 2,
-        shadowRadius: 2,
         elevation: 1,
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 10,
         backgroundColor: 'white',
-        borderRadius: 25,
-        padding: 10,
+        borderRadius: 50,
+        padding: 25,
     },
     person: {
         width: '100%',
