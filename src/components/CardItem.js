@@ -4,7 +4,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import { theme } from '../theme'
 import { Icon } from 'react-native-elements'
 
-export default function CartItem({ children }) {
+export default function CardItem({ children }) {
     return (
       	<View style={[styles.container]}>
             <Icon

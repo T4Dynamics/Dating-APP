@@ -6,6 +6,7 @@ export default class User {
     constructor(data) {
 
         this.name = data.name;
+        this.firstName = data.name.split(' ')[0];
         this.age = data.age;
         this.gender = data.gender;
 
@@ -18,6 +19,10 @@ export default class User {
 
     getName() {
         return this.name;
+    }
+
+    getFirstName() {
+        return this.name.split(' ')[0];
     }
 
     getAge() {
