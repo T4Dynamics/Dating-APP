@@ -159,22 +159,25 @@ const preMain = (currentSlide, navigation) => {
 
 const main = (navigation) => {
     return (
-        <View style={styles.container}>
-            <Button
-                style={styles.authButton}
-                mode="outlined"
-                onPress={() => navigation.navigate('Profile', { screen: 'LoginScreen' })}
-            >
-                Login
-            </Button>
+        <View>
+            <View style={styles.container}>
+                <Button
+                    style={styles.authButton}
+                    mode="outlined"
+                    onPress={() => navigation.navigate('Profile', { screen: 'LoginScreen' })}
+                >
+                    Login
+                </Button>
 
-            <Button
-                style={styles.authButton}
-                mode="contained"
-                onPress={() => navigation.navigate('Profile', { screen: 'RegisterScreen' })}
-            >
-                Sign up
-            </Button>
+                <Button
+                    style={styles.authButton}
+                    mode="contained"
+                    onPress={() => navigation.navigate('Profile', { screen: 'RegisterScreen' })}
+                >
+                    Sign up
+                </Button>
+            </View>
+            <Text style={{ textAlign: 'center', marginTop: '10%', color: theme.colors.primary, textDecorationLine: 'underline'}} onPress={()=> navigation.navigate('Profile', { screen: 'ResetPassword' })}>Forgot Password</Text>
         </View>
     )
 }
