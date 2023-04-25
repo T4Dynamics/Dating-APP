@@ -2,7 +2,7 @@ import { useRef, useEffect, useReducer, useState } from 'react';
 
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { CommonActions, NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import Toast from 'react-native-toast-message';
@@ -48,7 +48,6 @@ const reducer = (state, action) => {
 let showNavigation = false;
 
 const MainStack = createNativeStackNavigator();
-const MessagesStack = createNativeStackNavigator();
 const MatchesStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 
@@ -75,18 +74,11 @@ const MainStackScreen = ({ initialScreen }) => {
 	)
 }
 
-const MessagesStackScreen = () => {
-	return (
-		<MessagesStack.Navigator>
-			<MessagesStack.Screen name="MessagesScreen" component={Screens.MessagesScreen} options={{headerShown: false}}/>
-		</MessagesStack.Navigator>
-	)
-}
-
 const MatchesStackScreen = () => {
 	return (
 		<MatchesStack.Navigator>
 			<MatchesStack.Screen name="MatchesScreen" component={Screens.MatchesScreen} options={{headerShown: false}}/>
+			<MatchesStack.Screen name="MessageScreen" component={Screens.MessageScreen} options={{headerShown: false}}/>
 		</MatchesStack.Navigator>
 	)
 }
@@ -133,7 +125,7 @@ export default function App() {
 					initialRouteName={initialScreen}
 					screenOptions={({route}) => {
 						const focusedScreen = getFocusedRouteNameFromRoute(route);
-						const hiddenScreens = ['MainScreen', 'LoginScreen', 'RegisterScreen', 'SettingsScreen', 'AccountSetupScreen'];
+						const hiddenScreens = ['MainScreen', 'LoginScreen', 'RegisterScreen', 'ResetPasswordScreen', 'SettingsScreen', 'AccountSetupScreen', 'MessageScreen'];
 						const hideNav = hiddenScreens.includes(focusedScreen);
 
 						return {
@@ -148,7 +140,7 @@ export default function App() {
 								borderTopEndRadius: 25,
 								borderTopStartRadius: 25,
 								backgroundColor: '#F6F6F6',
-								height: 100,
+								height: Platform.OS === 'ios' ? 140 : 100,
 								padding: 15,
 								shadowColor: 'black',
 								shadowOffset: { width: 0, height: 2 },
@@ -180,31 +172,6 @@ export default function App() {
 					}}>
 						{() => <MainStackScreen initialScreen={initialScreen}/>}
 					</Tab.Screen>
-
-					<Tab.Screen name="Messages" component={MessagesStackScreen} options={({ navigation, route }) => {
-
-						return {
-							tabBarBadge: 3,
-							tabBarBadgeStyle: {
-								backgroundColor: '#121212',
-								color: 'white',
-								fontSize: 12,
-								fontWeight: 'bold',
-							},
-							tabBarButton: (props) => (
-								<TouchableOpacity style={styles.button} onPress={() => {
-									navigation.navigate('Messages', { screen: 'MessagesScreen' });
-								}}>
-								<Icon
-									name="message-square"
-									type="feather"
-									size={40}
-									style={styles.button}
-								/>
-								</TouchableOpacity>
-							),
-						}
-					}}/>
 
 					<Tab.Screen name="Matches" component={MatchesStackScreen} options={({ navigation, route }) => {
 
@@ -256,7 +223,7 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 			const docSnap = await getDoc(docRef);
 		
 			if (docSnap.exists()) {
-				Global.storeClientData('@user_document', JSON.stringify(docSnap.data()));
+				await Global.storeClientData('@user_document', JSON.stringify(docSnap.data()));
 				resolve();
 			} else {
 				console.log('No such document!');

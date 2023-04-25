@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, KeyboardAvoidingView, View } from 'react-native';
+import { ImageBackground, StyleSheet, SafeAreaView } from 'react-native';
 
 import { getTheme, theme } from '../theme'
 
@@ -11,7 +11,7 @@ export default function Background({ children }) {
             resizeMode="repeat"
             style={[styles.background]}
         >
-            {<KeyboardAvoidingView 
+            {<SafeAreaView 
                 style={[
                     styles.container,
                     { fontFamily: 'Judson-Regular' }
@@ -19,7 +19,7 @@ export default function Background({ children }) {
                 behavior=""
             >
                 {children}
-            </KeyboardAvoidingView>}
+            </SafeAreaView>}
         </ImageBackground>
     );
 }

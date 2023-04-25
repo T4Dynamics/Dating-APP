@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { View, Text } from "react-native";
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
 import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc } from '../../config/firebase';
 import * as Global from '../helpers/globals';
 import Background from '../components/Background';
-import Matches from '../components/Matches';
+import Match from '../components/Match';
+import Message from '../components/Message';
+import Header from '../components/Header';
 
 export default function MatchesScreen({ navigation }) {
     const [matches, setMatches] = useState([]);
@@ -38,7 +40,10 @@ export default function MatchesScreen({ navigation }) {
                 const userDoc = await getDoc(otherUserRef);
             
                 if (userDoc.exists()) {
-                    return userDoc.data();
+                    return {
+                        potentialMatchDoc: data,
+                        matchData: userDoc.data()
+                    };
                 }
             }
         });
@@ -50,11 +55,9 @@ export default function MatchesScreen({ navigation }) {
       
         resolvedPromises.forEach((promise) => {
             if (promise) {
-                console.log(promise);
-                if (promise.hasOwnProperty('name')) {
+                if (promise.hasOwnProperty('matchData')) {
                     confirmedMatches.push(promise);
                 } else {
-                    console.log(promise);
                     potentialMatches.push(promise);
                 }
             }
@@ -68,9 +71,35 @@ export default function MatchesScreen({ navigation }) {
 
     return (
         <Background>
-            <Text>Matches Screen</Text>
-            <Text>You have {matches.length} new matches</Text>
-            { confirmedMatches.map((match, index) => <Matches matchData={match} index={index}/> )}
+            <Header navigation={navigation}/>
+            <View style={styles.container}>
+                <Text>Matches</Text>
+                <ScrollView
+                    style={{ flexGrow: 0, height: '20%', width: '100%', paddingTop: 10 }}
+                    horizontal={true}
+                    contentContainerStyle={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
+                >
+                    <Match likeAmount={matches.length}/>
+                    { confirmedMatches.map((match, index) => !match.potentialMatchDoc.messaged ? <Match data={match} key={`match-${index}`} navigation={navigation}/> : null ) }
+                </ScrollView>
+                <Text>Messages</Text>
+                <ScrollView
+                    style={{ flexGrow: 0, height: '50%', paddingTop: 10 }}
+                    contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+                >
+                    { confirmedMatches.map((match, index) => match.potentialMatchDoc.messaged ? <Message data={match} key={`message-${index}`} navigation={navigation}/> : null ) }
+                </ScrollView>
+            </View>
         </Background>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%'
+    }
+});

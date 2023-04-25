@@ -21,9 +21,9 @@ const getClientData = async (key) => {
     } catch (e) {}
 }
 
-const clearAllData = async () => {
+const clearClientData = async (key) => {
     try {
-        await AsyncStorage.clear();
+        await AsyncStorage.removeItem(key);
     } catch (e) {}
 }
 
@@ -41,5 +41,5 @@ const getClientDocument = async () => {
 
 
 
-export { storeClientData, getClientData, getClientDocument, clearAllData }
+export { storeClientData, getClientData, getClientDocument, clearClientData }
 
