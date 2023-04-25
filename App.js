@@ -76,7 +76,6 @@ const MainStackScreen = ({ initialScreen }) => {
 }
 
 const MessagesStackScreen = () => {
-
 	return (
 		<MessagesStack.Navigator>
 			<MessagesStack.Screen name="MessagesScreen" component={Screens.MessagesScreen} options={{headerShown: false}}/>
@@ -85,7 +84,6 @@ const MessagesStackScreen = () => {
 }
 
 const MatchesStackScreen = () => {
-
 	return (
 		<MatchesStack.Navigator>
 			<MatchesStack.Screen name="MatchesScreen" component={Screens.MatchesScreen} options={{headerShown: false}}/>
@@ -204,7 +202,7 @@ export default function App() {
 									style={styles.button}
 								/>
 								</TouchableOpacity>
-							)
+							),
 						}
 					}}/>
 
@@ -309,7 +307,6 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 		return () => unsubscribed();
 	}, [dispatch]);
   
-	// Move the handleUserLoggedIn logic into a separate useEffect
 	useEffect(() => {
 		if (currentUser) {
 			const handleUserLoggedIn = async (user) => {
@@ -318,7 +315,6 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 				await Global.storeClientData("@matches_loaded", "false");
 			
 				const userId = await Global.getClientData("@user_id");
-				console.log("User ID: ", userId);
 			
 				await getUserDocument(userId)
 				.then(() => getInitialScreen(state.auth))

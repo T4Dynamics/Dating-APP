@@ -4,6 +4,7 @@ import { View, Text } from "react-native";
 import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc } from '../../config/firebase';
 import * as Global from '../helpers/globals';
 import Background from '../components/Background';
+import Matches from '../components/Matches';
 
 export default function MatchesScreen({ navigation }) {
     const [matches, setMatches] = useState([]);
@@ -26,36 +27,50 @@ export default function MatchesScreen({ navigation }) {
         const userRef = doc(firebaseFirestore, 'users', userId);
         const q = query(potentialMatchesRef, where("match_ref", "==", userRef));
         const potentialMatchesSnapshot = await getDocs(q);
-
-        const potentialMatches = [];
-        const confirmedMatches = [];
-
-        await Promise.all(potentialMatchesSnapshot.docs.map(async (document) => {
+      
+        const promises = potentialMatchesSnapshot.docs.map(async (document) => {
             const data = document.data();
-
+            
             if (data.user_like === 'LIKE' && data.match_like === 'NONE') {
-                potentialMatches.push(data);
+                return data;
             } else if (data.user_like === 'LIKE' && data.match_like === 'LIKE') {
                 const otherUserRef = data.user_ref;
                 const userDoc = await getDoc(otherUserRef);
-
-                if (userDoc.exists()) confirmedMatches.push(userDoc.data());
+            
+                if (userDoc.exists()) {
+                    return userDoc.data();
+                }
             }
-        }));
-
+        });
+      
+        const potentialMatches = [];
+        const confirmedMatches = [];
+      
+        const resolvedPromises = await Promise.all(promises);
+      
+        resolvedPromises.forEach((promise) => {
+            if (promise) {
+                console.log(promise);
+                if (promise.hasOwnProperty('name')) {
+                    confirmedMatches.push(promise);
+                } else {
+                    console.log(promise);
+                    potentialMatches.push(promise);
+                }
+            }
+        });
+      
         return { 
             potentialMatches, 
             confirmedMatches 
         };
     };
 
-    console.log('matches', matches);
-
     return (
         <Background>
             <Text>Matches Screen</Text>
             <Text>You have {matches.length} new matches</Text>
-            {matches.length > 0 && <Text>{matches[0].user_ref.path}</Text>}
+            { confirmedMatches.map((match, index) => <Matches matchData={match} index={index}/> )}
         </Background>
     );
 }

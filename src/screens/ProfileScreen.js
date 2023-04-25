@@ -16,10 +16,11 @@ export default function ProfileScreen({ navigation }) {
 
     const handleLogout = () => {
         signOut(firebaseAuth).then(() => {
-            navigation.navigate('Main', { screen: 'MainScreen' });
             Global.clearAllData();
             Global.matches = [];
             Global.profileBuilder = {};
+            
+            navigation.navigate('Main', { screen: 'MainScreen' });
         }).catch(error => {
             console.log(error);
         });

@@ -12,7 +12,7 @@ import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
 
-import { collection, getDocs, firebaseFirestore, doc, setDoc, query, where, updateDoc } from '../../config/firebase';
+import { collection, getDocs, firebaseFirestore, doc, setDoc, query, where, updateDoc, limit  } from '../../config/firebase';
 
 import { theme } from '../theme';
 
@@ -31,32 +31,45 @@ export default function SwipeScreen({ navigation }) {
                 const potentialMatchesSnapshot = await getDocs(potentialMatchesRef);
         
                 const swipedUserIds = new Set();
+                const matchedUserIds = new Set();
+        
                 potentialMatchesSnapshot.forEach((document) => {
                     const data = document.data();
-                    console.log('matches', data);
-                    if (data.user_id === loggedInUserId && (data.user_like === 'LIKE' || data.user_like === 'DISLIKE') && (data.match_like === 'LIKE' || data.match_like === 'DISLIKE')) {
-                        const swipedUserId = data.match_ref.id;
+            
+                    if (data.user_ref._key.path.segments[6] === loggedInUserId && (data.user_like === 'LIKE' || data.user_like === 'DISLIKE')) {
+                        const swipedUserId = data.match_ref._key.path.segments[6];
                         swipedUserIds.add(swipedUserId);
+            
+                        if (data.match_like === 'LIKE' || data.match_like === 'DISLIKE') {
+                            matchedUserIds.add(swipedUserId);
+                        }
                     }
                 });
         
                 const collectionRef = collection(firebaseFirestore, 'users');
-                getDocs(collectionRef).then((snapshot) => {
-                    const matches = {};
-                    snapshot.forEach((doc) => {
-                        const userId = doc.id;
-                        if (userId !== loggedInUserId && !swipedUserIds.has(userId)) {
-                            console.log('profiles', doc);
-                            matches[userId] = new User(doc.data(), userId);
-                        }
-                    });
+                const limitedQuery = query(collectionRef, limit(5));
+                const snapshot = await getDocs(limitedQuery);
+                const matches = {};
         
-                    Global.storeClientData('@matches_loaded', "true");
-                    setMatches(matches);
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const userId = doc.id;
+            
+                    if (
+                        userId !== loggedInUserId &&
+                        !swipedUserIds.has(userId) &&
+                        !matchedUserIds.has(userId) &&
+                        (data.match_like === 'undefined' || !data.match_like)
+                    ) {
+                        matches[userId] = new User(data, userId);
+                    }
                 });
+        
+                Global.storeClientData('@matches_loaded', "true");
+                setMatches(matches);
             }
         };
-        
+      
         fetchData();
     }, []);
     
@@ -75,15 +88,15 @@ export default function SwipeScreen({ navigation }) {
             onStartShouldSetPanResponder: () => true,
             onStartShouldSetPanResponderCapture: () => true,
             onMoveShouldSetPanResponder: (evt, gestureState) => {
-              const {dx, dy} = gestureState;
-              return dx > 2 || dx < -2 || dy > 2 || dy < -2;
+                const {dx, dy} = gestureState;
+                return dx > 2 || dx < -2 || dy > 2 || dy < -2;
             },
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-              const {dx, dy} = gestureState;
-              return dx > 2 || dx < -2 || dy > 2 || dy < -2;
+                const {dx, dy} = gestureState;
+                return dx > 2 || dx < -2 || dy > 2 || dy < -2;
             },
             onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}], {
-              useNativeDriver: false,
+                useNativeDriver: false,
             }),
             onPanResponderRelease: (event, gestureState) => {
                 if (gestureState.dx > 150) {
@@ -106,7 +119,8 @@ export default function SwipeScreen({ navigation }) {
 
     const handleSwipe = async (match, side) => {
         const userId = await Global.getClientData('@user_id');
-        createMatch(match, userId, likeType = side === 'right' ? true : false);
+
+        createMatch(match, userId, side === 'right' ? true : false);
         setMatches(matches => {
             const { [match.id]: _, ...updatedMatches } = matches;
             return updatedMatches;
@@ -120,8 +134,6 @@ export default function SwipeScreen({ navigation }) {
     
             const q = query(collection(firebaseFirestore, 'potential_matches'), where('user_ref', '==', userRef), where('match_ref', '==', matchRef));
             const snapshot = await getDocs(q);
-
-            console.log('snapshot', snapshot);
     
             const data = {
                 match_ref: matchRef,
@@ -133,12 +145,11 @@ export default function SwipeScreen({ navigation }) {
             if (!snapshot.empty) {
                 data.match_like = likeType ? 'LIKE' : 'DISLIKE';
                 const docId = snapshot.docs[0].id;
+
                 await updateDoc(doc(firebaseFirestore, 'potential_matches', docId), data);
-                console.log('Match updated with ID:', docId);
             } else {
                 const newDocRef = doc(collection(firebaseFirestore, 'potential_matches'));
                 await setDoc(newDocRef, data);
-                console.log('Match created with ID:', newDocRef.id);
             }
         } catch (error) {
             console.error('Error creating or updating match:', error);

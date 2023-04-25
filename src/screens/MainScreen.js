@@ -17,68 +17,6 @@ export default function MainScreen({ navigation }) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        paddingTop: '5%',
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    slideContainer: {
-        width: '80%',
-        flexDirection: 'row',
-    },
-    title: {
-        fontSize: 36,
-        fontFamily: theme.fonts.judson.regular,
-    },
-    button: {
-        borderRadius: 100,
-        width: 70,
-        height: 70,
-        fontSize: '100%',
-        backgroundColor: theme.colors.primary,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    description: {
-        fontSize: 15,
-        textAlign: 'left',
-        fontFamily: theme.fonts.montserrat.regular,
-        color: '#393939'
-    },
-    slide: {
-        width: 10,
-        height: 10,
-        borderRadius: 100,
-        backgroundColor: 'grey',
-        margin: 5,
-    },
-    viewTop: {
-        height: '60%',
-        width: '100%',
-        backgroundColor: theme.colors.primary,
-    },
-    viewTopBackground: {
-        width: '100%',
-        height: '100%',
-        zIndex: 99,
-        marginTop: '10%'
-    },
-    viewBot: {
-        width: '80%',
-        height: '40%',
-        paddingTop: '5%',
-    },
-    authButton: {
-        minWidth: '30%',
-        height: undefined,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-})
-
 const displayData = {
     1: {
         title: 'Dating with Personality',
@@ -202,3 +140,65 @@ const content = (currentSlide, navigation) => {
         </Background>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        paddingTop: '5%',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    slideContainer: {
+        width: '80%',
+        flexDirection: 'row',
+    },
+    title: {
+        fontSize: 36,
+        fontFamily: theme.fonts.judson.regular,
+    },
+    button: {
+        borderRadius: 100,
+        width: 70,
+        height: 70,
+        fontSize: '100%',
+        backgroundColor: theme.colors.primary,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    description: {
+        fontSize: 15,
+        textAlign: 'left',
+        fontFamily: theme.fonts.montserrat.regular,
+        color: '#393939'
+    },
+    slide: {
+        width: 10,
+        height: 10,
+        borderRadius: 100,
+        backgroundColor: 'grey',
+        margin: 5,
+    },
+    viewTop: {
+        height: '60%',
+        width: '100%',
+        backgroundColor: theme.colors.primary,
+    },
+    viewTopBackground: {
+        width: '100%',
+        height: '100%',
+        zIndex: 99,
+        marginTop: '10%'
+    },
+    viewBot: {
+        width: '80%',
+        height: '40%',
+        paddingTop: '5%',
+    },
+    authButton: {
+        minWidth: '30%',
+        height: undefined,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+})
