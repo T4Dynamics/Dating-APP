@@ -46,6 +46,7 @@ const reducer = (state, action) => {
 };
 
 let showNavigation = false;
+let navActive = 'SwipeScreen';
 
 const MainStack = createNativeStackNavigator();
 const MatchesStack = createNativeStackNavigator();
@@ -140,13 +141,14 @@ export default function App() {
 								borderTopEndRadius: 25,
 								borderTopStartRadius: 25,
 								backgroundColor: '#F6F6F6',
-								height: Platform.OS === 'ios' ? 140 : 100,
+								height: Platform.OS === 'ios' ? 120 : 100,
 								padding: 15,
 								shadowColor: 'black',
 								shadowOffset: { width: 0, height: 2 },
 								shadowOpacity: 0.15,
 								justifyContent: 'center',
 								alignItems: 'center',
+								flex: 1,
 								display: !showNavigation ? 'none' 
 									: hideNav ? 'none' : 'flex',
 							},
@@ -159,12 +161,13 @@ export default function App() {
 							tabBarButton: (props) => (
 								<TouchableOpacity style={styles.button} onPress={() => {
 									navigation.navigate('SwipeScreen');
+									navActive = 'SwipeScreen';
 								}}>
 								<Icon
 									name="toggle-left"
 									type="feather"
-									size={40}
-									style={styles.button}
+									size={30}
+									style={navActive === 'SwipeScreen' ? [styles.button, styles.buttonActive] : styles.button}
 								/>
 								</TouchableOpacity>
 							)
@@ -179,12 +182,13 @@ export default function App() {
 							tabBarButton: (props) => (
 								<TouchableOpacity style={styles.button} onPress={() => {
 									navigation.navigate('Matches', { screen: 'MatchesScreen' });
+									navActive = 'MatchesScreen';
 								}}>
 								<Icon
 									name="heart"
 									type="feather"
-									size={40}
-									style={styles.button}
+									size={30}
+									style={navActive === 'MatchesScreen' ? [styles.button, styles.buttonActive] : styles.button}
 								/>
 								</TouchableOpacity>
 							)
@@ -196,12 +200,13 @@ export default function App() {
 							tabBarButton: (props) => (
 								<TouchableOpacity style={styles.button} onPress={() => {
 									navigation.navigate('Profile', { screen: 'ProfileScreen' });
+									navActive = 'ProfileScreen';
 								}}>
 									<Icon
 										name="user"
 										type="feather"
-										size={40}
-										style={styles.button}
+										size={30}
+										style={navActive === 'ProfileScreen' ? [styles.button, styles.buttonActive] : styles.button}
 									/>
 								</TouchableOpacity>
 							)
@@ -308,10 +313,14 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'blue',
-
 	},
     button: {
-        padding: 10,
-        borderRadius: 100,
+        paddingHorizontal: 20,
+		paddingVertical: 10,
+		justifyContent: 'center',
     },
+	buttonActive: {
+		backgroundColor: 'white',
+		borderRadius: 100,
+	},
 });
