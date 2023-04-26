@@ -4,17 +4,18 @@ import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
 import { theme } from '../theme';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Header({ navigation }) {
+export default function Header({ navigation, screen }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>
+            <Text style={styles.text} onPress={() => navigation.navigate('Main', { screen: 'SwipeScreen'})}>
                 Slider
             </Text>
-            <View 
+            <TouchableOpacity 
                 style={styles.icons}
-                onStartShouldSetResponder={() => navigation.navigate('Profile', { screen: 'SettingsScreen' })}
+                onPress={() => navigation.navigate(screen.parent, { screen: screen.child })}
             >
                 <Icon
                     name='cog'
@@ -22,7 +23,7 @@ export default function Header({ navigation }) {
                     color={'#121212'}
                     size={30}
                 />
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }

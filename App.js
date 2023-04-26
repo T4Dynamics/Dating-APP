@@ -91,7 +91,7 @@ const ProfileStackScreen = () => {
 			<ProfileStack.Screen name="LoginScreen" component={Screens.LoginScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="ResetPassword" component={Screens.ResetPasswordScreen} options={{headerShown: false}}/>
-			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false}}/>
+			<ProfileStack.Screen name="SwipeSettingScreen" component={Screens.SwipeSettingScreen} options={{headerShown: false}}/>
 		</ProfileStack.Navigator>
 	)
 }

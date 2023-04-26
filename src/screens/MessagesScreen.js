@@ -4,7 +4,6 @@ import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "
 
 import { Icon } from 'react-native-elements'
 
-import Button from "../components/Button";
 import Background from "../components/Background";
 import Input from '../components/Input';
 import { ScrollView } from 'react-native-gesture-handler';

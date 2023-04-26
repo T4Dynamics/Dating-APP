@@ -47,9 +47,12 @@ const displayData = (currentSlide, navigation) => {
     const [bio, setBio] = useState('');
 
 
-    const handleLogout = () => {
-        signOut(firebaseAuth).then(() => {
-            Global.clearAllData();
+    const handleLogout = async () => {
+        signOut(firebaseAuth).then(async () => {
+            await Global.clearClientData('@user_id');
+            await Global.clearClientData('@user_document');
+            await Global.clearClientData('@user_name');
+            await Global.clearClientData('@matches_loaded');
             Global.matches = [];
             Global.profileBuilder = {};
 

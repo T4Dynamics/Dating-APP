@@ -162,11 +162,11 @@ export default function SwipeScreen({ navigation }) {
         setSwipe('');
     }
 
+    const headerScreenData = { parent: 'Profile', child: 'SwipeSettingScreen' }
+
     return (
         <Background>
-            <Header
-                navigation={navigation}
-            />
+            <Header navigation={navigation} screen={headerScreenData}/>
 
             { 
                 match ? matchCard(match, pan, panResponder, rotate) : 
