@@ -2,9 +2,12 @@ import { useRef, useEffect, useReducer, useState } from 'react';
 
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
+<<<<<<< HEAD
 import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
+=======
+import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+>>>>>>> c3f6d5c (Added responsive height to navbar using react native dimensions)
 import { CommonActions, NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
-
 import Toast from 'react-native-toast-message';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -141,7 +144,7 @@ export default function App() {
 								borderTopEndRadius: 25,
 								borderTopStartRadius: 25,
 								backgroundColor: '#F6F6F6',
-								height: Platform.OS === 'ios' ? 120 : 100,
+								height: Dimensions.get('window').height * 0.15,
 								padding: 15,
 								shadowColor: 'black',
 								shadowOffset: { width: 0, height: 2 },
