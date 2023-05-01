@@ -128,12 +128,15 @@ const displayData = (currentSlide, navigation) => {
                             placeholder="First Name"
                             onChangeText={first_name => setName({ ...name, first_name })}
                             value={name.first_name ?? ''}
+                            autoFocus
+                            autoCorrect={false}
                         />
                         <Input
                             placeholder="Last Name"
                             onChangeText={last_name => setName({ ...name, last_name })}
                             value={name.last_name ?? ''}
                             style={{ marginTop: 10 }}
+                            autoCorrect={false}
                         />
                         <Button
                             style={{ marginTop: 10, width: '100%' }}
