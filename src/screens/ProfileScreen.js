@@ -1,16 +1,26 @@
 import { useEffect, useState } from 'react'
 
 import { useRoute } from '@react-navigation/native';
-import { firebaseAuth, signOut, collection, getDocs, firebaseFirestore } from "../../config/firebase";
+import { firebaseAuth, signOut } from "../../config/firebase";
+import { Dimensions, Image, StyleSheet, View, Text, FlatList, ScrollView } from "react-native";
 
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from "react-native";
-import { Icon } from 'react-native-elements'
 
 import Background from "../components/Background";
 import Button from "../components/Button";
-import Header from "../components/Header";
 
 import * as Global from "../helpers/globals";
+import { StatusBar } from "expo-status-bar";
+
+const interests = [
+    "Basketball",
+    "Football",
+    "Video Games",
+    "Hiking",
+    "Being a BU Ambassador",
+    "Rent Boy",
+    "Hot Chocolate",
+]
 
 export default function ProfileScreen({ navigation }) {
 
@@ -50,50 +60,82 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <Background>
-            <Header navigation={navigation} screen={headerScreenData}/>
-            <ScrollView
-                style={{ flexGrow: 0, height: '80%', paddingTop: 10 }}
-                contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
-            >
-                <View style={styles.container} onStartShouldSetResponder={() => navigation.navigate('Profile', { screen: 'ProfileScreen'})}>
-                    <Image source={require('../assets/blank_user.png')} style={styles.userImage} />
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile', { screen: 'ProfileScreen'})}>
-                        <Icon
-                            name='pencil'
-                            type='material-community'
-                            color={'#fff'}
-                            size={18}
+            <ScrollView>
+                <StatusBar style="light" />
+                <Image source={require('../assets/test-user-image.jpg')} style={styles.user_image} />
+                <View style={styles.profileContent}>
+                    <Text style={styles.firstName}>Rhys </Text>
+                    <Text style={styles.label}>Your Bio </Text>
+                    <Text style={styles.bio}>Hey girls, my name is Rhys. Yeah, you've probably heard of me. Kinda a big deal in the BU Ambassador space. </Text>
+                    <Text style={styles.label}>Your Interests </Text>
+                    <View style={styles.interestContainer}>
+                        <FlatList
+                            data={interests}
+                            renderItem={({ item }) => (
+                                <Text style={styles.interest}>{item}</Text>
+                            )}
+                            keyExtractor={item => item}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
                         />
-                    </TouchableOpacity>
+                    </View>
+                    <View style={styles.horizontalButtons}>
+                        <Button mode="contained" onPress={() => navigation.navigate('EditProfileScreen')}> Edit Profile </Button>
+                    </View>
                 </View>
-                <Text style={{ fontSize: 18}}>{ userDocument ? firstName + ', ' + userDocument.age : 'Loading...' }</Text>
-                <Button mode="contained" onPress={ handleLogout } > Logout </Button>
+                <View style={styles.buttonContainer}>
+                    <Button mode="contained" onPress={ test }> Test </Button>
+                    <Button mode="contained" onPress={ handleLogout }> Logout </Button>
+                </View>
             </ScrollView>
         </Background>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        height: '100%',
-        alignItems: 'center',
-    },
-    userImage: {
-        width: 150,
-        height: 150,
-        borderRadius: 50,
-    },
-    button: {
-        position: 'absolute',
+    user_image: {
         top: 0,
-        right: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        width: 32,
-        height: 32,
-        borderRadius: 100,
+        position: 'absolute',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height * .5,
     },
-});
-
+    profileContent: {
+        textAlign: 'left',
+        width: Dimensions.get('window').width,
+        marginTop: Dimensions.get('window').height * .5,
+        padding: 15,
+    },
+    label: {
+        fontSize: 20,
+        color: 'gray',
+    },
+    bio: {
+        margin: 5,
+        fontSize: 18,
+        letterSpacing: .6,
+        lineHeight: 20,
+    },
+    firstName: {
+        fontSize: 40,
+    },
+    buttonContainer: {
+        width: Dimensions.get('window').width,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    },
+    interestContainer: {
+        marginVertical: 10,
+    },
+    interest: {
+        backgroundColor: '#1a1a1a',
+        padding: 10,
+        marginRight: 2,
+        marginHorizontal: 10,
+        borderRadius: 5,
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    horizontalButtons: {
+        display: 'flex',
+    }
+})

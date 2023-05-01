@@ -4,10 +4,9 @@ import { useRef, useEffect, useState } from 'react';
 import Background from "../components/Background";
 import Header from "../components/Header";
 import CardItem from "../components/CardItem";
-
 import User from '../models/User.js';
 
-import { StyleSheet, Text, Animated, PanResponder, View, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, Text, Animated, PanResponder, View, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
 import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
@@ -253,18 +252,18 @@ const undefinedMatches = (pan, panResponder, rotate, text) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex1: 1,
+        flex: 1,
         position: 'absolute',
-        left: '5%',
+        marginHorizontal: Dimensions.get('window').width * 0.05,
         top: '15%',
-        width: '90%',
+        width: Dimensions.get('window').width * 0.9,
         height: Dimensions.get('window').height * 0.65,
-        padding: 15,
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: theme.colors.accent,
-        borderRadius: 15,
-        elevation: 3
+        elevation: 3,
+        backgroundColor: '#f2f2f2',
+        padding: 15,
+        borderRadius: 10,
     },
     row: {
         width: '75%',
