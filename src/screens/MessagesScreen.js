@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useRoute } from '@react-navigation/native';
-import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import React from "react";
+import { Text, View, StyleSheet, FlatList, Dimensions } from "react-native";
+import { Input } from "react-native-elements";
 
 import { Icon } from 'react-native-elements'
 
@@ -59,150 +59,59 @@ export default function MessageScreen({ navigation }) {
         setMessage('');
     }
 
+const dummyData = [
+    {id: '1', user: 'Sarah', message: 'Hello!'}, 
+    {id: '2', user: 'Megan', message: 'I know right!'},
+    {id: '3', user: 'Sarah', message: 'Babe!'}, 
+    {id: '4', user: 'Hannah', message: 'You so cute!'},
+    {id: '5', user: 'Jude', message: 'Cheers mush'}, 
+    {id: '6', user: 'Joanna', message: 'Yeah I used to go ther...'},
+    {id: '7', user: 'Rose', message: 'Hello!'}, 
+    {id: '8', user: 'Gale', message: 'Im old enough to be your granmother!'},
+    {id: '9', user: 'Sarah', message: 'Hello!'},
+    {id: '10', user: 'Megan', message: 'I know right!'},
+    {id: '11', user: 'Sarah', message: 'Babe!'},
+]
+
+export default function MessagesScreen({ navigation }) {
     return (
-        <Background>
-            <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <View style={styles.header}>
-                <View style={styles.button} onStartShouldSetResponder={() => navigation.navigate('Matches', { screen: 'MatchesScreen'})}>
-                    <Icon 
-                        name='chevron-left'
-                        type='material-community'
-                        size={50}
-                        color={'grey'}
-                        style={{
-                            zIndex: 1,
-                        }}
-                    />
-                </View>
-                <Text style={styles.centerText}>{ data.matchName }</Text>
-            </View>
-            <ScrollView
+        <View style={styles.container}>
+            <Text style={styles.title}>Messages</Text>
+            <FlatList 
+                data={dummyData}
+                renderItem={({item}) => <Message message={item.message} user={item.user} />}
+                keyExtractor={item => item.id}
                 style={styles.messageContainer}
-                contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center' }}
-            >
-                    <Text style={{ fontSize: 12, alignSelf: 'center', paddingBottom: 10 }}>You matched with { nameDisplay } on 25/04/2023</Text>
-                {
-                    messages.map((msg, index) => (
-                        <View
-                            key={index}
-                            style={ msg.sender === 'user' ? styles.userMessageWrapper : styles.matchMessageWrapper }
-                        >
-                        <Text
-                            style={[
-                                styles.message,
-                                msg.sender === 'user' ? styles.userMessage : styles.matchMessage,
-                            ]}
-                        >
-                            { msg.content }
-                        </Text>
-                    </View>
-                ))}
-            </ScrollView>
-            <View style={styles.inputContainer}>
-                <Input
-                    style={styles.textInput}
-                    placeholder="Type a message..."
-                    onChangeText={setMessage}
-                    value={message}
-                />
-                <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                    <Text style={styles.sendButtonText}>Send</Text>
-                </TouchableOpacity>
-            </View>
-            </KeyboardAvoidingView>
-        </Background>
+                ListHeaderComponent={<Input placeholder="Search" style={styles.search} />}
+                
+            />
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    header: {
-        width: '100%',
-        height: '10%',
-        minHeight: 60,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-
-        shadowColor: "grey",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
-        elevation: 0,
-    },
-    button: {
-        position: "absolute",
-        left: 0,
+        height: Dimensions.get('window').height * .75,
+        top: 100,
+        paddingHorizontal: 20,
     },
     centeredText: {
         textAlign: "center",
         flex: 1,
     },
-    inputContainer: {
-        flexDirection: 'row',
-        height: '10%',
-        minHeight: 75,
-        alignItems: 'center',
-        backgroundColor: 'white',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-    },
-    textInput: {
-        flex: 1,
-        borderRadius: 5,
-        height: '100%',
-        marginRight: 10,
-    },
-    sendButton: {
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderRadius: 5,
-    },
-    sendButtonText: {
-        color: 'black',
+    search: {
+        padding: 15,
+        backgroundColor: '#F6F6F6',
+        borderRadius: 10,
+        borderBottomWidth: 0,
+        marginVertical: 10,
     },
     messageContainer: {
         flexGrow: 0,
-        height: '100%',
-        paddingTop: 10,
-        paddingHorizontal: 10,
-        width: '100%',
-    },
-    userMessageWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        marginBottom: 10,
-    },
-    matchMessageWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        marginBottom: 10,
-    },
-    userMessage: {
-        backgroundColor: '#00B2FF',
-        color: 'white',
-        borderBottomRightRadius: 0,
-    },
-    matchMessage: {
-        backgroundColor: 'lightgrey',
-        color: 'black',
-        borderBottomLeftRadius: 0,
-    },
-    message: {
-        padding: 10,
-        borderRadius: 10,
-    },
+        marginTop: 20,
+        flexDirection: 'column',
+        gap: 20,
+    }
 });
+
+
