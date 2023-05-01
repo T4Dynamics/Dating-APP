@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-function Message({ ...props }) {
+function Message({ message, user, time }) {
     return (
         <View style={styles.messageContainer}>
             <Image source={require('../assets/blank_user.png')}  style={styles.user_image} />
             <View style={styles.messageContent}>
-                <Text>Username</Text>
-                <Text>This is a message from the user</Text>
+                <Text>{user}</Text>
+                <Text>{message}</Text>
             </View>
         </View>
     );
