@@ -2,9 +2,8 @@ import { useRef, useEffect, useReducer, useState } from 'react';
 
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonActions, NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
-
 import Toast from 'react-native-toast-message';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -149,7 +148,7 @@ export default function App() {
 								borderTopEndRadius: 25,
 								borderTopStartRadius: 25,
 								backgroundColor: '#F6F6F6',
-								height: 100,
+								height: Dimensions.get('window').height * 0.15,
 								padding: 15,
 								shadowColor: 'black',
 								shadowOffset: { width: 0, height: 2 },
