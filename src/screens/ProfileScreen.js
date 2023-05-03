@@ -4,13 +4,12 @@ import { useRoute } from '@react-navigation/native';
 import { firebaseAuth, signOut } from "../../config/firebase";
 import { Dimensions, Image, StyleSheet, View, Text, FlatList, ScrollView } from "react-native";
 
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity} from "react-native";
-
 import Background from "../components/Background";
 import Button from "../components/Button";
 
 import * as Global from "../helpers/globals";
 import { StatusBar } from "expo-status-bar";
+import Header from '../components/Header';
 
 const interests = [
     "Basketball",
@@ -60,7 +59,11 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <Background>
-            <ScrollView>
+            <Header screen={headerScreenData} navigation={navigation} toggle={false} />
+            <ScrollView
+                    style={{ flexGrow: 0, height: '100%', paddingTop: 10, marginTop: Dimensions.get('window').height * .07, marginBottom: Dimensions.get('window').height * 0.12 }}
+                    contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+                >
                 <StatusBar style="light" />
                 <Image source={require('../assets/test-user-image.jpg')} style={styles.user_image} />
                 <View style={styles.profileContent}>
@@ -84,7 +87,6 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button mode="contained" onPress={ test }> Test </Button>
                     <Button mode="contained" onPress={ handleLogout }> Logout </Button>
                 </View>
             </ScrollView>

@@ -165,7 +165,7 @@ export default function SwipeScreen({ navigation }) {
 
     return (
         <Background>
-            <Header navigation={navigation} screen={headerScreenData}/>
+            <Header navigation={navigation} screen={headerScreenData} toggle={true}/>
 
             { 
                 match ? matchCard(match, pan, panResponder, rotate) : 
@@ -208,7 +208,7 @@ const matchCard = (match, pan, panResponder, rotate) => {
                 }
             </View>
             <View style={styles.row}>
-                <TouchableOpacity onPress={() => handleSwipe(user, 'left')}>
+                <TouchableOpacity onPress={() => handleSwipe(match, 'left')}>
                     <Icon
                         name='close'
                         type='material-community'
@@ -217,7 +217,7 @@ const matchCard = (match, pan, panResponder, rotate) => {
                         size={50}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleSwipe(user, 'right')}>
+                <TouchableOpacity onPress={() => handleSwipe(match, 'right')}>
                     <Icon
                         name='heart'
                         type='material-community'

@@ -6,13 +6,14 @@ import * as Global from '../helpers/globals';
 import { theme } from '../theme';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Header({ navigation, screen }) {
+export default function Header({ navigation, screen, toggle }) {
 
     return (
         <View style={styles.container}>
             <Text style={styles.text} onPress={() => navigation.navigate('Main', { screen: 'SwipeScreen'})}>
                 Slider
             </Text>
+            {toggle ?
             <TouchableOpacity 
                 style={styles.icons}
                 onPress={() => navigation.navigate(screen.parent, { screen: screen.child })}
@@ -24,6 +25,7 @@ export default function Header({ navigation, screen }) {
                     size={30}
                 />
             </TouchableOpacity>
+            : null}
         </View>
     );
 }

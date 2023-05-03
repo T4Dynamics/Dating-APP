@@ -71,7 +71,7 @@ export default function MatchesScreen({ navigation }) {
 
     return (
         <Background>
-            <Header navigation={navigation} screen='ProfileScreen'/>
+            <Header navigation={navigation} screen='ProfileScreen' toggle={true}/>
             <View style={styles.container}>
                 <Text>Matches</Text>
                 <ScrollView

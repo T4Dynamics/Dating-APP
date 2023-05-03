@@ -2,11 +2,7 @@ import { useRef, useEffect, useReducer, useState } from 'react';
 
 import { Provider } from 'react-native-paper'
 import { useFonts } from 'expo-font';
-<<<<<<< HEAD
-import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
-=======
 import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
->>>>>>> c3f6d5c (Added responsive height to navbar using react native dimensions)
 import { CommonActions, NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
@@ -95,6 +91,7 @@ const ProfileStackScreen = () => {
 			<ProfileStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="ResetPassword" component={Screens.ResetPasswordScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SwipeSettingScreen" component={Screens.SwipeSettingScreen} options={{headerShown: false}}/>
+			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false}}/>
 		</ProfileStack.Navigator>
 	)
 }
