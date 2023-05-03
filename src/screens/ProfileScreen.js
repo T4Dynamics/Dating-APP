@@ -4,12 +4,12 @@ import { useRoute } from '@react-navigation/native';
 import { firebaseAuth, signOut } from "../../config/firebase";
 import { Dimensions, Image, StyleSheet, View, Text, FlatList, ScrollView } from "react-native";
 
-import Background from "../components/Background";
 import Button from "../components/Button";
 
 import * as Global from "../helpers/globals";
 import { StatusBar } from "expo-status-bar";
 import Header from '../components/Header';
+import Background from '../components/Background';
 
 const interests = [
     "Basketball",
@@ -83,7 +83,7 @@ export default function ProfileScreen({ navigation }) {
                         />
                     </View>
                     <View style={styles.horizontalButtons}>
-                        <Button mode="contained" onPress={() => navigation.navigate('EditProfileScreen')}> Edit Profile </Button>
+                        <Button mode="contained" onPress={() => navigation.navigate(screen.parent, { screen: screen.child })}> Edit Profile </Button>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
     horizontalButtons: {
         display: 'flex',
     }
-})
+});
