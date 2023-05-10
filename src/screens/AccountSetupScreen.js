@@ -70,6 +70,11 @@ const displayData = (currentSlide, navigation) => {
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     }
 
+    const calculateAgeUnix = (day, month, year) => {
+        const dobDate = new Date(year, month - 1, day);
+        return Math.floor(dobDate.getTime() / 1000);
+    }
+
     const toggleInterest = (type, interest) => {
         if (type === 'likes' && likes.includes(interest)) {
             setLikes(likes.filter(e => e !== interest));
@@ -231,6 +236,8 @@ const displayData = (currentSlide, navigation) => {
                                 });
 
                                 const calculatedAge = calculateAge(day, month, year);
+                                const calculatedAgeUnix = calculateAgeUnix(day, month, year);
+
                                 if (calculatedAge < 18) return Toast.show({
                                     type: 'error',
                                     text1: 'Error',
@@ -241,7 +248,7 @@ const displayData = (currentSlide, navigation) => {
                                     bottomOffset: 40,
                                 });
 
-                                Global.profileBuilder = { ...Global.profileBuilder, age: calculatedAge };
+                                Global.profileBuilder = { ...Global.profileBuilder, age: calculatedAgeUnix };
                                 
                                 navigation.navigate('Main', { screen: 'AccountSetupScreen', params: { currentSlide: currentSlide + 1 } });
                             }}

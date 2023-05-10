@@ -21,6 +21,8 @@ export default function SwipeScreen({ navigation }) {
     const [match, setMatch] = useState(null);
     const [swipe, setSwipe] = useState('');
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const fetchData = async () => {
             if (Object.keys(Global.matches).length === 0) {
@@ -69,14 +71,16 @@ export default function SwipeScreen({ navigation }) {
             }
         };
       
-        fetchData();
+        fetchData().then(() => {
+            setLoading(false);
+        });
     }, []);
     
     useEffect(() => {
         const match = matches[Object.keys(matches)[0]];
 
         if (match) {
-          setMatch(match);
+            setMatch(match);
         }
       }, [matches]);
     
@@ -139,6 +143,7 @@ export default function SwipeScreen({ navigation }) {
                 user_ref: userRef,
                 match_like: 'NONE',
                 user_like: likeType ? 'LIKE' : 'DISLIKE',
+                date: new Date().getTime(),
             };
     
             if (!snapshot.empty) {
@@ -168,7 +173,7 @@ export default function SwipeScreen({ navigation }) {
             <Header navigation={navigation} screen={headerScreenData} toggle={true}/>
 
             { 
-                match ? matchCard(match, pan, panResponder, rotate) : 
+                loading ? <Text/> : match ? matchCard(match, pan, panResponder, rotate) : 
                 Global.matchesLoaded == false ? undefinedMatches(pan, panResponder, rotate, 'Loading...') :
                     undefinedMatches(pan, panResponder, rotate, 'No More Matches') 
             }

@@ -27,7 +27,15 @@ export default class User {
     }
 
     getAge() {
-        return this.age;
+        let birthDate = new Date(this.age * 1000);  // Convert to milliseconds
+        let currentDate = new Date();
+        
+        let age = currentDate.getFullYear() - birthDate.getFullYear();
+        let m = currentDate.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     }
 
     getGender() {

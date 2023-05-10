@@ -30,7 +30,8 @@ export default function ProfileScreen({ navigation }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            setUserDocument(await Global.getClientDocument());
+            const userDocument = await Global.getClientDocument();
+            setUserDocument(userDocument);
         };
 
         fetchData();
@@ -65,15 +66,30 @@ export default function ProfileScreen({ navigation }) {
                     contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
                 >
                 <StatusBar style="light" />
-                <Image source={require('../assets/test-user-image.jpg')} style={styles.user_image} />
+                <Image source={require('../assets/demo-image.jpg')} style={styles.userImage} />
                 <View style={styles.profileContent}>
-                    <Text style={styles.firstName}>Rhys </Text>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={styles.firstName}>{ firstName }</Text>
+                        <Text style={[styles.firstName, { fontSize: 18}]}>{ userDocument ? userDocument.getAge() : '' }</Text>
+                    </View>
                     <Text style={styles.label}>Your Bio </Text>
-                    <Text style={styles.bio}>Hey girls, my name is Rhys. Yeah, you've probably heard of me. Kinda a big deal in the BU Ambassador space. </Text>
+                    <Text style={styles.bio}>{ userDocument ? userDocument.description : ''}</Text>
                     <Text style={styles.label}>Your Interests </Text>
                     <View style={styles.interestContainer}>
                         <FlatList
-                            data={interests}
+                            data={userDocument ? userDocument.getLikes() : []}
+                            renderItem={({ item }) => (
+                                <Text style={styles.interest}>{item}</Text>
+                            )}
+                            keyExtractor={item => item}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                        />
+                    </View>
+                    <Text style={styles.label}>Your Dislikes </Text>
+                    <View style={styles.interestContainer}>
+                        <FlatList
+                            data={userDocument ? userDocument.getDislikes() : []}
                             renderItem={({ item }) => (
                                 <Text style={styles.interest}>{item}</Text>
                             )}
@@ -83,11 +99,11 @@ export default function ProfileScreen({ navigation }) {
                         />
                     </View>
                     <View style={styles.horizontalButtons}>
-                        <Button mode="contained" onPress={() => navigation.navigate(screen.parent, { screen: screen.child })}> Edit Profile </Button>
+                        <Button style={{ marginTop: 10 }} mode="contained" onPress={() => navigation.navigate(screen.parent, { screen: screen.child })}> Edit Profile </Button>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button mode="contained" onPress={ handleLogout }> Logout </Button>
+                    <Button style={{ marginTop: 10 }} mode="outlined" onPress={ handleLogout }> Logout </Button>
                 </View>
             </ScrollView>
         </Background>
@@ -95,7 +111,7 @@ export default function ProfileScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    user_image: {
+    userImage: {
         top: 0,
         position: 'absolute',
         width: Dimensions.get('window').width,
