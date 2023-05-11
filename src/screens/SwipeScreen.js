@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
 
-import { collection, getDocs, firebaseFirestore, doc, setDoc, query, where, updateDoc, limit  } from '../../config/firebase';
+import { collection, getDocs, firebaseFirestore, doc, setDoc, query, where, updateDoc, limit, firebaseStorage, ref, getDownloadURL, getDoc  } from '../../config/firebase';
 
 import { theme } from '../theme';
 
@@ -67,6 +67,7 @@ export default function SwipeScreen({ navigation }) {
                 });
         
                 Global.storeClientData('@matches_loaded', "true");
+                getUserData(loggedInUserId);
                 setMatches(matches);
             }
         };
@@ -82,7 +83,31 @@ export default function SwipeScreen({ navigation }) {
         if (match) {
             setMatch(match);
         }
-      }, [matches]);
+    }, [matches]);
+
+    const getUserData = async (id) => {
+        return new Promise(async (resolve, reject) => {
+            const docRef = doc(firebaseFirestore, 'users', id);
+            const docSnap = await getDoc(docRef);
+        
+            if (docSnap.exists()) {
+                const imageRef = ref(firebaseStorage, `images/${id}`);
+                getDownloadURL(imageRef)
+                    .then(async (url) => {
+                        const userData = docSnap.data();
+                        userData.imageUrl = url;
+                        await Global.storeClientData('@user_document', JSON.stringify(userData));
+                        resolve();
+                    })
+                    .catch((error) => {
+                        console.error("Failed to get download URL:", error);
+                        reject();
+                    });
+            } else {
+                reject();
+            }
+        });
+    };
     
     const pan = useRef(new Animated.ValueXY()).current;
 

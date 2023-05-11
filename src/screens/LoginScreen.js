@@ -5,7 +5,7 @@ import Background from "../components/Background";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
-import { firebaseAuth, signInWithEmailAndPassword, onAuthStateChanged } from '../../config/firebase';
+import { firebaseAuth, signInWithEmailAndPassword, onAuthStateChanged, firebaseApp, firebaseFirestore } from '../../config/firebase';
 
 import { Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
