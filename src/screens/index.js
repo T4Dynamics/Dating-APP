@@ -9,3 +9,4 @@ export { default as SwipeSettingScreen } from './SwipeSettingScreen';
 export { default as AccountSetupScreen } from './AccountSetupScreen';
 export { default as ResetPasswordScreen } from './ResetPasswordScreen';
 export { default as SettingsScreen } from './SettingsScreen';
+export { default as SubscriptionScreen } from './SubscriptionScreen';

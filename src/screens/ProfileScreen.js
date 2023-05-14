@@ -143,8 +143,8 @@ export default function ProfileScreen({ navigation }) {
 
         if (!result.canceled) {
             const imageUri = result.assets[0].uri;
-            const userId = await Global.getClientData('@user_id');
-            const imageRef = ref(firebaseStorage, `images/${userId}`);
+            const user = await Global.getClientDocument();
+            const imageRef = ref(firebaseStorage, `images/${user.id}`);
             const response = await fetch(imageUri);
             const blob = await response.blob();
 
@@ -164,7 +164,7 @@ export default function ProfileScreen({ navigation }) {
         <Background>
             <Header screen={headerScreenData} navigation={navigation} toggle={false} />
             <ScrollView
-                    style={{ flexGrow: 0, height: '100%', paddingTop: 10, marginTop: Dimensions.get('window').height * .07, marginBottom: Dimensions.get('window').height * 0.12 }}
+                    style={{ flexGrow: 1, paddingTop: 10, marginTop: Dimensions.get('window').height * .07, marginBottom: Dimensions.get('window').height * 0.12 }}
                     contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
                 >
                 <StatusBar style="light" />
@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+        paddingBottom: 30,
     },
     interestContainer: {
         marginVertical: 10,

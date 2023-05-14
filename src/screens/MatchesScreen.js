@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc } from '../../config/firebase';
 import * as Global from '../helpers/globals';
@@ -82,6 +82,13 @@ export default function MatchesScreen({ navigation }) {
                     <Match likeAmount={matches.length}/>
                     { confirmedMatches.map((match, index) => !match.potentialMatchDoc.messaged ? <Match data={match} key={`match-${index}`} navigation={navigation}/> : null ) }
                 </ScrollView>
+
+                <TouchableOpacity style={[styles.premiumContainer]} onPress={() => navigation.navigate('Profile', { screen: 'SubscriptionScreen' })}>
+                    <Text>
+                        Slider +
+                    </Text>
+                </TouchableOpacity>
+
                 <Text>Messages</Text>
                 <ScrollView
                     style={{ flexGrow: 0, height: '50%', paddingTop: 10 }}
@@ -101,5 +108,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%'
-    }
+    },
+    premiumContainer: {
+        width: '90%',
+        height: '10%',
+        backgroundColor: '#F6F6F6',
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 10
+    },
 });

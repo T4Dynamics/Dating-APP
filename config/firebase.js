@@ -36,7 +36,6 @@ if (getApps.length === 0) {
 }
 
 export { 
-
     //App
     firebaseApp, 
 

@@ -21,13 +21,21 @@ export default function MessageScreen({ navigation }) {
 	const firstName = name ? name.split(' ')[0] : null;
 	const nameDisplay = firstName ?? 'Unknown';
 
+    const matchDate = new Date(data.match_date * 1000);
+    const day = String(matchDate.getDate()).padStart(2, '0');
+    const month = String(matchDate.getMonth() + 1).padStart(2, '0');
+    const year = matchDate.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-
-    let chatKey = `chat-${data.matchId}`;
+    const [chatKey, setChatKey] = useState('');
 
     useEffect(() => {
         const loadMessages = async () => {
+            const user = await Global.getClientDocument();
+
+            setChatKey(`CHAT_${user.id}_${data.matchId}`);
 
             const storedMessages = await Global.getClientData(chatKey);
             if (storedMessages) setMessages(JSON.parse(storedMessages));
@@ -80,7 +88,7 @@ export default function MessageScreen({ navigation }) {
                 style={styles.messageContainer}
                 contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center' }}
             >
-                    <Text style={{ fontSize: 12, alignSelf: 'center', paddingBottom: 10 }}>You matched with { nameDisplay } on 25/04/2023</Text>
+                    <Text style={{ fontSize: 12, alignSelf: 'center', paddingBottom: 10 }}>You matched with { nameDisplay } on { data.match_date ? formattedDate : 'Unknown Date'}</Text>
                 {
                     messages.map((msg, index) => (
                         <View

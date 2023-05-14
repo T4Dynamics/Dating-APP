@@ -639,7 +639,7 @@ const displayData = (currentSlide, navigation) => {
             description: 'You can now start using the app!',
             screen: (dArr, navigation) => {
 
-                async function saveProfileData(profileData) {
+                const saveProfileData = async (profileData) => {
                     try {
                         const profilesRef = collection(firebaseFirestore, 'users');
                         

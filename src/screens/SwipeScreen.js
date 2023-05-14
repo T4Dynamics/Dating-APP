@@ -92,16 +92,22 @@ export default function SwipeScreen({ navigation }) {
         
             if (docSnap.exists()) {
                 const imageRef = ref(firebaseStorage, `images/${id}`);
+                let imageUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+    
                 getDownloadURL(imageRef)
-                    .then(async (url) => {
-                        const userData = docSnap.data();
-                        userData.imageUrl = url;
-                        await Global.storeClientData('@user_document', JSON.stringify(userData));
-                        resolve();
+                    .then((url) => {
+                        imageUrl = url;
                     })
                     .catch((error) => {
-                        console.error("Failed to get download URL:", error);
-                        reject();
+                        
+                    })
+                    .finally(async () => {
+                        const userData = docSnap.data();
+                        userData.imageUrl = imageUrl;
+                        userData.id = id;
+
+                        await Global.storeClientData('@user_document', JSON.stringify(userData));
+                        resolve();
                     });
             } else {
                 reject();
@@ -168,11 +174,12 @@ export default function SwipeScreen({ navigation }) {
                 user_ref: userRef,
                 match_like: 'NONE',
                 user_like: likeType ? 'LIKE' : 'DISLIKE',
-                date: new Date().getTime(),
             };
     
             if (!snapshot.empty) {
                 data.match_like = likeType ? 'LIKE' : 'DISLIKE';
+                data.match_date = new Date().getTime();
+
                 const docId = snapshot.docs[0].id;
 
                 await updateDoc(doc(firebaseFirestore, 'potential_matches', docId), data);

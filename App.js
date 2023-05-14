@@ -92,6 +92,7 @@ const ProfileStackScreen = () => {
 			<ProfileStack.Screen name="ResetPassword" component={Screens.ResetPasswordScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SwipeSettingScreen" component={Screens.SwipeSettingScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false}}/>
+			<ProfileStack.Screen name="SubscriptionScreen" component={Screens.SubscriptionScreen} options={{headerShown: false}}/>
 		</ProfileStack.Navigator>
 	)
 }
@@ -228,7 +229,10 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 			const docSnap = await getDoc(docRef);
 		
 			if (docSnap.exists()) {
-				await Global.storeClientData('@user_document', JSON.stringify(docSnap.data()));
+				let userData = docSnap.data();
+				userData.id = id;
+
+				await Global.storeClientData('@user_document', JSON.stringify(userData));
 				resolve();
 			} else {
 				console.log('No such document!');
