@@ -12,9 +12,8 @@ import * as Global from "../helpers/globals";
 export default function SubscriptionScreen({ navigation }) {
     const [selectedSlider, setSelectedSlider] = useState(1);
 
-    const slider1 = ['Unlimited Likes', 'Multiple Pictures'];
-    const slider2 = ['Unlimited Likes', 'Multiple Pictures', 'Super Likes', 'No Ads']
-    const slider3 = ['Unlimited Likes', 'Multiple Pictures', 'Super Likes', 'No Ads', 'Rewind', 'Passport']
+    const sliderPlus = ['No Ads', 'Unlimited Reverse', 'Unlimited Likes', 'Abroad'];
+    const sliderPremium = [...sliderPlus, 'Admirers', 'See who likes you', 'Top Picks', 'Monthly Boost', 'See who you\'ve liked', 'Priority Likes', 'Message before matching']
 
     const purchasePremium = async () => {
 
@@ -40,37 +39,25 @@ export default function SubscriptionScreen({ navigation }) {
         }
     }
 
-    const renderContent = () => {
-        switch(selectedSlider) {
-            case 1:
-                return displayData(slider1);
-            case 2:
-                return displayData(slider2);
-             case 3:
-                return displayData(slider3);
-            default:
-                return null;
-        }
-    }
-
   return (
     <Background>
         <Header navigation={navigation}/>
         <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 10 }}></Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Button style={ styles.button } mode={ selectedSlider != 1 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(1) }>Slider +</Button>
-            <Button style={ styles.button } mode={ selectedSlider != 2 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(2) }>Slider ++</Button>
-            <Button style={ styles.button } mode={ selectedSlider != 3 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(3) }>Slider +++</Button>
+            <Button style={ styles.button } mode={ selectedSlider != 1 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(1) }>Slider+</Button>
+            <Button style={ styles.button } mode={ selectedSlider != 2 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(2) }>Slider Premium</Button>
         </View>
+        <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 10 }}>Scroll to View</Text>
         <ScrollView
-                    style={{ flexGrow: 0, height: '50%', paddingTop: 10 }}
+                    style={{ flexGrow: 0, height: '45%', width: '80%', paddingTop: 10 }}
                     contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
         >
-            { renderContent() }
+            { selectedSlider == 1 ? displayData(sliderPlus) : displayData(sliderPremium) }
         </ScrollView>
         <View style={styles.container}>
+            <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 10 }}>£{ selectedSlider == 1 ? '4.99' : '9.99' }/month</Text>
             <Button mode="contained" style={{ marginTop: 10, width: '100%'}} onPress={ () => { purchasePremium() } } >
-                Purchase { selectedSlider == 1 ? 'Slider +' : selectedSlider == 2 ? 'Slider ++' : 'Slider +++'}
+                Purchase { selectedSlider == 1 ? 'Slider+' : 'Slider Premium'}
             </Button>
         </View>
     </Background>
