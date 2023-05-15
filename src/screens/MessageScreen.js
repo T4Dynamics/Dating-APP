@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as Global from '../helpers/globals';
 
 import Toast from 'react-native-toast-message';
+import { firebaseFirestore, collection, addDoc, getDoc, setDoc, getDocs, updateDoc, doc, where, query } from '../../config/firebase';
 
 export default function MessageScreen({ navigation }) {
 
@@ -31,14 +32,38 @@ export default function MessageScreen({ navigation }) {
     const [messages, setMessages] = useState([]);
     const [chatKey, setChatKey] = useState('');
 
+    const generateChatKey = (userId, matchId) => {
+        return `CHAT_${[userId, matchId].sort().join('_')}`;
+    }
+
     useEffect(() => {
         const loadMessages = async () => {
             const user = await Global.getClientDocument();
-
-            setChatKey(`CHAT_${user.id}_${data.matchId}`);
-
-            const storedMessages = await Global.getClientData(chatKey);
-            if (storedMessages) setMessages(JSON.parse(storedMessages));
+    
+            const newChatKey = generateChatKey(user.id, data.matchId);
+            setChatKey(newChatKey);
+        
+            if (!newChatKey) return;
+    
+            const chatDocRef = doc(firebaseFirestore, 'chats', newChatKey);
+    
+            const chatDoc = await getDoc(chatDocRef);
+    
+            if (!chatDoc.exists()) {
+                console.log('No chat document');
+                return;
+            }
+    
+            const q = query(
+                collection(chatDocRef, 'messages'),
+                orderBy('timestamp')
+            );
+                
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setMessages(snapshot.docs.map(doc => doc.data()));
+            });
+    
+            return unsubscribe;
         }
 
         loadMessages();
@@ -58,12 +83,10 @@ export default function MessageScreen({ navigation }) {
         const newMessage = {
             sender: 'user',
             content: message,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         };
 
-        const updatedMessage = [...messages, newMessage];
-
-        await Global.storeClientData(chatKey, JSON.stringify(updatedMessage));
-        setMessages([...messages, { sender: 'user', content: message }]);
+        firebaseFirestore.collection('chats').doc(chatKey).collection('messages').add(newMessage);
         setMessage('');
     }
 
