@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, initializeAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail, EmailAuthProvider, signInWithCredential } from 'firebase/auth';
-import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, doc, where, query, updateDoc, limit, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, setDoc, getDoc, getDocs, doc, where, query, updateDoc, limit, deleteDoc, orderBy, onSnapshot } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { getReactNativePersistence } from 'firebase/auth/react-native';
@@ -63,6 +63,8 @@ export {
     where,
     query,
     limit,
+    orderBy,
+    onSnapshot,
 
     //Storage
     firebaseStorage,

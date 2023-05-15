@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as Global from '../helpers/globals';
 
 import Toast from 'react-native-toast-message';
-import { firebaseFirestore, collection, addDoc, getDoc, setDoc, getDocs, updateDoc, doc, where, query } from '../../config/firebase';
+import { firebaseFirestore, collection, addDoc, getDoc, setDoc, getDocs, updateDoc, doc, where, query, orderBy, onSnapshot } from '../../config/firebase';
 
 export default function MessageScreen({ navigation }) {
 
@@ -39,33 +39,28 @@ export default function MessageScreen({ navigation }) {
     useEffect(() => {
         const loadMessages = async () => {
             const user = await Global.getClientDocument();
-    
             const newChatKey = generateChatKey(user.id, data.matchId);
             setChatKey(newChatKey);
+
         
             if (!newChatKey) return;
-    
+        
             const chatDocRef = doc(firebaseFirestore, 'chats', newChatKey);
-    
             const chatDoc = await getDoc(chatDocRef);
-    
-            if (!chatDoc.exists()) {
-                console.log('No chat document');
-                return;
-            }
-    
-            const q = query(
-                collection(chatDocRef, 'messages'),
-                orderBy('timestamp')
-            );
-                
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setMessages(snapshot.docs.map(doc => doc.data()));
-            });
-    
-            return unsubscribe;
-        }
 
+        
+            if (!chatDoc.exists()) {
+                // No need to do anything IG
+            }
+        
+            const messagesCollectionRef = collection(chatDocRef, 'messages');
+            const q = query(messagesCollectionRef, orderBy('timestamp'));
+
+            return onSnapshot(q, snapshot => {
+                setMessages(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+            });
+        }
+    
         loadMessages();
     }, []);
 
@@ -83,10 +78,14 @@ export default function MessageScreen({ navigation }) {
         const newMessage = {
             sender: 'user',
             content: message,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            timestamp: new Date().getTime(),
         };
 
-        firebaseFirestore.collection('chats').doc(chatKey).collection('messages').add(newMessage);
+        console.log(newMessage);
+
+        const messagesCollectionRef = collection(doc(firebaseFirestore, 'chats', chatKey), 'messages');
+        addDoc(messagesCollectionRef, newMessage);
+
         setMessage('');
     }
 
