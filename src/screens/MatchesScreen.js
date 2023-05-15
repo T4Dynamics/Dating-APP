@@ -85,7 +85,7 @@ export default function MatchesScreen({ navigation }) {
 
                 <TouchableOpacity style={[styles.premiumContainer]} onPress={() => navigation.navigate('Profile', { screen: 'SubscriptionScreen' })}>
                     <Text>
-                        Slider +
+                        Slider Premium
                     </Text>
                 </TouchableOpacity>
 

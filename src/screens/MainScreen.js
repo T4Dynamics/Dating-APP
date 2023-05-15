@@ -102,7 +102,7 @@ const main = (navigation) => {
                 <Button
                     style={styles.authButton}
                     mode="outlined"
-                    onPress={() => navigation.navigate('Profile', { screen: 'LoginScreen' })}
+                    onPress={() => navigation.navigate('LoginScreen')}
                 >
                     Login
                 </Button>
@@ -110,12 +110,12 @@ const main = (navigation) => {
                 <Button
                     style={styles.authButton}
                     mode="contained"
-                    onPress={() => navigation.navigate('Profile', { screen: 'RegisterScreen' })}
+                    onPress={() => navigation.navigate('RegisterScreen')}
                 >
                     Sign up
                 </Button>
             </View>
-            <Text style={{ textAlign: 'center', marginTop: '10%', color: theme.colors.primary, textDecorationLine: 'underline'}} onPress={()=> navigation.navigate('Profile', { screen: 'ResetPassword' })}>Forgot Password</Text>
+            <Text style={{ textAlign: 'center', marginTop: '10%', color: theme.colors.primary, textDecorationLine: 'underline'}} onPress={()=> navigation.navigate('ResetPassword')}>Forgot Password</Text>
         </View>
     )
 }

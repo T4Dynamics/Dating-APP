@@ -6,6 +6,7 @@ export default class User {
     constructor(data, id) {
         this.id = id ?? data.id;
         this.imageUrl = data.imageUrl;
+        this.premium = data.premium;
         
         this.name = data.name;
         this.firstName = data.name.split(' ')[0];
@@ -81,5 +82,9 @@ export default class User {
 
     getAttraction() {
         return this.attraction;
+    }
+
+    getPremium() {
+        return this.premium;
     }
 }

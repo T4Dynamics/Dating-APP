@@ -44,7 +44,6 @@ const reducer = (state, action) => {
 	}
 };
 
-let showNavigation = false;
 let navActive = 'SwipeScreen';
 
 const MainStack = createNativeStackNavigator();
@@ -53,7 +52,6 @@ const ProfileStack = createNativeStackNavigator();
 
 const MainStackScreen = ({ initialScreen }) => {
 	let screen = [
-		{ screen: 'MainScreen', component: Screens.MainScreen },
 		{ screen: 'SwipeScreen', component: Screens.SwipeScreen },
 		{ screen: 'AccountSetupScreen', component: Screens.AccountSetupScreen },
 	];
@@ -64,8 +62,6 @@ const MainStackScreen = ({ initialScreen }) => {
 			screen.unshift(item);
 		}
 	});
-
-	showNavigation = initialScreen === "MainScreen" ? false : true;
 
 	return (
 		<MainStack.Navigator>
@@ -87,15 +83,116 @@ const ProfileStackScreen = () => {
 	return (
 		<ProfileStack.Navigator>
 			<ProfileStack.Screen name="ProfileScreen" component={Screens.ProfileScreen} options={{headerShown: false }}/>
-			<ProfileStack.Screen name="LoginScreen" component={Screens.LoginScreen} options={{headerShown: false}}/>
-			<ProfileStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
-			<ProfileStack.Screen name="ResetPassword" component={Screens.ResetPasswordScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SwipeSettingScreen" component={Screens.SwipeSettingScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SettingsScreen" component={Screens.SettingsScreen} options={{headerShown: false}}/>
 			<ProfileStack.Screen name="SubscriptionScreen" component={Screens.SubscriptionScreen} options={{headerShown: false}}/>
 		</ProfileStack.Navigator>
 	)
 }
+
+const AuthenticatedStack = (initialScreen) => (
+	<Tab.Navigator
+		initialRouteName={initialScreen}
+		screenOptions={({route}) => {
+			const focusedScreen = getFocusedRouteNameFromRoute(route);
+			const hiddenScreens = ['SettingsScreen', 'AccountSetupScreen', 'MessageScreen', 'SwipeSettingScreen'];
+			const hideNav = hiddenScreens.includes(focusedScreen);
+
+			return {
+				headerShown: false,
+				tabBarShowLabel: false,
+				tabBarItemStyle: {
+					width: 50,
+					height: 50,
+				},
+				tabBarStyle: {
+					position: 'absolute',
+					borderTopEndRadius: 25,
+					borderTopStartRadius: 25,
+					backgroundColor: '#F6F6F6',
+					height: Dimensions.get('window').height * 0.15,
+					padding: 15,
+					shadowColor: 'black',
+					shadowOffset: { width: 0, height: 2 },
+					shadowOpacity: 0.15,
+					justifyContent: 'center',
+					alignItems: 'center',
+					flex: 1,
+					display: hideNav ? 'none' : 'flex',
+				},
+			}
+		}}>
+
+		<Tab.Screen name="Main" options={({ navigation, route }) => {
+
+			return {
+				tabBarButton: (props) => (
+					<TouchableOpacity style={styles.button} onPress={() => {
+						navigation.navigate('Main', { screen: 'SwipeScreen'});
+						navActive = 'SwipeScreen';
+					}}>
+					<Icon
+						name="toggle-left"
+						type="feather"
+						size={30}
+						style={navActive === 'SwipeScreen' ? [styles.button, styles.buttonActive] : styles.button}
+					/>
+					</TouchableOpacity>
+				)
+			}
+		}}>
+			{() => <MainStackScreen initialScreen={initialScreen}/>}
+		</Tab.Screen>
+
+		<Tab.Screen name="Matches" component={MatchesStackScreen} options={({ navigation, route }) => {
+
+			return {
+				tabBarButton: (props) => (
+					<TouchableOpacity style={styles.button} onPress={() => {
+						navigation.navigate('Matches', { screen: 'MatchesScreen' });
+						navActive = 'MatchesScreen';
+					}}>
+					<Icon
+						name="heart"
+						type="feather"
+						size={30}
+						style={navActive === 'MatchesScreen' ? [styles.button, styles.buttonActive] : styles.button}
+					/>
+					</TouchableOpacity>
+				)
+			}
+		}}/>
+
+		<Tab.Screen name="Profile" options={({ navigation, route }) => {
+			return {
+				tabBarButton: (props) => (
+					<TouchableOpacity style={styles.button} onPress={() => {
+						navigation.navigate('Profile', { screen: 'ProfileScreen' });
+						navActive = 'ProfileScreen';
+					}}>
+						<Icon
+							name="user"
+							type="feather"
+							size={30}
+							style={navActive === 'ProfileScreen' ? [styles.button, styles.buttonActive] : styles.button}
+						/>
+					</TouchableOpacity>
+				)
+			}
+		}}>
+			{ (props) => <ProfileStackScreen { ...props } /> }
+		</Tab.Screen>
+	</Tab.Navigator>
+  );
+  
+  const NonAuthenticatedStack = () => (
+		<MainStack.Navigator>
+			<MainStack.Screen name="MainScreen" component={Screens.MainScreen} options={{headerShown: false}}/>
+		  	<MainStack.Screen name="LoginScreen" component={Screens.LoginScreen} options={{headerShown: false}}/>
+		  	<MainStack.Screen name="RegisterScreen" component={Screens.RegisterScreen} options={{headerShown: false}}/>
+		  	<MainStack.Screen name="ResetPassword" component={Screens.ResetPasswordScreen} options={{headerShown: false}}/>
+		</MainStack.Navigator>
+  	);
 
 const Tab = createBottomTabNavigator();
 
@@ -123,99 +220,7 @@ export default function App() {
 		<Provider theme={[theme]}>
 			<NavigationContainer ref={navigationRef}>
 			<AuthHandler auth={auth} dispatch={dispatch} state={state} navigationRef={navigationRef} />
-				<Tab.Navigator
-					initialRouteName={initialScreen}
-					screenOptions={({route}) => {
-						const focusedScreen = getFocusedRouteNameFromRoute(route);
-						const hiddenScreens = ['MainScreen', 'LoginScreen', 'RegisterScreen', 'ResetPasswordScreen', 'SettingsScreen', 'AccountSetupScreen', 'MessageScreen'];
-						const hideNav = hiddenScreens.includes(focusedScreen);
-
-						return {
-							headerShown: false,
-							tabBarShowLabel: false,
-							tabBarItemStyle: {
-								width: 50,
-								height: 50,
-							},
-							tabBarStyle: {
-								position: 'absolute',
-								borderTopEndRadius: 25,
-								borderTopStartRadius: 25,
-								backgroundColor: '#F6F6F6',
-								height: Dimensions.get('window').height * 0.15,
-								padding: 15,
-								shadowColor: 'black',
-								shadowOffset: { width: 0, height: 2 },
-								shadowOpacity: 0.15,
-								justifyContent: 'center',
-								alignItems: 'center',
-								flex: 1,
-								display: !showNavigation ? 'none' 
-									: hideNav ? 'none' : 'flex',
-							},
-						}
-					}}>
-
-					<Tab.Screen name="Main" options={({ navigation, route }) => {
-
-						return {
-							tabBarButton: (props) => (
-								<TouchableOpacity style={styles.button} onPress={() => {
-									navigation.navigate('SwipeScreen');
-									navActive = 'SwipeScreen';
-								}}>
-								<Icon
-									name="toggle-left"
-									type="feather"
-									size={30}
-									style={navActive === 'SwipeScreen' ? [styles.button, styles.buttonActive] : styles.button}
-								/>
-								</TouchableOpacity>
-							)
-						}
-					}}>
-						{() => <MainStackScreen initialScreen={initialScreen}/>}
-					</Tab.Screen>
-
-					<Tab.Screen name="Matches" component={MatchesStackScreen} options={({ navigation, route }) => {
-
-						return {
-							tabBarButton: (props) => (
-								<TouchableOpacity style={styles.button} onPress={() => {
-									navigation.navigate('Matches', { screen: 'MatchesScreen' });
-									navActive = 'MatchesScreen';
-								}}>
-								<Icon
-									name="heart"
-									type="feather"
-									size={30}
-									style={navActive === 'MatchesScreen' ? [styles.button, styles.buttonActive] : styles.button}
-								/>
-								</TouchableOpacity>
-							)
-						}
-					}}/>
-
-					<Tab.Screen name="Profile" options={({ navigation, route }) => {
-						return {
-							tabBarButton: (props) => (
-								<TouchableOpacity style={styles.button} onPress={() => {
-									navigation.navigate('Profile', { screen: 'ProfileScreen' });
-									navActive = 'ProfileScreen';
-								}}>
-									<Icon
-										name="user"
-										type="feather"
-										size={30}
-										style={navActive === 'ProfileScreen' ? [styles.button, styles.buttonActive] : styles.button}
-									/>
-								</TouchableOpacity>
-							)
-						}
-					}}>
-						{ (props) => <ProfileStackScreen { ...props } /> }
-					</Tab.Screen>
-				</Tab.Navigator>
+			{auth ? <AuthenticatedStack /> : <NonAuthenticatedStack />}
 				<Toast />
 			</NavigationContainer>
 		</Provider>
@@ -284,6 +289,7 @@ const AuthHandler = ({ dispatch, state, navigationRef }) => {
 	}, [dispatch]);
   
 	useEffect(() => {
+
 		if (currentUser) {
 			const handleUserLoggedIn = async (user) => {
 				await Global.storeClientData("@user_id", user.uid);

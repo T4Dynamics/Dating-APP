@@ -23,7 +23,7 @@ export default function ResetPasswordScreen({ navigation }) {
         }
 
         sendPasswordResetEmail(firebaseAuth, email).then(() => {
-            navigation.navigate('Main', { screen: 'MainScreen', params: { currentSlide: 4 } });
+            navigation.navigate('MainScreen', { currentSlide: 4 });
             
             return Toast.show({
                 type: 'success',
@@ -65,7 +65,7 @@ export default function ResetPasswordScreen({ navigation }) {
                 <Button
                     style={{ marginTop: 10, width: '100%' }}
                     mode="outlined"
-                    onPress={ () => navigation.navigate('Main', { screen: 'MainScreen', params: { currentSlide: 4 } }) }
+                    onPress={ () => navigation.navigate('MainScreen', { currentSlide: 4 }) }
                 >
                     Main Menu
                 </Button>

@@ -28,6 +28,7 @@ export default function ProfileScreen({ navigation }) {
     useEffect(() => {
         const fetchData = async () => {
             const userDocument = await Global.getClientDocument();
+
             setUserDocument(userDocument);
             setProfileImageUrl(userDocument.imageUrl);
         };
