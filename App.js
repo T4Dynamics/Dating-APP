@@ -13,7 +13,7 @@ import { Icon } from 'react-native-elements';
 import { theme } from './src/theme';
 
 import * as Screens from './src/screens/index';
-import { firebaseAuth, onAuthStateChanged, firebaseFirestore, doc, getDoc } from './config/firebase';
+import { firebaseAuth, onAuthStateChanged, firebaseFirestore, doc, getDoc, setDoc, ref, firebaseStorage, getDownloadURL } from './config/firebase';
 
 import * as Global from './src/helpers/globals';
 
@@ -229,22 +229,51 @@ export default function App() {
 
 const AuthHandler = ({ dispatch, state, navigationRef }) => {
 	const getUserDocument = async (id) => {
-		return new Promise(async (resolve, reject) => {
-			const docRef = doc(firebaseFirestore, 'users', id);
-			const docSnap = await getDoc(docRef);
-		
-			if (docSnap.exists()) {
-				let userData = docSnap.data();
-				userData.id = id;
+        return new Promise(async (resolve, reject) => {
+            const userRef = doc(firebaseFirestore, 'users', id);
+            const userSnap = await getDoc(userRef);
 
-				await Global.storeClientData('@user_document', JSON.stringify(userData));
-				resolve();
-			} else {
-				console.log('No such document!');
-				reject();
-			}
-		});
-	};
+            const premiumRef = doc(firebaseFirestore, 'premium_profiles', id);
+            const premiumSnap = await getDoc(premiumRef);
+        
+            if (userSnap.exists()) {
+                const imageRef = ref(firebaseStorage, `images/${id}`);
+                let imageUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+    
+                getDownloadURL(imageRef)
+                    .then((url) => {
+                        imageUrl = url;
+                    })
+                    .catch((error) => {
+                        
+                    })
+                    .finally(async () => {
+                        const userData = userSnap.data();
+
+                        userData.imageUrl = imageUrl;
+                        userData.id = id;
+
+                        if (premiumSnap.exists()) {
+							const premiumData = premiumSnap.data();
+							const currentTime = new Date().getTime();
+
+							if (premiumData.expiry < currentTime) {
+								userData.premium = 0;
+								const subscriptionRef = collection(firebaseFirestore, 'premium_profiles');
+    
+								const docRef = doc(subscriptionRef, id);
+								await setDoc(docRef, { plan: 0 });
+							} else userData.premium = premiumData.plan;
+						}
+
+                        await Global.storeClientData('@user_document', JSON.stringify(userData));
+                        resolve();
+                    });
+            } else {
+                reject();
+            }
+        });
+    };
 
 	const getInitialScreen = async (auth) => {
 		let initialScreen;

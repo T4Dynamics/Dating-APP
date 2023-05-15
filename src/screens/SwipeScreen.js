@@ -67,7 +67,6 @@ export default function SwipeScreen({ navigation }) {
                 });
         
                 Global.storeClientData('@matches_loaded', "true");
-                getUserData(loggedInUserId);
                 setMatches(matches);
             }
         };
@@ -84,36 +83,6 @@ export default function SwipeScreen({ navigation }) {
             setMatch(match);
         }
     }, [matches]);
-
-    const getUserData = async (id) => {
-        return new Promise(async (resolve, reject) => {
-            const docRef = doc(firebaseFirestore, 'users', id);
-            const docSnap = await getDoc(docRef);
-        
-            if (docSnap.exists()) {
-                const imageRef = ref(firebaseStorage, `images/${id}`);
-                let imageUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
-    
-                getDownloadURL(imageRef)
-                    .then((url) => {
-                        imageUrl = url;
-                    })
-                    .catch((error) => {
-                        
-                    })
-                    .finally(async () => {
-                        const userData = docSnap.data();
-                        userData.imageUrl = imageUrl;
-                        userData.id = id;
-
-                        await Global.storeClientData('@user_document', JSON.stringify(userData));
-                        resolve();
-                    });
-            } else {
-                reject();
-            }
-        });
-    };
     
     const pan = useRef(new Animated.ValueXY()).current;
 
