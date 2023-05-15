@@ -1,0 +1,22 @@
+[
+    {
+        "name": "ComfyCloud Mattress", 
+        "description": "Experience the best sleep of your life with our high-quality, cloud-soft mattresses. Your dreams await!", 
+        "image": "https://www.tedsinteriors.co.uk/wp-content/uploads/2021/09/Ice-Cloud-Comfort-2200-Mattress-at-Teds-Interiors-Newry-available-in-Double-Bed-Mattress-and-King-Size-Bed-Mattress-sizes.jpg"
+    },
+    {
+        "name": "SprintSpeed Sneakers", 
+        "description": "Unleash your potential with our ultralight, durable sneakers. Designed for maximum comfort and speed.", 
+        "image": "https://cdn.shopify.com/s/files/1/0015/4445/4207/articles/saucony_endorphin_speed_3-01.jpg?v=1675904804"
+    },
+    {
+        "name": "GlowSkin Beauty Cream", 
+        "description": "Reveal your natural glow with our organic beauty cream. Radiant skin is just a click away.", 
+        "image": "https://images.squarespace-cdn.com/content/v1/5e5bdba7c50ea102c526d018/1591642535402-4C00M737GLVKYDS1YFA4/26.jpg?format=1500w"
+    },
+    {
+        "name": "AeroDyne Drones", 
+        "description": "Capture breathtaking aerial footage with our state-of-the-art drones. The sky is no longer the limit.", 
+        "image": "https://assets.newatlas.com/dims4/default/dc2839d/2147483647/strip/true/crop/1920x1080+0+0/resize/1920x1080!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2Farchive%2Faerodyne-nimbus-crashproof-drone-48.jpg"
+    }
+]

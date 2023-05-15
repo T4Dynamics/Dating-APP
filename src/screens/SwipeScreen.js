@@ -10,16 +10,16 @@ import { StyleSheet, Text, Animated, PanResponder, View, TouchableOpacity, Dimen
 import { Icon } from 'react-native-elements'
 
 import * as Global from '../helpers/globals';
+import * as advertisements from '../data/advertisements.json';
 
 import { collection, getDocs, firebaseFirestore, doc, setDoc, query, where, updateDoc, limit, firebaseStorage, ref, getDownloadURL, getDoc  } from '../../config/firebase';
-
-import { theme } from '../theme';
 
 export default function SwipeScreen({ navigation }) {
 
     const [matches, setMatches] = useState([]);
     const [match, setMatch] = useState(null);
     const [swipe, setSwipe] = useState('');
+    const [counter, setCounter] = useState(0);
 
     const [loading, setLoading] = useState(true);
 
@@ -135,8 +135,10 @@ export default function SwipeScreen({ navigation }) {
             onPanResponderRelease: (event, gestureState) => {
                 if (gestureState.dx > 150) {
                     if (Object.keys(matches).length) setSwipe("right");
+                    else setCounter(counter => counter + 1);
                 } else if (gestureState.dx < -150) {
                     if (Object.keys(matches).length) setSwipe("left");
+                    else setCounter(counter => counter + 1);
                 }
                 Animated.spring(pan, {
                     toValue: { x: 0, y: 0 },
@@ -205,7 +207,7 @@ export default function SwipeScreen({ navigation }) {
             <Header navigation={navigation} screen={headerScreenData} toggle={true}/>
 
             { 
-                loading ? <Text/> : match ? matchCard(match, pan, panResponder, rotate) : 
+                loading ? <Text/> : counter == 5 ? advertisementCard(match, pan, panResponder, rotate) : match ? matchCard(match, pan, panResponder, rotate) : 
                 Global.matchesLoaded == false ? undefinedMatches(pan, panResponder, rotate, 'Loading...') :
                     undefinedMatches(pan, panResponder, rotate, 'No More Matches') 
             }
@@ -287,6 +289,37 @@ const undefinedMatches = (pan, panResponder, rotate, text) => {
     )
 }
 
+const advertisementCard = (match = null, pan, panResponder, rotate) => {
+    const advert = advertisements["default"][Math.floor(Math.random() * advertisements["default"].length)];
+
+    return (
+        <Animated.View
+            style={[
+                pan.getLayout(), 
+                styles.container, 
+                {transform: [
+                    { translateX: pan.x },
+                    { translateY: pan.y },
+                    { rotate: rotate }
+                ]}
+            ]}
+            {...panResponder.panHandlers}s
+        >
+            <ImageBackground 
+                source={{uri: advert.image}} 
+                style={{...styles.advertContainer, flex: 1}}
+                imageStyle={ styles.image }
+                resizeMode='cover'
+            >
+                <View style={styles.person}>
+                    <Text style={styles.heading}>{advert.name}</Text>
+                </View>
+                <Text style={styles.text}>{advert.description}</Text>
+            </ImageBackground>
+        </Animated.View>
+    )
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -294,13 +327,32 @@ const styles = StyleSheet.create({
         marginHorizontal: Dimensions.get('window').width * 0.05,
         top: '15%',
         width: Dimensions.get('window').width * 0.9,
+        maxWidth: Dimensions.get('window').width * 0.9,
         height: Dimensions.get('window').height * 0.65,
+        maxHeight: Dimensions.get('window').height * 0.65,
         justifyContent: 'space-between',
         alignItems: 'center',
         elevation: 3,
         backgroundColor: '#f2f2f2',
         padding: 15,
         borderRadius: 10,
+    },
+    advertContainer: {
+        width: Dimensions.get('window').width * 0.9,
+        height: "80%",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        
+    },
+    image: {
+        borderRadius: 10, 
+        width: '80%', 
+        height: '75%', 
+        margin: Dimensions.get('window').width * 0.09, 
+        elevation: 3, backgroundColor: '#f2f2f2', 
+        marginTop: Dimensions.get('window').width * 0.15, 
+        borderRadius: 10,
+        opacity: 0.5,
     },
     row: {
         width: '75%',
