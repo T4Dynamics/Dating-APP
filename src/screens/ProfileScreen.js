@@ -204,7 +204,7 @@ export default function ProfileScreen({ navigation }) {
                         />
                     </View>
                     <View style={styles.horizontalButtons}>
-                        <Button style={{ marginTop: 10 }} mode="contained" onPress={() => navigation.navigate(screen.parent, { screen: screen.child })}> Edit Profile </Button>
+                        <Button style={{ marginTop: 10 }} mode="contained" onPress={() => navigation.navigate(headerScreenData.parent, { screen: headerScreenData.child })}> Edit Profile </Button>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>

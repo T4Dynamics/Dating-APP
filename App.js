@@ -13,7 +13,7 @@ import { Icon } from 'react-native-elements';
 import { theme } from './src/theme';
 
 import * as Screens from './src/screens/index';
-import { firebaseAuth, onAuthStateChanged, firebaseFirestore, doc, getDoc, setDoc, ref, firebaseStorage, getDownloadURL } from './config/firebase';
+import { firebaseAuth, onAuthStateChanged, firebaseFirestore, doc, getDoc, setDoc, ref, firebaseStorage, getDownloadURL, collection } from './config/firebase';
 
 import * as Global from './src/helpers/globals';
 

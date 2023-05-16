@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 
 import { collection, setDoc, doc, firebaseFirestore } from "../../config/firebase";
 
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10,
         backgroundColor: '#F6F6F6',
+        width: Dimensions.get('window').width * 0.8,
     },
     text: {
         fontSize: 20,
