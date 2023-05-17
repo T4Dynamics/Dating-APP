@@ -97,14 +97,14 @@ export default function SubscriptionScreen({ navigation }) {
     return (
         <Background>
             <Header navigation={navigation}/>
-            <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 10 }}></Text>
+            <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 5 }}></Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Button style={ styles.button } mode={ selectedSlider != 1 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(1) }>Slider+</Button>
                 <Button style={ styles.button } mode={ selectedSlider != 2 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(2) }>Slider Premium</Button>
             </View>
             <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 10 }}>Scroll to View</Text>
             <ScrollView
-                        style={{ flexGrow: 0, height: '40%', width: '80%', paddingTop: 10 }}
+                        style={{ flexGrow: 0, height: '37.5%', width: '80%', paddingTop: 10 }}
                         contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
             >
                 { selectedSlider == 1 ? displayData(sliderPlus) : displayData(sliderPremium) }

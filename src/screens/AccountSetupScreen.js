@@ -646,6 +646,8 @@ const displayData = (currentSlide, navigation) => {
                         const loggedInUserId = await Global.getClientData('@user_id');
                         const docRef = doc(profilesRef, loggedInUserId);
                         await setDoc(docRef, profileData);
+
+                        await Global.storeClientData('@user_document', profileData);
                         
                         console.log('Document written with custom name:', loggedInUserId);
                     } catch (e) {

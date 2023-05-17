@@ -32,6 +32,7 @@ export default function SettingsScreen({ navigation }) {
     return (
         <Background>
             <Header navigation={navigation}/>
+            <View style={styles.container}>
             <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 10 }}>Edit Settings</Text>
             <Text style={{ fontSize: 14, textAlign: 'center', marginTop: 10 }}>Select an option below to edit</Text>
             <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 10 }}>Scroll to View</Text>
@@ -41,8 +42,7 @@ export default function SettingsScreen({ navigation }) {
             >
                 { displayData(settings) }
             </ScrollView>
-            <View style={styles.container}>
-                <Button mode="contained" style={{ marginTop: 10, width: '100%' }} onPress={() => navigation.navigate('Profile', { screen: 'ProfileScreen' })}>
+                <Button mode="contained" style={{ marginTop: 10, width: '80%' }} onPress={() => navigation.navigate('Profile', { screen: 'ProfileScreen' })}>
                     Go back
                 </Button>
             </View>
@@ -66,16 +66,10 @@ const displayData = (data) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '80%',
+        width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
-    },
-    button: {
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 10,
-        marginRight: 10
+        justifyContent: 'center',
     },
     row: {
         flexDirection: 'row',

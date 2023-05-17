@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useRoute } from '@react-navigation/native';
 import { firebaseAuth, firebaseFirestore, EmailAuthProvider, signOut, doc, deleteDoc, signInWithCredential, getStorage, ref, uploadBytes, getDownloadURL, firebaseStorage } from "../../config/firebase";
-import { Dimensions, Image, StyleSheet, View, Text, FlatList, ScrollView, Alert, TouchableOpacity } from "react-native";
+import { Dimensions, Image, StyleSheet, View, Text, FlatList, ScrollView, Alert, TouchableOpacity, Platform } from "react-native";
 
 import Button from "../components/Button";
 
@@ -165,7 +165,7 @@ export default function ProfileScreen({ navigation }) {
         <Background>
             <Header screen={headerScreenData} navigation={navigation} toggle={false} />
             <ScrollView
-                    style={{ flexGrow: 1, paddingTop: 10, marginTop: Dimensions.get('window').height * .07, marginBottom: Dimensions.get('window').height * 0.12 }}
+                    style={ styles.profileSlider}
                     contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
                 >
                 <StatusBar style="light" />
@@ -222,6 +222,20 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * .5,
+    },
+    profileSlider: { 
+        flexGrow: 1, 
+        paddingTop: 10, 
+        ...Platform.select({
+            ios: {
+                marginTop: Dimensions.get('window').height * .07, 
+                marginBottom: Dimensions.get('window').height * 0.12
+            },
+            android: {
+                marginTop: Dimensions.get('window').height * .13, 
+                marginBottom: Dimensions.get('window').height * 0.15 
+            }
+        })
     },
     profileContent: {
         textAlign: 'left',

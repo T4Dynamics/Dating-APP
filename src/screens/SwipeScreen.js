@@ -62,6 +62,7 @@ export default function SwipeScreen({ navigation }) {
                         !matchedUserIds.has(userId) &&
                         (data.match_like === 'undefined' || !data.match_like)
                     ) {
+                        console.log(data);
                         matches[userId] = new User(data, userId);
                     }
                 });
@@ -201,7 +202,7 @@ const matchCard = (match, pan, panResponder, rotate) => {
         >
             <View style={styles.person}>
                 <Text style={styles.heading}>{match.name}</Text>
-                <Text style={styles.heading}>{match.age}</Text>
+                <Text style={styles.heading}>{match.getAge()}</Text>
             </View>
             <Text style={styles.text}>{match.description}</Text>
             <View style={styles.children}>

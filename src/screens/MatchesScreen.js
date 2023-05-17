@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
 
 import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc } from '../../config/firebase';
 import * as Global from '../helpers/globals';
@@ -107,7 +107,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
+        ...Platform.select({
+            android: {
+                marginTop: Dimensions.get('window').height * .10, 
+            },
+        }),
     },
     premiumContainer: {
         width: '90%',
