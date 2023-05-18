@@ -16,8 +16,9 @@ export default class User {
         this.description = data.match_data.description;
         this.likes = data.match_data.likes;
         this.dislikes = data.match_data.dislikes;
-        this.goal = data.match_data.relationship_goal;
+        this.goal = data.match_data.relationshipType;
         this.attraction = data.match_data.attraction;
+        this.age_range = data.match_data.ageRange;
     }
 
     getId() {
@@ -86,5 +87,9 @@ export default class User {
 
     getPremium() {
         return this.premium;
+    }
+
+    getAgeRange() {
+        return this.age_range;
     }
 }

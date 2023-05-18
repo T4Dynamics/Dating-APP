@@ -19,7 +19,7 @@ import * as Utils from '../helpers/utils';
 
 import Input from "../components/Input";
 
-export default function SettingsScreen({ navigation }) {
+export default function AccountSetupScreen({ navigation }) {
 
     const route = useRoute();
     const currentSlide = route.params ? route.params.currentSlide : 1;
@@ -647,6 +647,8 @@ const displayData = (currentSlide, navigation) => {
                         const docRef = doc(profilesRef, loggedInUserId);
                         await setDoc(docRef, profileData);
 
+                        profileData.imageUrl = imageUrl;
+                        profileData.id = id;
                         await Global.storeClientData('@user_document', profileData);
                         
                         console.log('Document written with custom name:', loggedInUserId);
