@@ -276,7 +276,7 @@ const advertisementCard = (match = null, pan, panResponder, rotate) => {
                     { rotate: rotate }
                 ]}
             ]}
-            {...panResponder.panHandlers}s
+            {...panResponder.panHandlers}
         >
             <ImageBackground 
                 source={{uri: advert.image}} 

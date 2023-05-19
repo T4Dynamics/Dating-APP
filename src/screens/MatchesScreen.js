@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, Platform, Dimensions, ImageBackground } from 'react-native';
 
 import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc } from '../../config/firebase';
 import * as Global from '../helpers/globals';
@@ -78,15 +78,22 @@ export default function MatchesScreen({ navigation }) {
 
     return (
         <Background>
-            <Header navigation={navigation} screen='ProfileScreen' toggle={true}/>
+            <Header navigation={navigation} screen='ProfileScreen' toggle={false}/>
             <View style={styles.container}>
-                <Text>Matches</Text>
+                <Text style={styles.title}>Matches</Text>
                 <ScrollView
                     style={{ flexGrow: 0, height: '20%', width: '100%', paddingTop: 10 }}
                     horizontal={true}
                     contentContainerStyle={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <Match likeAmount={matches.length}/>
+                    <ImageBackground 
+                        style={styles.potentialMatches}
+                        source={require('../assets/premium-gradient.png')}
+                        imageStyle={{ overflow: 'hidden', borderRadius: 15, resizeMode: 'cover' }}
+                    > 
+                        <Text style={styles.potentialMatchesText}>{matches.length}</Text>
+                    </ImageBackground>
+                    
                     { confirmedMatches.map((match, index) => !match.potentialMatchDoc.messaged ? <Match data={match} key={`match-${index}`} navigation={navigation}/> : null ) }
                 </ScrollView>
 
@@ -96,7 +103,7 @@ export default function MatchesScreen({ navigation }) {
                     </Text>
                 </TouchableOpacity>
 
-                <Text>Messages</Text>
+                <Text style={styles.title}>Messages</Text>
                 <ScrollView
                     style={{ flexGrow: 0, height: '50%', paddingTop: 10 }}
                     contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
@@ -120,6 +127,27 @@ const styles = StyleSheet.create({
                 marginTop: Dimensions.get('window').height * .10, 
             },
         }),
+    },
+    title: {
+        width: Dimensions.get("window").width - 30,
+        fontSize: 24,
+        textAlign: 'left',
+        fontWeight: 'bold',
+    },
+    potentialMatches: {
+        alignSelf: 'flex-start',
+        height: 75,
+        width: 75,
+        margin: 10,
+        backgroundColor: 'red',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+	},
+    potentialMatchesText: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: '#ffffff',
     },
     premiumContainer: {
         width: '90%',

@@ -13,6 +13,8 @@ import Background from '../components/Background';
 import * as ImagePicker from 'expo-image-picker';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
+const windowWidth = Dimensions.get('window').width;
+
 export default function ProfileScreen({ navigation }) {
 
     const route = useRoute();
@@ -175,7 +177,7 @@ export default function ProfileScreen({ navigation }) {
                 <View style={styles.profileContent}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Text style={styles.firstName}>{ firstName }</Text>
-                        <Text style={[styles.firstName, { fontSize: 18}]}>{ userDocument ? userDocument.getAge() : '' }</Text>
+                        <Text style={styles.age}>{ userDocument ? userDocument.getAge() : '' }</Text>
                     </View>
                     <Text style={styles.label}>Your Bio </Text>
                     <Text style={styles.bio}>{ userDocument ? userDocument.description : ''}</Text>
@@ -186,6 +188,7 @@ export default function ProfileScreen({ navigation }) {
                             renderItem={({ item }) => (
                                 <Text style={styles.interest}>{item}</Text>
                             )}
+
                             keyExtractor={item => item}
                             showsHorizontalScrollIndicator={false}
                             horizontal={true}
@@ -204,12 +207,12 @@ export default function ProfileScreen({ navigation }) {
                         />
                     </View>
                     <View style={styles.horizontalButtons}>
-                        <Button style={{ marginTop: 10 }} mode="contained" onPress={() => navigation.navigate(headerScreenData.parent, { screen: headerScreenData.child })}> Edit Profile </Button>
+                        <Button mode="contained" onPress={() => navigation.navigate(headerScreenData.parent, { screen: headerScreenData.child })}> Edit Profile </Button>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button style={{ marginTop: 10 }} mode="outlined" onPress={ handleLogout }> Logout </Button>
-                    <Button style={{ marginTop: 10, backgroundColor: '#EE4B2B', color: 'white' }} mode="outlined" onPress={ handleDeleteAccount }> {confirmationToggle ? 'Confirm Deletion' : deleteToggle ? `Confirm Deletion in ${countdown}` : 'Delete Account'} </Button>
+                    <Button mode="contained" onPress={ handleLogout } width={(windowWidth - 40) / 2} > Logout </Button>
+                    <Button mode="outlined" onPress={ handleDeleteAccount }  width={(windowWidth - 40) / 2} > {confirmationToggle ? 'Confirm Deletion' : deleteToggle ? `Confirm Deletion in ${countdown}` : 'Delete Account'} </Button>
                 </View>
             </ScrollView>
         </Background>
@@ -246,9 +249,13 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 20,
         color: 'gray',
+        marginVertical: 5,
+    },
+    age: {
+        fontSize: 24,
     },
     bio: {
-        margin: 5,
+        marginVertical: 20,
         fontSize: 18,
         letterSpacing: .6,
         lineHeight: 20,
@@ -257,9 +264,9 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
     buttonContainer: {
-        width: Dimensions.get('window').width,
+        width: Dimensions.get('window').width - 30,
+        justifyContent: 'space-between',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
         paddingBottom: 30,
     },
     interestContainer: {
