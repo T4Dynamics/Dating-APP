@@ -27,16 +27,23 @@ export default function MatchesScreen({ navigation }) {
     const fetchPotentialMatches = async (userId) => {
         const potentialMatchesRef = collection(firebaseFirestore, 'potential_matches');
         const userRef = doc(firebaseFirestore, 'users', userId);
-        const q = query(potentialMatchesRef, where("match_ref", "==", userRef));
-        const potentialMatchesSnapshot = await getDocs(q);
+
+        const q1 = query(potentialMatchesRef, where("user_ref", "==", userRef));
+        const q2 = query(potentialMatchesRef, where("match_ref", "==", userRef));
+        
+        const potentialMatchesSnapshot1 = await getDocs(q1);
+        const potentialMatchesSnapshot2 = await getDocs(q2);
+
+        const potentialMatchesSnapshot = [...potentialMatchesSnapshot1.docs, ...potentialMatchesSnapshot2.docs];
       
-        const promises = potentialMatchesSnapshot.docs.map(async (document) => {
+        const promises = potentialMatchesSnapshot.map(async (document) => {
             const data = document.data();
             
             if (data.user_like === 'LIKE' && data.match_like === 'NONE') {
+                console.log('potential match', data);
                 return data;
             } else if (data.user_like === 'LIKE' && data.match_like === 'LIKE') {
-                const otherUserRef = data.user_ref;
+                const otherUserRef = data.user_ref._key.path.segments[6] == userId ? data.match_ref : data.user_ref;
                 const userDoc = await getDoc(otherUserRef);
             
                 if (userDoc.exists()) {

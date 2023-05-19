@@ -22,7 +22,7 @@ export default function MessageScreen({ navigation }) {
 	const firstName = name ? name.split(' ')[0] : null;
 	const nameDisplay = firstName ?? 'Unknown';
 
-    const matchDate = new Date(data.match_date * 1000);
+    const matchDate = new Date(data.matchTimestamp * 1000);
     const day = String(matchDate.getDate()).padStart(2, '0');
     const month = String(matchDate.getMonth() + 1).padStart(2, '0');
     const year = matchDate.getFullYear();
@@ -110,7 +110,7 @@ export default function MessageScreen({ navigation }) {
                 style={styles.messageContainer}
                 contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center' }}
             >
-                    <Text style={{ fontSize: 12, alignSelf: 'center', paddingBottom: 10 }}>You matched with { nameDisplay } on { data.match_date ? formattedDate : 'Unknown Date'}</Text>
+                    <Text style={{ fontSize: 12, alignSelf: 'center', paddingBottom: 10 }}>You matched with { nameDisplay } on { data.matchTimestamp ? formattedDate : 'Unknown Date'}</Text>
                 {
                     messages.map((msg, index) => (
                         <View

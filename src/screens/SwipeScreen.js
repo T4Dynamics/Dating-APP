@@ -62,7 +62,6 @@ export default function SwipeScreen({ navigation }) {
                         !matchedUserIds.has(userId) &&
                         (data.match_like === 'undefined' || !data.match_like)
                     ) {
-                        console.log(data);
                         matches[userId] = new User(data, userId);
                     }
                 });
@@ -134,11 +133,15 @@ export default function SwipeScreen({ navigation }) {
     }
     
     const createMatch = async (match, userId, likeType) => {
+        console.log('createMatch', match, userId, likeType);
         try {
             const matchRef = doc(firebaseFirestore, 'users', match.id);
             const userRef = doc(firebaseFirestore, 'users', userId);
+
+            console.log('matchRef', matchRef);
+            console.log('userRef', userRef);
     
-            const q = query(collection(firebaseFirestore, 'potential_matches'), where('user_ref', '==', userRef), where('match_ref', '==', matchRef));
+            const q = query(collection(firebaseFirestore, 'potential_matches'), where('match_ref', '==', userRef), where('user_ref', '==', matchRef));
             const snapshot = await getDocs(q);
     
             const data = {

@@ -22,7 +22,8 @@ export default function Match({ data, likeAmount, navigation }) {
 		return (
 			<TouchableOpacity style={[styles.container]} onPress={() => navigation.navigate('Matches', { screen: 'MessageScreen', params: { 
 				matchId: data.potentialMatchDoc.user_ref._key.path.segments[6], 
-				matchName: data.matchData.name 
+				matchName: data.matchData.name,
+				matchTimestamp: data.potentialMatchDoc.match_date
 			}})}>
 				<View style={[styles.card]} />
 				<Text style={[styles.text]}>
