@@ -97,25 +97,27 @@ export default function SubscriptionScreen({ navigation }) {
     return (
         <Background>
             <Header navigation={navigation}/>
-            <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 5 }}></Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Button style={ styles.button } mode={ selectedSlider != 1 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(1) }>Slider+</Button>
-                <Button style={ styles.button } mode={ selectedSlider != 2 ? 'contained' : 'outlined'} onPress={ () => setSelectedSlider(2) }>Slider Premium</Button>
-            </View>
-            <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 10 }}>Scroll to View</Text>
+            <Text style={styles.title}> 
+                { selectedSlider == 1 ? 'Slider+' : 'Slider Premium' } 
+            </Text>
+            <Text style={{ width: '80%', marginVertical: 15, fontSize: 20, textAlign: 'left', marginTop: 10 }}>£{price}/month</Text>
             <ScrollView
-                        style={{ flexGrow: 0, height: '37.5%', width: '80%', paddingTop: 10 }}
-                        contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+                style={{ flexGrow: 0, height: '37.5%', width: '80%', paddingTop: 10 }}
+                contentContainerStyle={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
             >
                 { selectedSlider == 1 ? displayData(sliderPlus) : displayData(sliderPremium) }
             </ScrollView>
+            <Text style={{marginTop: 5}}> Scroll for More </Text>
             <View style={styles.container}>
-                <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 10 }}>£{price}/month</Text>
-                <Button mode="contained" style={{ marginTop: 10, width: '100%', backgroundColor: buttonColor }} onPress={ () => { purchasePremium(true) } } >
-                    {buttonText}
-                </Button>
                 { premiumPlan != 0 ? <Button mode="outlined" style={{ marginTop: 10, width: '100%' }} onPress={ () => { purchasePremium(false) } } > Cancel Plan </Button> : null}
             </View>
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20 }}>
+                <Button mode={ selectedSlider != 1 ? 'outlined' : 'contained'} onPress={ () => setSelectedSlider(1) }>Slider+</Button>
+                <Button mode={ selectedSlider != 2 ? 'outlined' : 'contained'} onPress={ () => setSelectedSlider(2) }>Slider Premium</Button>
+            </View>
+            <Button mode="contained" onPress={ () => { purchasePremium(true) } } >
+                {buttonText}
+            </Button>
         </Background>
     );
 }
@@ -141,12 +143,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    button: {
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 10,
-        marginRight: 10
-    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -154,6 +150,13 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: '#F6F6F6',
         width: Dimensions.get('window').width * 0.8,
+    },
+    title: {
+        width: '80%',
+        fontSize: 30,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        padding: 10
     },
     text: {
         fontSize: 20,

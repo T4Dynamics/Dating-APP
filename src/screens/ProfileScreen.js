@@ -206,8 +206,13 @@ export default function ProfileScreen({ navigation }) {
                             horizontal={true}
                         />
                     </View>
-                    <View style={styles.horizontalButtons}>
+                    <View style={styles.verticleButtons}>
                         <Button mode="contained" onPress={() => navigation.navigate(headerScreenData.parent, { screen: headerScreenData.child })}> Edit Profile </Button>
+                        <Button mode="contained" onPress={() => navigation.navigate('Profile', { screen: 'SubscriptionScreen' })}>
+                            <Text>
+                                Slider Premium
+                            </Text>
+                        </Button>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
@@ -281,7 +286,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
-    horizontalButtons: {
-        display: 'flex',
+    verticleButtons: {
+        height: 115,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     }
 });

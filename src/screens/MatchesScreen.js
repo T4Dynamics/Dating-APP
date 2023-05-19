@@ -86,22 +86,18 @@ export default function MatchesScreen({ navigation }) {
                     horizontal={true}
                     contentContainerStyle={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <ImageBackground 
-                        style={styles.potentialMatches}
-                        source={require('../assets/premium-gradient.png')}
-                        imageStyle={{ overflow: 'hidden', borderRadius: 15, resizeMode: 'cover' }}
-                    > 
-                        <Text style={styles.potentialMatchesText}>{matches.length}</Text>
-                    </ImageBackground>
+                    <TouchableOpacity style={styles.potentialMatches} onPress={() => navigation.navigate('Profile', { screen: 'SubscriptionScreen' })}>
+                        <ImageBackground
+                            style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
+                            source={require('../assets/premium-gradient.png')}
+                            imageStyle={{ overflow: 'hidden', borderRadius: 15, resizeMode: 'cover' }}
+                        >
+                                <Text style={styles.potentialMatchesText}>{matches.length}</Text>
+                        </ImageBackground>
+                    </TouchableOpacity>
                     
                     { confirmedMatches.map((match, index) => !match.potentialMatchDoc.messaged ? <Match data={match} key={`match-${index}`} navigation={navigation}/> : null ) }
                 </ScrollView>
-
-                <TouchableOpacity style={[styles.premiumContainer]} onPress={() => navigation.navigate('Profile', { screen: 'SubscriptionScreen' })}>
-                    <Text>
-                        Slider Premium
-                    </Text>
-                </TouchableOpacity>
 
                 <Text style={styles.title}>Messages</Text>
                 <ScrollView
