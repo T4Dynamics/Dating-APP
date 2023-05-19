@@ -647,7 +647,7 @@ const displayData = (currentSlide, navigation) => {
                         const docRef = doc(profilesRef, loggedInUserId);
                         await setDoc(docRef, profileData);
 
-                        profileData.imageUrl = imageUrl;
+                        profileData.imageUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
                         profileData.id = id;
                         await Global.storeClientData('@user_document', profileData);
                         
