@@ -8,8 +8,7 @@ import Button from "../components/Button";
 import Background from "../components/Background";
 
 export default function SwipeSettingScreen({ navigation }) {
-
-    const [distance, setDistance] = useState({ min: 0, max: 99 });
+    const [distance, setDistance] = useState(50);
 
     const saveDistance = async () => {
         if (distance.min > distance.max) return Toast.show({
@@ -33,40 +32,30 @@ export default function SwipeSettingScreen({ navigation }) {
         });
     }
 
-
     return (
         <Background>
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <Text style={styles.title}>Settings Screen</Text>
             <View style={styles.inputContainer}>
                 <View>
-                    <Text>Min Distance: {distance.min}</Text>
+                    <Text>Max Distance: {distance}</Text>
                     <Slider
-                        style={{ width: '100%', height: 40 }}
-                        minimumValue={18}
+                        style={{ width: '100%', height: 40, marginBottom: 30 }}
+                        minimumValue={0}
                         maximumValue={99}
                         step={1}
-                        value={distance.min}
-                        onValueChange={(value) => setDistance({ ...distance, min: value })}
-                        minimumTrackTintColor="#2f95dc"
+                        value={distance}
+                        onValueChange={(value) => setDistance(value)}
+                        minimumTrackTintColor="#000"
                         maximumTrackTintColor="#ccc"
                     />
                 </View>
-                <View>
-                    <Text>Max Distance: {distance.max}</Text>
-                    <Slider
-                        style={{ width: '100%', height: 40 }}
-                        minimumValue={18}
-                        maximumValue={99}
-                        step={1}
-                        value={distance.max}
-                        onValueChange={(value) => setDistance({ ...distance, max: value })}
-                        minimumTrackTintColor="#2f95dc"
-                        maximumTrackTintColor="#ccc"
-                    />
-                </View>
-                <Button style={{ marginTop: 10 }} mode="contained" onPress={ () => saveDistance()}> Save </Button>
-                <Button style={{ marginTop: 10 }} mode="outlined" onPress={ () => navigation.navigate('Main', { screen: 'SwipeScreen' }) }> Go Back </Button>
+                <Button mode="contained" onPress={ 
+                    () => {
+                        saveDistance();
+                        navigation.navigate('Main', { screen: 'SwipeScreen' })
+                    }
+                }> Save </Button>
             </View>
             </KeyboardAvoidingView>
         </Background>
@@ -78,10 +67,10 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         width: '100%',
-        maxWidth: 340,
         alignSelf: 'center',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
+        flexDirection: 'column',
     },
     inputContainer: {
         justifyContent: 'center',

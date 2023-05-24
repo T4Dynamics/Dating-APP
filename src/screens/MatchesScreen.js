@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, Platform, Dimensions, ImageBackground } from 'react-native';
 
-import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc } from '../../config/firebase';
+import { collection, getDocs, query, where, firebaseFirestore, doc, getDoc, getDownloadURL, ref, firebaseStorage} from '../../config/firebase';
 import * as Global from '../helpers/globals';
 import Background from '../components/Background';
 import Match from '../components/Match';
@@ -45,11 +45,20 @@ export default function MatchesScreen({ navigation }) {
             } else if (data.user_like === 'LIKE' && data.match_like === 'LIKE') {
                 const otherUserRef = data.user_ref._key.path.segments[6] == userId ? data.match_ref : data.user_ref;
                 const userDoc = await getDoc(otherUserRef);
+
+                const imageRef = ref(firebaseStorage, `images/${data.match_ref._key.path.segments[6]}`);
+                let userData = userDoc.data();
+
+                getDownloadURL(imageRef).then((url) => {
+                    userData.url = url;
+                }).catch((error) => {
+                    console.log('error', error);
+                });
             
                 if (userDoc.exists()) {
                     return {
                         potentialMatchDoc: data,
-                        matchData: userDoc.data()
+                        matchData: userData
                     };
                 }
             }
