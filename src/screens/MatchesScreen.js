@@ -38,9 +38,9 @@ export default function MatchesScreen({ navigation }) {
       
         const promises = potentialMatchesSnapshot.map(async (document) => {
             const data = document.data();
+            data.docRef = document._key.path.segments[6];
             
             if (data.user_like === 'LIKE' && data.match_like === 'NONE') {
-                console.log('potential match', data);
                 return data;
             } else if (data.user_like === 'LIKE' && data.match_like === 'LIKE') {
                 const otherUserRef = data.user_ref._key.path.segments[6] == userId ? data.match_ref : data.user_ref;
@@ -49,11 +49,12 @@ export default function MatchesScreen({ navigation }) {
                 const imageRef = ref(firebaseStorage, `images/${data.match_ref._key.path.segments[6]}`);
                 let userData = userDoc.data();
 
-                getDownloadURL(imageRef).then((url) => {
+                try {
+                    const url = await getDownloadURL(imageRef);
                     userData.url = url;
-                }).catch((error) => {
+                } catch (error) {
                     console.log('error', error);
-                });
+                }
             
                 if (userDoc.exists()) {
                     return {

@@ -33,6 +33,8 @@ export default function MessageScreen({ navigation }) {
     const [chatKey, setChatKey] = useState('');
 
     const generateChatKey = (userId, matchId) => {
+        console.log('userId', userId);
+        console.log('matchId', matchId);
         return `CHAT_${[userId, matchId].sort().join('_')}`;
     }
 
@@ -52,6 +54,10 @@ export default function MessageScreen({ navigation }) {
             if (!chatDoc.exists()) {
                 // No need to do anything IG
             }
+
+            const potentialDocRef = doc(firebaseFirestore, 'potential_matches', data.docRef);
+            await setDoc(potentialDocRef, { messaged: true }, { merge: true })
+
         
             const messagesCollectionRef = collection(chatDocRef, 'messages');
             const q = query(messagesCollectionRef, orderBy('timestamp'));
@@ -80,8 +86,6 @@ export default function MessageScreen({ navigation }) {
             content: message,
             timestamp: new Date().getTime(),
         };
-
-        console.log(newMessage);
 
         const messagesCollectionRef = collection(doc(firebaseFirestore, 'chats', chatKey), 'messages');
         addDoc(messagesCollectionRef, newMessage);

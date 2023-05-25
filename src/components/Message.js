@@ -5,10 +5,11 @@ function Message({ data, navigation, ...props }) {
     return (
         <TouchableOpacity style={[styles.container]} onPress={() => navigation.navigate('Matches', { screen: 'MessageScreen', params: { 
             matchId: data.potentialMatchDoc.user_ref._key.path.segments[6], 
-            matchName: data.matchData.name 
+            matchName: data.matchData.name,
+            docRef: data.potentialMatchDoc.docRef
         }})}>
             <View style={styles.leftContainer}>
-                <Image source={require('../assets/blank_user.png')}  style={styles.userImage} />
+                <Image source={{ uri: data.matchData.url }}  style={styles.userImage} />
             </View>
             <View style={styles.rightContainer}>
                 <View style={styles.messageContent}>
